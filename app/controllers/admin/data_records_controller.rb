@@ -30,23 +30,5 @@ class Admin::DataRecordsController < ApplicationController
     super
   end
 
-  def auto_complete_for_record_short_uri
-    if(s_uri = params[:record][:source])
-      s_uri_parts = s_uri.split(':')
-      options = { :limit => 10 }
-      @records = if(s_uri.include?('://'))
-        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
-      elsif(s_uri_parts.size == 2)
-        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
-      else
-        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
-      end
-
-      render :inline => "<%= content_tag(:ul, @records.map { |rec| content_tag(:li, h(N::URI.new(rec.uri).to_name_s)) }) %>"
-    else
-      render :inline => ''
-    end
-  end
-
   
 end

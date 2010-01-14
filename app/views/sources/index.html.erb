@@ -1,38 +1,25 @@
-<script type="text/javascript">    
-  $(function(){
-    // BUTTONS
-    $('.fg-button').hover(
-    function(){ $(this).removeClass('ui-state-default').addClass('ui-state-focus'); },
-    function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
-  );
-    	
+<%= ipod_dropdown('filter by type', N::SourceClass.used_subclass_hierarchy) { |t| filter_link_for(t) }%>
 
-    $('#class-menu').menu({
-      content: $('#class-menu-items').html(),
-      crumbDefaultText: ' '
-    });
-
-  });
-</script>
-
-<div id="select-container">
-<a tabindex="0" href="#class-menu-items" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="class-menu"><span class="ui-icon ui-icon-triangle-1-s"></span>fiter by type</a>
 <%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
-<div id="class-menu-items" class="hidden">
-  <%= subclass_list { |type| filter_link_for(type) } %>
-</div>
-</div>
 
-<div class="source-list">
+<%= timeline('tl', :data => { :source_finder => {} })%>
+
+<div class="sources_list">
 
 <h1>Sources found: <%= @sources.total_entries  %></h1>
-
+<ul>
 <% for source in @sources %>
-  <p>
-	<span class="source_type"><%= source_type_image %></span>
-	<span class="source-title"><%= link_to title_for(source), source.uri.to_s %></span><span class="source-type"></span></p>
+<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource)) %>
+<li>
+ <p>
+	<span class="source_type"><%= type_images(source.types) %></span>
+	<span class="source_title"><%= title_for(source) %></span>
+	<span class="source-data"><%= data_icons(source.data_records) %></span>
+	<span class="more"> <%= link_to 'more...', :action => 'dispatch', :dispatch_uri => N::URI.new(source.uri).local_name %></span>
+ </p>
+</li>
 <% end  %>
-
+</ul>
 </div>
 
 <%= will_paginate @sources %>

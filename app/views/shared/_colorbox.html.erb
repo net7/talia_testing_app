@@ -1,0 +1,10 @@
+<%= javascript_include_tag 'jquery.colorbox' %>
+<%= stylesheet_link_tag 'colorbox/colorbox.css' %>
+<!-- Colorbox popups -->
+<script type="text/javascript">
+$(document).ready(function(){
+	//Colorbox bindings for image/thing downloads
+	$(".cbox_image").colorbox({transition:"fade", photo:true});
+	$(".cbox_inline").colorbox({width:"80%", height:"80%", iframe:true});
+});
+</script>

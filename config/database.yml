@@ -1,0 +1,23 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+#
+#
+# Be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development: 
+  adapter: jdbcmysql
+  host: localhost
+  password: talia
+  username: talia
+  database: talia_2_3_new_talia_development
+production:
+  adapter: jdbcmysql
+  host: localhost
+  password: talia
+  username: talia
+  database: talia_2_3_new_talia_production
+test:
+  adapter: jdbcmysql
+  host: localhost
+  password: talia
+  username: talia
+  database: talia_2_3_new_talia_test

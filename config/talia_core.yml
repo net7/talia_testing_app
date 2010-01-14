@@ -1,0 +1,21 @@
+--- 
+site_name: Talia 2.3.
+rdf_connection_file: rdfstore
+ardf_log_level: 0
+local_uri: http://localhost:5000/
+default_namespace_uri: http://default.dummy/
+iip_root_directory_location: 
+standalone_db: true
+db_file: database
+namespaces: 
+  dcns: http://purl.org/dc/elements/1.1/
+  dct: http://purl.org/dc/terms/
+  dcmit: http://purl.org/dc/dcmitype/
+  hyper: http://www.hypernietzsche.org/ontology/
+  dive: http://purl.org/divenire/onto#
+  taliadom: http://trac.talia.discovery-project.eu/wiki/SampleDomainOntology#
+  foaf: http://xmlns.com/foaf/0.1/
+  skos: http://www.w3.org/2004/02/skos/core#
+  luccadom: http://trac.talia.discovery-project.eu/wiki/LuccaOntology#
+  talias: http://trac.talia.discovery-project.eu/wiki/StructuralOntology#
+  

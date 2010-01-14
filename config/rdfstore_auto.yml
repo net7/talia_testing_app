@@ -1,0 +1,9 @@
+--- 
+production: 
+  type: sesame
+  location: ./sesame_production.db
+test: 
+  type: sesame
+development: 
+  type: sesame
+  location: ./sesame_development.db

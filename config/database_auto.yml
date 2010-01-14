@@ -1,0 +1,19 @@
+--- 
+production: 
+  adapter: jdbcmysql
+  host: localhost
+  password: k
+  username: k
+  database: kdiscovery_talia_production
+test: 
+  adapter: jdbcmysql
+  host: localhost
+  password: k
+  username: k
+  database: kdiscovery_talia_test
+development: 
+  adapter: jdbcmysql
+  host: localhost
+  password: k
+  username: k
+  database: kdiscovery_talia_development

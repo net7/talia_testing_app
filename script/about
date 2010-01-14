@@ -1,0 +1,4 @@
+#!/Developer/Talia/jruby-1.3.1_2.3/bin/jruby
+require File.dirname(__FILE__) + '/../config/boot'
+$LOAD_PATH.unshift "#{RAILTIES_PATH}/builtin/rails_info"
+require 'commands/about'

@@ -17,41 +17,72 @@ module SourcesHelper
 
   # Gets the title for a source
   def title_for(source)
-    (source[N::DCNS.title].first || N::URI.new(source.uri).local_name)
-  end
-
-  # Nested list for the subclasses. This must take a block that renders the
-  # portion of HTML that goes inside each element item (usually a link)
-  def subclass_list(&block)
-    raise(ArgumentError, "No rendering block given") unless(block)
-    result = "<ul>\n"
-    elements = N::SourceClass.used_subclass_hierarchy
-    elements.each { |klass, children| result << subclass_list_for(klass, children, &block) }
-    result << "</ul>\n"
-    result
+    (source[N::DCNS.title].first || source[N::RDF.label].first || N::URI.new(source.uri).local_name.titleize)
   end
 
   def semantic_target(element)
     if(element.respond_to?(:uri))
-      link_to(N::URI.new(element.uri).to_name_s, element.uri.to_s)
+      uri = N::URI.new(element.uri)
+      link_to(uri.to_name_s, :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
     else
       element
     end
   end
-
+  
+  def type_images(types)
+    @type_map ||= { 
+      N::TALIA.Source => 'source',
+      N::FOAF.Group => 'group',
+      N::LUCCADOM.epoch => 'period',
+      N::LUCCADOM.building => 'building',
+      N::LUCCADOM.museum => 'image',
+      N::LUCCADOM.epoch => 'period',
+      N::LUCCADOM.document => 'document',
+      N::LUCCADOM.artwork => 'image',
+      N::LUCCADOM.place => 'map',
+      N::LUCCADOM.city => 'map',
+      N::FOAF.Person => 'person',
+      N::LUCCADOM.church => 'building'
+    }
+    result = ''
+    types.each do |t|
+      image = @type_map[t] || 'source'
+      name = t.local_name.titleize
+      result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
+        :action => 'index', :filter => t.to_name_s('+')
+      )
+    end
+    result
+  end
+  
+  def data_icons(data_records)
+    result = ''
+    data_records.each do |rec|
+      link_data = data_record_options(rec)
+      result << link_to(
+        image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
+        { :controller => 'source_data',
+          :action => 'show',
+          :id => rec.id },
+        link_data.last
+      )
+    end
+    
+    result
+  end
 
   private
 
-  def subclass_list_for(element, children, &block)
-    result = ''
-    result << '<li>' << block.call(element) << "\n"
-    if(!children.empty?)
-      result << "<ul>\n"
-      children.each { |child, progeny| result << subclass_list_for(child, progeny, &block) }
-      result << "</ul>\n"
+  def data_record_options(record)
+    if(record.mime.include?('image/'))
+      ['image', {:class => 'cbox_image'}]
+    elsif(record.mime.include?('text/'))
+      ['text', {:class =>'cbox_inline' }]
+    elsif(record.mime == 'application/xml')
+      ['text', {:class => 'cbox_inline'}]
+    else
+      ['gear', {}]
     end
-    result << "</li>\n"
-    result
   end
 
 end
