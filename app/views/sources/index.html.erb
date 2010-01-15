@@ -1,8 +1,8 @@
-<%= ipod_dropdown('filter by type', N::SourceClass.used_subclass_hierarchy) { |t| filter_link_for(t) }%>
+<%= timeline('tl', :data => { :source_finder => {} })%>
+
+<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? }) { |t| filter_link_for(t) }%>
 
 <%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
-
-<%= timeline('tl', :data => { :source_finder => {} })%>
 
 <div class="sources_list">
 

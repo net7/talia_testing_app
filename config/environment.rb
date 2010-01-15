@@ -33,6 +33,7 @@ Rails::Initializer.run do |config|
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
+  config.gem 'hobo'
   config.time_zone = 'UTC'
   config.logger = Logger.new("#{RAILS_ROOT}/log/#{RAILS_ENV}.log", 3, 104857600)
 

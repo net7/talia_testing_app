@@ -125,7 +125,7 @@ class SourcesController < ApplicationController
   # * If no other template is found, this will return the default template name
   def template_for(source)
     source.types.each do |type|
-      if(template = template_map[type.uri.to_s].downcase)
+      if(template = template_map[type.uri.to_s.downcase])
         return template
       end
     end
