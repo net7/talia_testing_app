@@ -1,0 +1,11 @@
+<!-- Tag definitions for the Admin subsite -->
+  
+<include src="rapid" plugin="hobo"/>
+
+<include src="taglibs/auto/admin/rapid/cards"/>
+<include src="taglibs/auto/admin/rapid/pages"/>
+<include src="taglibs/auto/admin/rapid/forms"/>
+
+<set-theme name="clean"/>
+
+<def tag="app-name">Talia New 2.3 - Admin</def>
