@@ -1,41 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-quentin:
-  id:                        1
-  login:                     quentin
-  email:                     quentin@example.com
-  salt:                      902ba3cda1883801594b6e1b452790cc53948fda # SHA1('0')
-  crypted_password:          963ac5081d668351591b87ae95f4d06ccc48cba4 # 'monkey'
-  created_at:                <%= 5.days.ago.to_s :db  %>
-  remember_token_expires_at: <%= 1.days.from_now.to_s %>
-  remember_token:            0ade7c2cf97f75d009975f4d720d1fa6c19f4897
-      
-aaron:
-  id:                        2
-  login:                     aaron
-  email:                     aaron@example.com
-  salt:                      fe5dbbcea5ce7e2988b8c69bcfdfde8904aabc1f # SHA1('1')
-  crypted_password:          22d4d291ca19f47c911ee91ad5339d3946ed7988 # 'monkey'
-  created_at:                <%= 1.days.ago.to_s :db %>
-  remember_token_expires_at: 
-  remember_token:            
-
-
-old_password_holder:
-  id:                        3
-  login:                     old_password_holder
-  email:                     salty_dog@example.com
-  salt:                      7e3041ebc2fc05a40c60028e2c4901a81035d3cd
-  crypted_password:          00742970dc9e6319f8019fd54864d3ea740f04b1 # test
-  created_at:                <%= 1.days.ago.to_s :db %>
-
-
-
-admin:
-  id: 4
-  login: admin
-  email: admin@example.com
-  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
-  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
-  # activation_code: adminscode # only if you're activating new signups
-  created_at: <%= 1.days.ago.to_s :db %>
-  roles: admin
+# one:
+#   column: value
+#
+# two:
+#   column: value
