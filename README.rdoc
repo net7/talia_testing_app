@@ -1,0 +1,3 @@
+== Developer Talia App ==
+
+This is a playground app for Talia Development. If you aren't a developer, this isn't interesting for you.
