@@ -20,14 +20,26 @@ module SourcesHelper
     (source[N::DCNS.title].first || source[N::RDF.label].first || N::URI.new(source.uri).local_name.titleize)
   end
 
+
+  # If the element is a resource or an uri-like element, create a link to that element (if it's just a string, it
+  # is just passed through). 
+  #
+  # If the element is in the "local" namespace, the helper will automatically create a correct URI, even if the
+  # current app doesn't run on the "local" domain. Otherwise it will use the URI itself for the link URI.
   def semantic_target(element)
     if(element.respond_to?(:uri))
-      uri = N::URI.new(element.uri)
-      link_to(uri.to_name_s, :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
+      uri = element.to_uri
+      if(uri.local?)
+        link_to(uri.to_name_s, :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
+      else
+        link_to(uri.to_name_s, uri.to_s)
+      end
     else
       element
     end
   end
+  
+  
   
   def type_images(types)
     @type_map ||= { 

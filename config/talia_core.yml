@@ -18,4 +18,5 @@ namespaces:
   skos: http://www.w3.org/2004/02/skos/core#
   luccadom: http://trac.talia.discovery-project.eu/wiki/LuccaOntology#
   talias: http://trac.talia.discovery-project.eu/wiki/StructuralOntology#
-  
+  swicky: http://discovery-project.eu/ontologies/philoSpace/
+  discovery: http://discovery-project.eu/ontologies/scholar/0.1/

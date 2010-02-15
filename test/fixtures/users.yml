@@ -5,3 +5,8 @@
 #
 # two:
 #   column: value
+admin:
+  name: admin
+  state: active
+  email_address: admin@admin.com
+  administrator: true

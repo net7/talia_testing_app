@@ -1,7 +1,6 @@
 class CustomTemplatesController < ApplicationController
   
   layout nil
-  session :off
   
   caches_page :xslt
   

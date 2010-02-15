@@ -1,9 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.resources :oai
+
   map.site_search  'search', :controller => 'admin/front', :action => 'search'
+
   map.admin '/admin', :controller => 'admin/front', :action => 'index'
 
   Hobo.add_routes(map)
-
+  
+  map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'
+  map.resources :swicky_notebooks, :path_prefix => 'users/:user_name'
 
   # Autocomplete on URI
   map.connect 'sources/auto_complete_for_uri', :controller => 'sources', :action => 'auto_complete_for_uri'
@@ -71,5 +77,5 @@ ActionController::Routing::Routes.draw do |map|
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
   map.connect ':controller/:action/:id'
-  # map.connect ':controller/:action/:id.:format'
+  # # map.connect ':controller/:action/:id.:format'
 end

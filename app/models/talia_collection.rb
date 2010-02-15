@@ -9,8 +9,6 @@ class TaliaCollection < ActiveRecord::Base
   
   set_table_name "active_sources"
   
-  
-  
   def create_permitted?
     acting_user.administrator?
   end
