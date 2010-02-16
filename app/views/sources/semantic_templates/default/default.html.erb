@@ -6,8 +6,6 @@
 
 <% for record in @source.data_records %>
 
-<%= h(record.inspect) %>
-
 <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
 
 <%= iip_flash_viewer(record, 600, 600)%>
@@ -19,4 +17,10 @@
 <% if(@source.data_records.size > 0) %>
   <h2>Data Records</h2>
   <%= render(:partial => 'data_list') %>
+<% end %>
+
+<% for record in @source.data_records %>
+	<% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
+		<%= thctag((@source.uri + "#data#{record.id}").to_s, record.content_string) %>
+	<% end %>
 <% end %>
