@@ -21,6 +21,10 @@
 
 <% for record in @source.data_records %>
 	<% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-		<%= thctag((@source.uri + "#data#{record.id}").to_s, record.content_string) %>
+		<% element_uri = (@source.uri + "#data#{record.id}").to_s %>
+		<% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
+		<h2>This element has <%= ncount %> annotations</h2>
+		<% end %>
+		<%= thctag(element_uri, record.content_string) %>
 	<% end %>
 <% end %>
