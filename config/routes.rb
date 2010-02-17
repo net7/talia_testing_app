@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.site_search  'search', :controller => 'admin/front', :action => 'search'
 
   map.admin '/admin', :controller => 'admin/front', :action => 'index'
-
+  map.connect '/admin/import/:action', :controller => 'admin/import'
   Hobo.add_routes(map)
   
   map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'

@@ -1,0 +1,18 @@
+<page title="Import">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1>Import data</h1>
+      <section class="welcome-message">
+        
+      
+      </section>
+    </header>
+
+    <section class="content-body">
+    </section>
+  </content:>
+  
+</page>
