@@ -63,10 +63,10 @@ class SwickyNotebooksController < ApplicationController
       raise(ActiveRecord::RecordNotFound, "No parameter given for annotations")
     end
     respond_to do |format|
-      format.xml { render :text => Swicky::JsonEncoder.new(notes_triples).to_json }
+      format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples).to_json }
       format.rdf { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
-      format.html { render :text => Swicky::JsonEncoder.new(notes_triples).to_json }
-      format.json { render :text => Swicky::JsonEncoder.new(notes_triples).to_json }
+      format.html { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples).to_json }
+      format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples).to_json }
     end
   end
   
