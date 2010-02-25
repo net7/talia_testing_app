@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-
   map.resources :oai
 
   map.site_search  'search', :controller => 'admin/front', :action => 'search'
