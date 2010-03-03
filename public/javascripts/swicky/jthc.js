@@ -154,20 +154,17 @@ $(function() {
             self.ajaxmanager.add({
                 url: this.options.baseURL + "annotated_fragments",
                 data: { uri: uri },
+                dataType: 'json',
                 type: 'POST',
                 success: function(data) { 
-                    var h;
-                    try { h = eval ("("+data+")"); } 
-                    catch (e) { h = []; }
-                    
-                    self.log("## Got "+h.length+" new fragments for: "+uri);
+                    self.log("## Got "+data.length+" new fragments for: "+uri);
 
-                    var n = h.length;
+                    var n = data.length;
                     
                     if (n) {
 
                         for (var i=0; i<n; i++) {
-                            var xp = h[i];
+                            var xp = data[i];
                             self.fragments[xp] = {'parenturl': uri};
                             self.log("## Created xpointer section: '"+xp+"' for "+uri);
                         }
@@ -209,16 +206,14 @@ $(function() {
                 $.ajax({
                     url: this.options.baseURL + "annotations",
                     data: { xpointer: xpointer },
+                    dataType: 'json',
                     type: 'POST',
                     success: function(data, text, xmlhr) {
                         
-                        var h;
-                        try { h = eval ("("+data+")"); } 
-                        catch (e) { h = {items: []}; }
 
-                        var n = h.items.length,
-                            xpointer = h['annotation-for']['uri'],
-                            hash = h['annotation-for']['hash'];
+                        var n = data.items.length,
+                            xpointer = data['annotation-for']['uri'],
+                            hash = data['annotation-for']['hash'];
                             
                         if (n == 0) {
                             self.log("## No annotation for an xpointer... "+xpointer+" ?? ");
@@ -230,7 +225,7 @@ $(function() {
                         self.log("## Got "+n+" new items for xpointer "+hash+" / "+xpointer);
                         self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
 
-                        self.addItemsToXPointer(xpointer, h);
+                        self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
 
                         self.log("## Note shown, putting buttonz! ");
@@ -252,7 +247,7 @@ $(function() {
         }, // askForXpointers()
         
 
-        addItemsToXPointer : function (xpointer, h) {
+        addItemsToXPointer : function (xpointer, data) {
             var self = this,
                 fragment = self.fragments[xpointer];
             
@@ -262,12 +257,12 @@ $(function() {
 
             // self.log("### Adding items to xpointer "+ xpointer);
 
-            fragment.items = h.items;
-            fragment.hash = h['annotation-for']['hash'];
+            fragment.items = data.items;
+            fragment.hash = data['annotation-for']['hash'];
             
             // TODO DEBUG: do we need types and properties?
-            fragment.types = h.types;
-            fragment.properties = h.properties;
+            fragment.types = data.types;
+            fragment.properties = data.properties;
             
         },
         
@@ -328,9 +323,9 @@ $(function() {
             var markup = 
                 '<div id="'+hash+'-note" class="THCNoteItem collapsed" about="'+xpointer+'">'+
                 "<h3>"+note.label+"</h3>"+
-                "<span class='hidden'>comment: "+note.comment+"</span>"+
-                "<span class='hidden'>hasCreationDate: "+note.hasCreationDate+"</span>"+
-                "<span class='hidden'>hasNoteAuthor: "+note.hasNoteAuthor+"</span>";
+                "<span class='swicky_hidden'>comment: "+note.comment+"</span>"+
+                "<span class='swicky_hidden'>hasCreationDate: "+note.hasCreationDate+"</span>"+
+                "<span class='swicky_hidden'>hasNoteAuthor: "+note.hasNoteAuthor+"</span>";
 
             // Markup for each statement
             markup += this.getStatementsMarkup(xpointer, note);
@@ -495,7 +490,7 @@ $(function() {
         
         // Will return the markup for every statement of the given item
         getStatementsMarkup : function (xpointer, item) {
-            var markup = "<table class='THCStatementTable hidden'>";
+            var markup = "<table class='THCStatementTable swicky_hidden'>";
             
             // No statements for this Note item .... strange?
             if (typeof item.hasStatement == "undefined") {
@@ -551,7 +546,7 @@ $(function() {
 
             return "<tr class='THCStatement'>"+ret+"</tr>";
 
-            // return "<span class='THCStatement hidden'>"+ret+"</span>";
+            // return "<span class='THCStatement'>"+ret+"</span>";
             
         }, // getSingleStatementMarkup()
 

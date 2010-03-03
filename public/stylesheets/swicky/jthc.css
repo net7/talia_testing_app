@@ -2,7 +2,7 @@
 .THCNoteItem span { display: block; border: 0px; padding: 1px; margin: 1px; font-size: 10px;}
 .THCNoteItem span.hide { display: none; }
 .THCNoteItem span.THCStatement span { display: inline; background-color: #fc0; }
-div.THCNoteItem.collapsed .hidden { display: none; }
+div.THCNoteItem.collapsed .swicky_hidden { display: none; }
 
 .THCNoteItem table.THCStatementTable td { padding: 0px; margin: 0px; background-color: #fc0; }
 .THCNoteItem span.SourceFragment { background-color: #f00; cursor: pointer; }

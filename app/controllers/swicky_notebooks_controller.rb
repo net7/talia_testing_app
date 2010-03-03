@@ -65,7 +65,7 @@ class SwickyNotebooksController < ApplicationController
     respond_to do |format|
       format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
       format.rdf { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
-      format.html { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
+      format.html { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
       format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
     end
   end
