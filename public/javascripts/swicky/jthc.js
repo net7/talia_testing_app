@@ -16,7 +16,7 @@ $(function() {
     $.jthc.defaults = {
         debug: true,
         // URL to do Ajax query to
-        baseURL: "../proxy.php",
+        baseURL: "/swicky_notebooks/context/",
         // DOM elements IDs 
         containerID: "THCAnnotations",
         tooltipID: "THCTooltip"
@@ -152,8 +152,8 @@ $(function() {
             self.log("## Getting fragments for: "+uri);
 
             self.ajaxmanager.add({
-                url: this.options.baseURL,
-                data: {uri: escape(uri), action: 'annotated_fragments'},
+                url: this.options.baseURL + "annotated_fragments",
+                data: { uri: uri },
                 type: 'POST',
                 success: function(data) { 
                     var h;
@@ -207,8 +207,8 @@ $(function() {
                 self.xpointersToLoad++;
 
                 $.ajax({
-                    url: this.options.baseURL,
-                    data: {xpointer: xpointer, action: 'annotations'},
+                    url: this.options.baseURL + "annotations",
+                    data: { xpointer: xpointer },
                     type: 'POST',
                     success: function(data, text, xmlhr) {
                         

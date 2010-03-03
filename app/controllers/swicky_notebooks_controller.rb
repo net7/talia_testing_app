@@ -1,7 +1,7 @@
 class SwickyNotebooksController < ApplicationController
   
   before_filter :get_user, :except => [:annotated_fragments, :annotations]
-  before_filter :basic_auth
+  before_filter :basic_auth, :except => [:annotated_fragments, :annotations]
   before_filter :get_notebook, :except => [:index, :create, :annotated_fragments, :annotations]
   skip_before_filter :verify_authenticity_token
 
