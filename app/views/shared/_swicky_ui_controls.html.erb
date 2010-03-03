@@ -1,0 +1,32 @@
+<div id="controls">
+	<table style="width: 100%;">
+		<tr>
+			<td style="width: 15%;">
+				The selected xpointer is:
+			</td>
+			<td>
+				<textarea id="selectedXPointer" cols="30" rows="2" style="width:
+				100%;"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<button onclick=" getElementById('selectedXPointer').value =
+				THCTag.getXPointerFromSelection(); SetXPathAndOffset();">
+				Get XPointer</button>
+				<button onclick="THCTag.addByXPointer(getElementById('selectedXPointer').value);">
+					Select
+				</button>
+				<button onclick="THCTag.getContentURIs();">
+					Get URIs
+				</button>
+				<button onclick="THCTagCore.addClickImageHooks();">
+					Add IMG hooks
+				</button>
+				<button onclick="searchPrompt('this and that', false);">
+					Find...
+				</button>
+			</td>
+		</tr>
+	</table>
+</div>

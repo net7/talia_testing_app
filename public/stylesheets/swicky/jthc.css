@@ -1,0 +1,30 @@
+.THCNoteItem { border: 2px solid black; margin: 5px; padding: 5px; }
+.THCNoteItem span { display: block; border: 0px; padding: 1px; margin: 1px; font-size: 10px;}
+.THCNoteItem span.hide { display: none; }
+.THCNoteItem span.THCStatement span { display: inline; background-color: #fc0; }
+div.THCNoteItem.collapsed .hidden { display: none; }
+
+.THCNoteItem table.THCStatementTable td { padding: 0px; margin: 0px; background-color: #fc0; }
+.THCNoteItem span.SourceFragment { background-color: #f00; cursor: pointer; }
+.THCNoteItem span.Source { background-color: #0f0; cursor: pointer; }
+
+div#THCAnnotations { position: fixed; right:10px; top:10px; background-color: #ccf; }
+div#THCAnnotations.loading h2 { 
+    background: url(ajax-loader.gif) no-repeat scroll left top;
+    text-indent: -99999px;
+    text-align: middle;
+}
+
+div#THCAnnotations h2 { display: block; background-color: #33C; }
+div#THCAnnotations h2 { display: block; text-indent: 20px; background: #33c url(icons/table_multiple.png) no-repeat scroll left top; }
+
+#THCTooltip {
+    background-color: #ffe;
+}
+
+.THCNoteItem h3 { 
+    display:block; 
+    text-indent: 20px; 
+    background: transparent url(icons/page_white_text_width.png) no-repeat scroll left top; 
+    cursor: pointer;
+}

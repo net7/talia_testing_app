@@ -1,0 +1,63 @@
+table.note {
+	border:     1px solid #ddd;
+	font-size: 7pt
+}
+
+table.arrow {
+	font-size: 7pt
+}
+
+td.label {
+	font-weight: bold;
+	font-size:   8pt;
+	color: #ffffff;
+	background-color: #aaaaaa
+}
+
+.author {
+	color:  #888;
+	font-weight: bold;
+}
+
+.date {
+	font-style:  bold;
+	color:  #888;
+}
+
+.notetype {
+	color:  #888;
+	font-weight: bold;
+}
+
+.description {
+}
+
+.search {
+	font-weight: bold;
+	font-size:   7pt;
+}
+
+.menu {
+	font-size:   7pt;
+}
+
+.head {
+	font-size:   7pt;
+	background-color: #dddddd
+}
+
+div#exhibitBrowser {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 400px;
+	background-color: #fee;
+}
+
+div#controls {
+	width: 800px;
+	border: 1px solid green;
+	display: block;
+	background-color: #fcc;
+
+}

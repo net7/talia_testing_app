@@ -1,0 +1,26 @@
+div.eztipContainer { position: absolute; border: 0; }
+div.eztipContainer div { position: relative; float: left; }
+div.eztipContainer div.eztipLeft { clear: both; }
+
+div.eztipContainer.bottomleft .eztipLeft {  width: 30px; height: 87px; background: url(ez/ez_bottomleft_stem.png); }
+div.eztipContainer.bottomleft .eztipRight { width: 9px; height: 73px; background: url(ez/ez_right_border.png); }
+
+div.eztipContainer.bottomright .eztipRight {  width: 30px; height: 87px; background: url(ez/ez_bottomright_stem.png); }
+div.eztipContainer.bottomright .eztipLeft { width: 9px; height: 73px; background: url(ez/ez_left_border.png); }
+
+div.eztipContainer.topright .eztipRight {  width: 30px; height: 87px; background: url(ez/ez_topright_stem.png); }
+div.eztipContainer.topright .eztipLeft { top: 14px; width: 9px; height: 73px; background: url(ez/ez_left_border.png); }
+div.eztipContainer.topright .eztipContent { top: 14px; }
+
+div.eztipContainer.topleft .eztipLeft {  width: 30px; height: 87px; background: url(ez/ez_topleft_stem.png); }
+div.eztipContainer.topleft .eztipRight { top: 14px; width: 9px; height: 73px; background: url(ez/ez_right_border.png); }
+div.eztipContainer.topleft .eztipContent { top: 14px; }
+
+
+div.eztipContainer .eztipContent {
+    width: 500px;
+    background: url(ez/ez_bg.png); 
+    font-size: 10px;
+    color: #fff;
+    padding: 3px 10px; 
+}
