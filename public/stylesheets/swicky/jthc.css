@@ -1,30 +1,123 @@
-.THCNoteItem { border: 2px solid black; margin: 5px; padding: 5px; }
-.THCNoteItem span { display: block; border: 0px; padding: 1px; margin: 1px; font-size: 10px;}
-.THCNoteItem span.hide { display: none; }
-.THCNoteItem span.THCStatement span { display: inline; background-color: #fc0; }
-div.THCNoteItem.collapsed .swicky_hidden { display: none; }
+/* Base della finestra */
+div#THCAnnotations {
+	position: fixed;
+	right:10px;
+	top:10px;
+	background-color: rgba(0,0,0,0.88);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
 
-.THCNoteItem table.THCStatementTable td { padding: 0px; margin: 0px; background-color: #fc0; }
-.THCNoteItem span.SourceFragment { background-color: #f00; cursor: pointer; }
-.THCNoteItem span.Source { background-color: #0f0; cursor: pointer; }
+/* Testata */
+div#THCAnnotations h2 {
+	display: block;
+	text-indent: 20px;
+	background-color: rgba(51,51,51,0.88);
+	border-bottom: 1px solid #8c8c8c;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	color: #fff;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	text-align: center;
+	padding: 5px 0;
+	font-size: 14px;
+}
 
-div#THCAnnotations { position: fixed; right:10px; top:10px; background-color: #ccf; }
+/* Singola Nota */
+.THCNoteItem{
+	border-bottom: 1px solid #515151;
+	padding: 10px;
+}
+
+.THCNoteItem:last-child {
+	border-bottom: none;
+}
+
+.THCNoteItem.expanded {
+	background-color: rgba(0,0,0,0.91);
+}
+
+.THCNoteItem:last-child.expanded {
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+}
+
+.THCNoteItem h3 {
+	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+	font-weight: normal;
+	font-size: 11px;
+	color: #fff;	display:block; 
+    text-indent: 20px; 
+    background: transparent url(icons/page_white_text_width.png) no-repeat scroll left top; 
+    cursor: pointer;
+}
+
+/* Dettagli Nota */
+.THCNoteItem span {
+	display: block;
+	border: 0px; 
+	padding: 1px;
+	margin: 1px;
+	font-size: 10px;
+	color: #949494;
+}
+
+.THCNoteItem span.hide {
+	display: none;
+}
+
+div.THCNoteItem.collapsed .swicky_hidden {
+	display: none;
+}
+
+.THCNoteItem table.THCStatementTable {
+	margin-top: 5px;
+	color: #fff;
+}
+
+.THCNoteItem table.THCStatementTable td span {
+	color: #fff;	
+}
+
+.THCNoteItem span.THCStatement span {
+	display: inline;
+	background-color: #ffd400;
+	padding: 3px;
+}
+
+.THCNoteItem table.THCStatementTable td {
+	padding: 0px;
+	margin: 0px;
+	background-color: #dfb900;
+}
+
+
+.THCNoteItem span.SourceFragment {
+	background-color: #dc0000;
+	color: #fff;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.THCNoteItem span.Source {
+	background-color: #00ba00;
+	padding: 3px;
+	cursor: pointer;
+}
+
 div#THCAnnotations.loading h2 { 
     background: url(ajax-loader.gif) no-repeat scroll left top;
     text-indent: -99999px;
     text-align: middle;
 }
 
-div#THCAnnotations h2 { display: block; background-color: #33C; }
-div#THCAnnotations h2 { display: block; text-indent: 20px; background: #33c url(icons/table_multiple.png) no-repeat scroll left top; }
-
 #THCTooltip {
     background-color: #ffe;
 }
 
-.THCNoteItem h3 { 
-    display:block; 
-    text-indent: 20px; 
-    background: transparent url(icons/page_white_text_width.png) no-repeat scroll left top; 
-    cursor: pointer;
-}
+
