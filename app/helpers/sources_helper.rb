@@ -5,6 +5,12 @@ module SourcesHelper
     link_to 'index', :action => 'index'
   end
 
+  # About parameter with the uri of the current source (if the is a current source,
+  # blank string otherwise)
+  def source_about
+    @source ? (' about ="' << @source.uri.to_s << '"') : ''
+  end
+
   # Checks if the current filter points to the given type
   def current_filter?(ctype)
     (ctype.to_name_s('+') == params[:filter])

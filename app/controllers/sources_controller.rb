@@ -57,6 +57,11 @@ class SourcesController < ApplicationController
   # caught and see if a source exists. If the source exists, the system will
   # try to figure out how to render it. In this case, all relations on the source are
   # automaticaly prefetched when it's loaded.
+  #
+  #
+  # The dispatch also supports callbacks in the controller: If you have a source with
+  # type dcns:name, it will try to call the method #dncs_name (if defined) before 
+  # rendering the source.
   def dispatch
     @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
     @types = @source.types
