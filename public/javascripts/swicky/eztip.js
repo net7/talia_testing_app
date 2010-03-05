@@ -1,5 +1,5 @@
 $(function() {
-
+    /*
     var eztipCode = 
             "<div class='eztipContainer' id='#eztipid#'>"+
             "   <div class='eztipBorderTop'>"+
@@ -23,6 +23,12 @@ $(function() {
                 "   <div class='eztipContent'><br/>#eztipcontent#</div>"+
                 "   <div class='eztipRight'></div>"+
                 "</div>";
+	*/
+	var eztipCode = 
+            "<div class='eztipContainer' id='#eztipid#'>"+
+                "   <div class='eztipContent'>#eztipcontent#</div>"+
+                "</div>";
+
 
  	// eztip constructor
 	$.eztip = function (opts) {
@@ -48,8 +54,8 @@ $(function() {
 	    animationLength: 250,
         
 	    // Offset to position the tip
-	    leftOffset: 10,
-	    topOffset: 10,
+	    leftOffset: 2,
+	    topOffset: 2,
 	    
 	    // Length in pixels of the in-animation
 	    introMoveExtent: 25,
