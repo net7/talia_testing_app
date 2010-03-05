@@ -41,6 +41,7 @@ THCTag = {
 
     // add THCTag by XPointer
     addByXPointer: function(xPointer) {
+        
     	if (THC_DEBUG_MODE) {
     		alert('Method:addByXPointer\n' +
     				'xPointer: ' + xPointer);	
@@ -70,8 +71,10 @@ THCTag = {
     			'StartURL: ' + startUrl + ' StartXPath: ' + startXPath + ' StartOffset: ' + startOffset + ' EndXPath: ' + endXPath + ' EndOffset: ' + endOffset);	
     	}
     	
-        if((startXPath != endXPath) || ((startXPath == endXPath) && (parseInt(startOffset) < parseInt(endOffset)))) {
+        if ((startXPath != endXPath) || ((startXPath == endXPath) && (parseInt(startOffset) < parseInt(endOffset)))) {
         	THCTagCore.Annotate.addTHCTagsFromXPath(startUrl, startXPath, startOffset, endXPath, endOffset);    
+        } else {
+            alert("ERROR: Null xpointer!!");
         }
   		
     },
@@ -1020,7 +1023,7 @@ THCTagCore.Annotate = {
 	},
 
     selectionLinkButton: function(elementName, startUrl, startXPath, startOffset, endXPath, endOffset) {
-
+    
         var hash = jthc.getHashFromXpointer(elementName);
         
         var selectionLink = document.createElement("a");
@@ -1153,6 +1156,7 @@ THCTagCore.Annotate = {
  		 	var hash = jthc.getHashFromXpointer(xpointer),
  		 	    selectionId = THCTagUtil.decodeUrl(hash + "-sel");
  		 
+ 		 
  		 	THCTagCore.Annotate.wrapIntersectedElement(highlightRange.commonAncestorContainer, highlightRange, selectionId);
  		 
             /*
@@ -1161,8 +1165,7 @@ THCTagCore.Annotate = {
  		 	var deselectId = THCTagUtil.decodeUrl(xpointer + "-desel");
  		 	*/
 
- 		 	var hash = jthc.getHashFromXpointer(THCTagUtil.decodeUrl(xpointer)),
- 		 	    xpointerId = hash,
+ 		 	var xpointerId = hash,
  		 	    anchorId = hash + "-anchor",
  		 	    deselectId = hash + "-desel";
             
