@@ -1,11 +1,15 @@
 /* Base della finestra */
 div#THCAnnotations {
 	position: fixed;
-	right:10px;
 	top:10px;
+	width: 400px;
 	background-color: rgba(0,0,0,0.88);
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+}
+
+div#THCAnnotations.collapsed .THCNoteItem {
+    display: none;
 }
 
 /* Testata */
@@ -27,7 +31,7 @@ div#THCAnnotations h2 {
 }
 
 /* Singola Nota */
-.THCNoteItem{
+.THCNoteItem {
 	border-bottom: 1px solid #515151;
 	padding: 10px;
 }
@@ -75,6 +79,12 @@ div.THCNoteItem.collapsed .swicky_hidden {
 	display: none;
 }
 
+.THCNoteItem span.swicky_field_name {
+    display: inline;
+    color: #fc0;
+}
+
+
 .THCNoteItem table.THCStatementTable {
 	margin-top: 5px;
 	color: #fff;
@@ -96,6 +106,14 @@ div.THCNoteItem.collapsed .swicky_hidden {
 	background-color: #dfb900;
 }
 
+.THCNoteItem table.THCStatementTable td.swicky_arrow {
+    background-color: #949494;
+}
+.THCNoteItem table.THCStatementTable td.swicky_arrow span.swicky_arrow {
+    font-size: 2.0em;
+    color: #fc0;
+}
+
 
 .THCNoteItem span.SourceFragment {
 	background-color: #dc0000;
@@ -112,12 +130,31 @@ div.THCNoteItem.collapsed .swicky_hidden {
 
 div#THCAnnotations.loading h2 { 
     background: url(ajax-loader.gif) no-repeat scroll left top;
+    background-position: 50% 50%;
     text-indent: -99999px;
-    text-align: middle;
 }
 
 #THCTooltip {
     background-color: #ffe;
 }
+
+
+
+span.swicky_tooltip_entry {
+	display: block;
+	padding: 2px;
+	font-size: 10px;
+	color: #949494;
+	background-color: #0c0c0c;
+    border-color: #666;
+    border-style: dashed;
+    border-width: 0 0 1px 0;
+}
+
+span.swicky_tooltip_entry span.swicky_tooltip_field_name {
+    color: #fc0;
+    display: inline;
+}
+
 
 

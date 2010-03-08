@@ -55,23 +55,36 @@ $(function() {
              this.annotationsNumber = 0;
              this.xpointersToLoad = 0;
              this.xpointersLoaded = 0;
+             this.addedNotesUris = [];
+             this.addedXpointers = [];
 
              // Get all the uris in this page
              this.uris = THCTag.getContentURIs();
              
-             for (var i=0; i<this.uris.length; i++)
+             // Use the about attribute of the body tag as well
+             this.uris.push($('body').attr('about'));
+             
+             for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
-            
-             // this.askForFragments("http://dbin.org/swickynotes/demo/HanselAndGretel.htm");
             
             // Append to DOM the containers for the annotation browser
             $('body').append("<div id='"+this.options.containerID+"'><h2><span id='annotationsNumber'></span> annotations</h2></div>");
-            $('#'+this.options.containerID).addClass('loading');
+            $('#'+this.options.containerID).addClass('loading').draggable({handle: 'h2:first'});
 
             // And the lousy tooltip
             $('body').append("<div class='THCAnnotationsBox' id='"+this.options.tooltipID+"' style='border: 1px solid black; position: absolute; display:none;'></div>");
             
             self = this;
+
+            // Collapse on double click on the H2, the header of the annotations
+            $('#'+this.options.containerID+" h2").live('dblclick', function() {
+                var t = $('#'+self.options.containerID);
+                if (t.hasClass('collapsed'))
+                    t.removeClass('collapsed');
+                else
+                    t.addClass('collapsed');
+                return false;
+            });
 
             $('.THCStatementSubject.Source,.THCStatementObject.Source,').live('click', function() {
                 var url = $(this).attr('about');
@@ -81,14 +94,20 @@ $(function() {
             });
 
             $('.THCStatementSubject.SourceFragment,.THCStatementObject.SourceFragment,').live('click', function() {
+
                 var uri = $(this).attr('about'),
                     item = self.getItemFromURI(uri),
                     xpointer = self.getXpointerFromURI(uri),
                     xpointerId = item['hasCoordinates'],
-                    url = self.getFieldFromId(xpointer, xpointerId, 'uri');
-                    THCTag.showByXpointer(xpointer);  
-                // if (confirm("Navigate to fragment "+url+"? "))
-                    // window.location = url;
+                    newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
+                    parentItem = self.getItemFromXI(xpointer, item['isPartOf']);
+
+                    if (self.isOnThisPage(xpointer, item))
+                        THCTag.showByXPointer(newXpointer);  
+                    else
+                        if (confirm("Navigate to fragment "+parentItem.uri+"? "))
+                            window.location = parentItem.uri;
+
                 return false;
             });
             
@@ -120,6 +139,14 @@ $(function() {
             
         }, // showTooltip()
         */
+        
+        repositionNoteContainer : function () {
+            var bw = $('body').width(),
+                cw = $('#'+this.options.containerID).width(),
+                pos = bw - cw - 10;
+                
+                $('#'+this.options.containerID).css({left: pos+'px'});
+        },
         
         // Gets the fragments (xpointers) associated to the given URI, storing
         // them into the this.fragments[] array
@@ -205,9 +232,6 @@ $(function() {
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
 
-                        self.log("## Note shown, putting buttonz! ");
-                        THCTag.addByXPointer(xpointer);
-
                         if (self.xpointersToLoad == self.xpointersLoaded) {
                             $('#'+self.options.containerID).removeClass('loading');
                             self.setTipContent();
@@ -232,8 +256,6 @@ $(function() {
                 self.log("### ERROR! Section for xpointer not defined??! " + xpointer);
             }
 
-            // self.log("### Adding items to xpointer "+ xpointer);
-
             fragment.items = data.items;
             fragment.hash = data['annotation-for']['hash'];
             
@@ -243,18 +265,6 @@ $(function() {
             
         },
 
-
-        // TODO: useless? 
-        /*
-        // Returns an object with two fields, one for URL part, the other
-        // for the path
-        splitUrlXpointer : function (urlxpointer) {
-            var xp = urlxpointer.split('#');
-            return {url: xp[0], path: xp[1]};
-        },
-        */
-        
-        
         addNotesForXpointer : function (xpointer) {
             var self = this, fragment = self.fragments[xpointer];
 
@@ -270,30 +280,43 @@ $(function() {
             // TODO DEBUG: bisogna cercare in types com'e' l'id del type Note, ed usare
             // quello per cercare le note.. non una stringa fissa "Note" ..
 
-            for (var i=0; i<items.length; i++) {
-                if (self.isItemOfType(items[i], "Note")) {
+            for (var k=0; k<items.length; k++) {
+                if (self.isItemOfType(items[k], "Note")) {
 
-                        var id = items[i]['isAssociatedWith'],
-                            associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[i]),
-                            associatedXpointer = self.getAssociatedXpointer(xpointer, items[i]);
-
-
-                            console.log("Associated sourceFragment: ", associatedSourceFragment);
+                        var id = items[k]['isAssociatedWith'],
+                            associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[k]),
+                            associatedXpointer = self.getAssociatedXpointer(xpointer, items[k]);
 
                         if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
-                            console.log("@@ Hey, this is not internal! :(")
-                            continue;
+                            self.log("@@ Hey, this note is not internal! :( ... using original xpointer!")
+                            associatedXpointer = xpointer;
                         }
 
-                        if (xpointer != associatedXpointer)
-                            console.log("@@ DIFFERENT ASSOCIATED XPOINTER : "+ associatedXpointer, items[i]);
-                        else
-                            console.log("@@ Xpointer and associatedXpointer matches .. :)");
-                        
-                        self.addNoteToAnnotationBox(associatedXpointer, items[i].id);
+                        fragment.associatedXpointer = associatedXpointer;
+
+                        if (xpointer != associatedXpointer) 
+                            self.log("## DIFFERENT ASSOCIATED XPOINTER : " + associatedXpointer + " > "+ xpointer);
+                            
+                        if ($.inArray(items[k].uri, self.addedNotesUris) == -1) {
+                            self.addNoteToAnnotationBox(xpointer, items[k].id, associatedXpointer);
+                            self.repositionNoteContainer();
+                            self.addedNotesUris.push(items[k].uri);
+
+
+                            if ($.inArray(associatedXpointer, self.addedXpointers) > -1)
+                                self.log("## Xpointer already added????!? "+ associatedXpointer);
+                            else
+                                self.log("## Adding by xpointer: "+ associatedXpointer);
+                            self.addedXpointers.push(associatedXpointer);
+                            
+                            THCTag.addByXPointer(associatedXpointer);
+
+                        } else {
+                            self.log("### Already added this note, skipping it: "+ items[k].label);
+                        }
 
                 } else {
-                    // self.log(i+" is not a Note: "+items[i].type);
+                    // self.log(k+" is not a Note: ", items[k]);
                 }
             } // for
 
@@ -301,19 +324,34 @@ $(function() {
 
 
         isOnThisPage : function (xpointer, sourceFragmentItem) {
-            var self = this;
-            
+            var self = this,
+                arr = [];
+
+            // If it's not an array... make it an array!
+            if (typeof(sourceFragmentItem['isPartOf']) == "string")
+                arr.push(sourceFragmentItem['isPartOf']);
+            else
+                arr = sourceFragmentItem['isPartOf'];
+
+            // SourceFragment: let's check if there's a THCTag which matches his URI
+            // The thctags are in this.uris, initialized in init()
             if (self.isItemOfType(sourceFragmentItem, 'SourceFragment')) {
-                console.log("IsPartOf? ", sourceFragmentItem['isPartOf']);
-                for (i in sourceFragmentItem['isPartOf']) {
-                    var uri = self.getFieldFromId(xpointer, sourceFragmentItem['isPartOf'][i], 'uri');
-                    console.log("URI : " + uri);
+                
+                for (var j in arr) {
+                    var id = arr[j],
+                        uri = self.getFieldFromId(xpointer, id, 'uri');
+                    
+                    if ($.inArray(uri, self.uris) > -1) 
+                        return true;
                 }
                 
             } else if (self.isItemOfType(sourceFragmentItem, 'Source')) {
-                
+                for (j in arr) 
+                    if ($('body').attr('about') == self.getFieldFromId(xpointer, sourceFragmentItem['isPartOf'][j], 'uri'))
+                        return true;
             }
-            return true;
+            
+            return false;
             
         },
         
@@ -325,8 +363,10 @@ $(function() {
             // TODO: some sanity checks if some of these getItem fails .. ? 
             var self = this, associatedItem;
 
-            if (associatedItem = self.getItemFromXI(xpointer, item['isAssociatedWith'])) 
+            if (associatedItem = self.getItemFromXI(xpointer, item['isAssociatedWith'])) {
+                self.log("### getting associated item with "+ item.label + " which is " + associatedItem.label);
                 return associatedItem;
+            }
             return false;
         },
 
@@ -355,11 +395,11 @@ $(function() {
             return;
         },
 
-        addNoteToAnnotationBox: function (xpointer, id) {
+        addNoteToAnnotationBox: function (xpointer, id, associatedXpointer) {
             
             var self = this, 
                 note = self.getItemFromXI(xpointer, id),
-                hash = self.getHashFromXpointer(xpointer);
+                hash = self.getHashFromXpointer(associatedXpointer);
                 
             self.increaseAnnotationsNumber();
             
@@ -367,11 +407,11 @@ $(function() {
             
             var cont = $("#"+this.options.containerID);
             var markup = 
-                '<div id="'+hash+'-note" class="THCNoteItem collapsed" about="'+xpointer+'">'+
+                '<div id="'+hash+'-note" class="THCNoteItem collapsed" about="'+associatedXpointer+'">'+
                 "<h3>"+note.label+"</h3>"+
-                "<span class='swicky_hidden'>comment: "+note.comment+"</span>"+
-                "<span class='swicky_hidden'>hasCreationDate: "+note.hasCreationDate+"</span>"+
-                "<span class='swicky_hidden'>hasNoteAuthor: "+note.hasNoteAuthor+"</span>";
+                "<span class='swicky_hidden'><span class='swicky_field_name'>Comment:</span> "+note.comment+"</span>"+
+                "<span class='swicky_hidden'><span class='swicky_field_name'>Creation Date:</span> "+note.hasCreationDate+"</span>"+
+                "<span class='swicky_hidden'><span class='swicky_field_name'>Note Author:</span> "+note.hasNoteAuthor+"</span>";
 
             // Markup for each statement
             markup += this.getStatementsMarkup(xpointer, note);
@@ -381,8 +421,7 @@ $(function() {
             // markup += "</div>";
 
             cont.append(markup);
-
-            self.bindLiveHandlers(xpointer);
+            self.bindLiveHandlers(associatedXpointer);
 
         }, // addNoteToAnnotationBox()
 
@@ -397,7 +436,7 @@ $(function() {
 
                 var ret = "";
                 for (wut in item)
-                    ret += wut +": " + item[wut] + "<br>";
+                    ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
     
                 myEztip.setContent(obj, ret);
                 
@@ -416,8 +455,8 @@ $(function() {
                 
             $("a#" + selectId + ", div.THCNoteItem.collapsed").live("click", function() {
                 var xp = $(this).attr('about');
-                THCTag.showByXPointer(xp);
                 self.showNote(xp);
+                THCTag.showByXPointer(xp);
                 return false;
             });
 
@@ -441,6 +480,7 @@ $(function() {
             for (var i=0; i<item['type'].length; i++)
                 if (item['type'][i] == type)
                     return true;
+
             return false;
         },
 
@@ -491,23 +531,39 @@ $(function() {
         getUriFromId : function (x, i) { return this.getFieldFromId(x, i, 'uri'); },
 
         getHashFromXpointer : function (xpointer) {
-            var self = this,    
-                fragment = self.fragments[xpointer];
-            
+            var self = this;    
+            // fragment = self.fragments[xpointer];
+
+            for (var xp in self.fragments) {
+                var fragment = self.fragments[xp];
+                if (typeof fragment.items != "undefined")
+                    for (var i=0; i<fragment.items.length; i++)
+                        if (fragment.items[i].uri == xpointer) 
+                            return fragment.items[i]['hash'];
+            } // for index
+
+            return false;
+
+            /*
             if (typeof fragment == "undefined") {
                 self.log("ERROR: getHashFromXpointer with wrong xpointer: "+xpointer);
                 return "ERROR: no such xpointer: "+xpointer;
+            }
+            
+            console.log("Asked for hash, found this fragment: ", fragment);
+
+            if (typeof fragment['hash'] == "undefined") {
+                console.log("UNDEFINED?!");
             }
 
             // self.log("## Asked for HASH by xpointer "+xpointer+", returning "+fragment['hash']);
                 
             return fragment['hash'];
-            
+            */
         }, // getHashFromXpointer
 
         getXpointerFromHash : function (hash) {
             var self = this;
-
             
             for (i in self.fragments) 
                 if (self.fragments[i]['hash'] == hash) {
@@ -534,9 +590,25 @@ $(function() {
             } // for index
             return "ERROR: No xpointer for uri "+uri;
         },
+
+        // Will cycle over every fragment to look for the item with the given URI
+        getAssociatedXpointerFromURI : function (uri) {
+            var self = this;
+
+            var xpointer;
+            for (xpointer in self.fragments) {
+                var fragment = self.fragments[xpointer];
+                if (typeof fragment.items != "undefined")
+                    for (var i=0; i<fragment.items.length; i++)
+                        if (fragment.items[i].uri == uri) 
+                            return fragment.associatedXpointer;
+            } // for index
+            return "ERROR: No xpointer for uri "+uri;
+        },
+
         
         // Will return the markup for every statement of the given item
-        getStatementsMarkup : function (xpointer, item) {
+        getStatementsMarkup : function (xpointer, item, associatedXpointer) {
             var markup = "<table class='THCStatementTable swicky_hidden'>";
             
             // No statements for this Note item .... strange?
