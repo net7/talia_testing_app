@@ -69,10 +69,11 @@ $(function() {
             
             // Append to DOM the containers for the annotation browser
             $('body').append("<div id='"+this.options.containerID+"'><h2><span id='annotationsNumber'></span> annotations</h2></div>");
-            $('#'+this.options.containerID).addClass('loading').draggable({handle: 'h2:first'});
+            $('#'+this.options.containerID).addClass('loading').draggable({handle: 'h2:first'}).hide();
+            this.repositionNoteContainer();
 
             // And the lousy tooltip
-            $('body').append("<div class='THCAnnotationsBox' id='"+this.options.tooltipID+"' style='border: 1px solid black; position: absolute; display:none;'></div>");
+            // $('body').append("<div class='THCAnnotationsBox' id='"+this.options.tooltipID+"' style='border: 1px solid black; position: absolute; display:none;'></div>");
             
             self = this;
 
@@ -231,6 +232,7 @@ $(function() {
 
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
+                        $('#'+self.options.containerID).show();
 
                         if (self.xpointersToLoad == self.xpointersLoaded) {
                             $('#'+self.options.containerID).removeClass('loading');
