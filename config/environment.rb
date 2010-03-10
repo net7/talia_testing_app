@@ -8,7 +8,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
   # Autoconfigured gem dependency
-  # config.gem "hobo"
+  config.gem "hobo"
 
 
   # Settings in config/environments/* take precedence over those specified here.

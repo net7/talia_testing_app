@@ -17,15 +17,19 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
   # TODO: Permisions?
   def assign_collection
     source, collection = get_source_and_collection
-    source.predicate_set_uniq(:talia, :isInCollection, collection)
-    source.save!
+    if(@source.update_permitted?)
+      source.predicate_set_uniq(:talia, :isInCollection, collection)
+      source.save!
+    end
   end
   
   # TODO: Permissions?
   def remove_collection
     source, collection = get_source_and_collection
-    source[N::TALIA.isInCollection].remove(collection)
-    source.save!
+    if(@source.update_permitted?)
+      source[N::TALIA.isInCollection].remove(collection)
+      source.save!
+    end
   end
   
   private
@@ -39,6 +43,7 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
     collection = TaliaCore::Collection.find(collection_uri)
     @source_id = params[:source]
     @source = TaliaSource.find(source.id)
+    @source.acting_user = current_user
     [ source, collection ]
   end
   

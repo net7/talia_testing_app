@@ -7,15 +7,17 @@
 					<div id="#{drag_id}">
 						<card>
 							<before-heading:>
-								<div class="drag_handle">&nbsp;</div>
+								<if test="&this.with_acting_user(current_user) { this.update_permitted? }"><div class="drag_handle">&nbsp;</div></if>
 							</before-heading:>
 						</card>
 					</div>
+					<if test="&this.with_acting_user(current_user) { this.update_permitted? }">
 					<%= draggable_element(drag_id, 
 					    :handle => "'drag_handle'", 
 					    :revert => true, 
 					    :ghosting => true,
 					    :scroll => 'window' ) %>
+					</if>
 				</item:>
 			</collection:>
 			<aside:>
@@ -27,11 +29,13 @@
 						</div>
 					</item:>
 					<after-item:>
+					<if test="&this.with_acting_user(current_user) { this.update_permitted? }">
 					<%= drop_receiving_element(this.to_uri.safe_encoded,
 						:url => { :controller => 'admin/talia_sources', :action => 'assign_collection' },
 						:with => "'source=' + encodeURIComponent(element.id) + '&collection=#{this.to_uri.safe_encoded}'",
 						:hoverclass => 'drop_ready'
 					  ) %>
+					</if>
 					</after-item:>
 					<empty-message:>No collections found</empty-message>
 				</collection>

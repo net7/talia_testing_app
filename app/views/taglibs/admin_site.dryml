@@ -19,14 +19,17 @@
 		<div><%= this.uri %> | <%= this.short_type %></div>
 		<div>
 			<% source_uri = this.to_uri.safe_encoded %>
+			<% can_update = this.with_acting_user(current_user) { this.update_permitted? } %>
 			<repeat with="&this.real_source[N::TALIA.isInCollection]" join=", ">
 				<%= this.to_uri.local_name %> 
+				<if test="&can_update">
 				<remote-method-button method="disjoin_collection" label="x" 
 					params="&{:collection => this.to_uri.safe_encoded, :source => source_uri }" 
 					url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_collection')}"
 					spinner-next-to="#{source_uri}"
 					message="Deleting..."
 					/>
+				</if>
 			</repeat>
 		</div>
 	</body:>
