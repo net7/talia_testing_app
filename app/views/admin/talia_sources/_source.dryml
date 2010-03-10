@@ -1,0 +1,5 @@
+<card with="&source">
+	<before-heading:>
+		<div class="drag_handle">&nbsp;</div>
+	</before-heading:>
+</card>

@@ -1,3 +1,5 @@
+require 'base64'
+
 module AdminHelper
   def admin_toolbar
     widget(:toolbar, :buttons => [ 

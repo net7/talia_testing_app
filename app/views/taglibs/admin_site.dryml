@@ -10,6 +10,29 @@
 
 <def tag="app-name">Talia Admin Panel</def>
 
+<def tag="card" for="TaliaSource">
+  <card class="talia-source" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+	<body:>
+		<div><%= this.uri %> | <%= this.short_type %></div>
+		<div>
+			<% source_uri = this.to_uri.safe_encoded %>
+			<repeat with="&this.real_source[N::TALIA.isInCollection]" join=", ">
+				<%= this.to_uri.local_name %> 
+				<remote-method-button method="disjoin_collection" label="x" 
+					params="&{:collection => this.to_uri.safe_encoded, :source => source_uri }" 
+					url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_collection')}"
+					spinner-next-to="#{source_uri}"
+					message="Deleting..."
+					/>
+			</repeat>
+		</div>
+	</body:>
+  </card>
+</def>
+
 <def tag="prop-language">
 	<b>Language:</b> <this.lang if="lang" />
 	<else>n/a (default)</else>

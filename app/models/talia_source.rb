@@ -31,7 +31,7 @@ class TaliaSource < ActiveRecord::Base
   end
   
   def to_uri
-    N::URI.new(self.uri)
+    self.uri.to_uri
   end
 
   def real_source
