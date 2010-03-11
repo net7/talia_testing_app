@@ -10,6 +10,17 @@
 
 <def tag="app-name">Talia Admin Panel</def>
 
+<def tag="card" for="TaliaCollection">
+  <card class="talia-collection" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+	<body:>
+	
+	</body:>
+  </card>
+</def>
+
 <def tag="card" for="TaliaSource">
   <card class="talia-source" param="default" merge>
     <header: param>
@@ -20,7 +31,7 @@
 		<div>
 			<% source_uri = this.to_uri.safe_encoded %>
 			<% can_update = this.with_acting_user(current_user) { this.update_permitted? } %>
-			<repeat with="&this.real_source[N::TALIA.isInCollection]" join=", ">
+			<repeat with="&TaliaCore::Collection.find(:all, :find_through => [N::DCT.hasPart, this.to_uri])" join=", ">
 				<%= this.to_uri.local_name %> 
 				<if test="&can_update">
 				<remote-method-button method="disjoin_collection" label="x" 

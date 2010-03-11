@@ -18,8 +18,8 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
   def assign_collection
     source, collection = get_source_and_collection
     if(@source.update_permitted?)
-      source.predicate_set_uniq(:talia, :isInCollection, collection)
-      source.save!
+      collection << source
+      collection.save!
     end
   end
   
@@ -27,8 +27,8 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
   def remove_collection
     source, collection = get_source_and_collection
     if(@source.update_permitted?)
-      source[N::TALIA.isInCollection].remove(collection)
-      source.save!
+      collection.delete(source)
+      collection.save!
     end
   end
   

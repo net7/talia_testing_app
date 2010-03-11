@@ -8,6 +8,7 @@ class TaliaCollection < ActiveRecord::Base
   end
   
   declare_attr_type :name, :string
+  attr_writer :real_collection
   
   set_table_name "active_sources"
   
@@ -55,10 +56,17 @@ class TaliaCollection < ActiveRecord::Base
     self.uri.to_uri
   end
   
+  
+  def real_collection
+    @real_collection ||= TaliaCore::Collection.new(self.uri)
+  end
+  
   private
   
   def self.from_real_collection(real_collection)
-    TaliaCollection.send(:instantiate, real_collection.attributes)
+    collection = TaliaCollection.send(:instantiate, real_collection.attributes)
+    collection.real_collection = real_collection
+    collection
   end
   
 end
