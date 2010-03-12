@@ -1,7 +1,3 @@
 <index-page>
-	<collection: replace>
-		<table-plus fields="this">
-			<empty-message:>No collections match your criteria</empty-message:>
-		</table-plus>
-	</collection:>
+	<collection />
 </index-page>
