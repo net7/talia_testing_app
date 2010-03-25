@@ -1,25 +1,67 @@
-<%= timeline('tl', :data => { :source_finder => {} })%>
+<%= timeline('tl', 
+	:bands => [{
+		:width => "70%",
+		:intervalUnit => 'DECADE',
+		:intervalPixels => 100,
+		:layout => 'original',
+		},
+		{
+			:width => "30%",
+			:intervalUnit => 'CENTURY',
+			:intervalPixels => 80,
+			:layout => 'original',
+			:syncWith => 0,
+			:overview => true,
+			:highlight => true
+			}
+		], :data => { :source_finder => @conditions, :color => "#567DBB" } )%>
 
-<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? }) { |t| filter_link_for(t) }%>
-
+<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
+<script type="text/javascript">
+$(document).ready(function() 
+    { 
+        $("#sources_table").tablesorter();
+    } 
+);
+//alert("ciao");
+</script>
 <%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
 
 <div class="sources_list">
 
 <h1>Sources found: <%= @sources.total_entries  %></h1>
-<ul>
+
+<table id="sources_table" class="tablesorter" style="width:100%;">
+	<thead> 
+	<tr> 
+	    <th>Types</th> 
+	    <th>Title</th>
+	<th>Data</th>
+	<th>View</th>  
+	</tr> 
+	</thead>
+	<tbody>
 <% for source in @sources %>
-<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource)) %>
-<li>
- <p>
+<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource) || !source.is_a?(TaliaCore::Source)) %>
+
+
+<tr class="<%= cycle("even", "odd") %>" about="<%= source.uri %>">
+ <td>
 	<span class="source_type"><%= type_images(source.types) %></span>
-	<span class="source_title"><%= title_for(source) %></span>
+</td>
+ <td>
+	<span class="source_title" property="dc:title"><%= title_for(source) %></span>
+ </td>
+ <td>
 	<span class="source-data"><%= data_icons(source.data_records) %></span>
+ </td>
+ <td>
 	<span class="more"> <%= link_to 'more...', :action => 'dispatch', :dispatch_uri => N::URI.new(source.uri).local_name %></span>
- </p>
-</li>
+ </td>
+</tr>
 <% end  %>
-</ul>
+</tbody>
+</table>
 </div>
 
 <%= will_paginate @sources %>

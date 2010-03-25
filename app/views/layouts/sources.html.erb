@@ -1,29 +1,53 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+    "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:dc="http://purl.org/dc/elements/1.1/" >
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title><%= h(yield(:title) || "Talia | The Digital Library") %></title>
     <%= stylesheet_link_tag 'main' %>
+	<%= stylesheet_link_tag 'style' %>
     <%= javascript_include_tag 'jquery-1.4.1.min' %>
 	<%= javascript_include_tag 'jquery-ui-1.7.1.custom.min' %>
+	<%= javascript_include_tag 'jquery.tablesorter.min.js' %>
     <%= render :partial => 'shared/colorbox' %>
 	<%= render :partial => 'shared/swicky_ui_head' %>
     <%= iip_include_tags %>
     <%= fg_menu_includes %>
     <%= timeline_includes %>
+	
   </head>
   <body<%= source_about %>>
+	
     <div id="title_bar">
-      <h1><%= link_to h(yield(:title) || "Talia | The Digital Library"), 'root_path', :title => 'Home page'%></h1>
-      <p class="header_subtitle">Subtitle</p>
+      <h1><%= link_to h(yield(:title) || "Talia | Semantic Digital Library"), '/sources', :title => 'Home page'%></h1>
+      <h2 class="header_subtitle">Demo site</h2>
     </div>
 
     <!-- header end -->
     <!-- contents: main part of the page - divided into external and internal -->
     <div id="contents">
-      <%= yield %>
+      	<%= yield %>	
     </div>
+	<div id="closebar"><br /></div>
+	<div id="footer">
+		<div class="footwrap">
+				<ul>
+					<li><a href="#">Footer menu 1</a></li>
+					<li><a href="#">Footer menu 2</a></li>
+					<li><a href="#">Footer menu 3</a></li>
 
+				</ul>
+				<div id="col">
+					<p>Unless otherwise stated the content of this demo is subject to a CC-BY-SA 3.0 License.
+					Most of the content has been extracted from Wikipedia. Wikipedia's copyright policy is available at <a href="http://en.wikipedia.org/wiki/Wikipedia_Copyright">http://en.wikipedia.org/wiki/Wikipedia_Copyright</a>
+					</p>
+					<span id="stickers">
+					<%= link_to (image_tag("demo/valid-xhtml-rdfa.png"), "http://validator.w3.org/check?uri=referer") %>
+					</span>
+				</div>
+		<div class="clear"></div>
+		</div><!-- footwrap -->
+	</div><!-- FOOTER -->
+	<div id="closebar"><br /></div>
   </body>
 </html>

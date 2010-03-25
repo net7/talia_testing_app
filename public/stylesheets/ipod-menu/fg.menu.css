@@ -21,7 +21,7 @@ Date:		September 2008
 
 /* REQUIRED STYLES - the menus will only render correctly with these rules */	
 
-.fg-menu-container { position: absolute; top:0; left:-999px; padding: .4em;  overflow: hidden; }
+.fg-menu-container { position: absolute; top:0; left:-999px; padding: .4em;  overflow: hidden; z-index:3000;}
 .fg-menu-container.fg-menu-flyout { overflow: visible; }
 
 .fg-menu, .fg-menu ul { list-style-type:none; padding: 0; margin:0; }

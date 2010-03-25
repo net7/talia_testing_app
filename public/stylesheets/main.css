@@ -1,150 +1,221 @@
 /* CSS Document */
 
-
 /* ***************** ************** ************** */
+
 /* ***************** TAG GENERICI ************** */
-/* ***************** ************** ************** */
-* {margin: 0; padding: 0;}
 
+/* ***************** ************** ************** */
+
+* {
+	margin: 0;
+	padding: 0;
+}
 
 body {
-    text-align:left;
-    color:#333;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
-    font-size:0.8125em;
-    background: #FFF url(/images/core/left_edge.gif) top left repeat-y;
+	text-align: left;
+	color: #333;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+	font-size: 0.8125em;
+	background: #FFF url(/images/core/left_edge.gif) top left repeat-y;
 }
-
 
 /* DEFINIZIONE TAG */
-a{
-    color: #355a8e;
-    text-decoration: none;
-    outline: none;
+
+a {
+	color: #355a8e;
+	text-decoration: none;
+	outline: none;
 }
-a:hover{
-    color: #355a8e;
-    text-decoration: underline;
-    background-color: transparent;
+
+a:hover {
+	color: #355a8e;
+	text-decoration: underline;
+	background-color: transparent;
 }
-h1{
-    font-size:1.3em;
-    margin-bottom: 5px;
+
+h1 {
+	font-size: 1.3em;
+	margin-bottom: 5px;
 }
-h2{
-    font-size:1.2em;
-    margin-bottom: 5px;
+
+h2 {
+	font-size: 1.2em;
+	margin-bottom: 5px;
 }
-h3{
-    font-size:1.1em;
-    margin-bottom: 5px;
+
+h3 {
+	font-size: 1.1em;
+	margin-bottom: 5px;
 }
-p{
-    color:#333333;
-    line-height:1.7em;
-    font-size:0.9em;
-    margin-bottom: 5px;
+
+p {
+	color: #333333;
+	line-height: 1.7em;
+	/*font-size: 0.9em;*/
+	margin-bottom: 5px;
+
 }
 
 td {
-    padding-right: 3ex;
+	padding-right: 3ex;
 }
+
 /* DEFINIZIONE TAG */
 
-
 /* Taglist */
+
 div.tags {
-    margin-bottom: 0.5em;
-    margin-top: 0.5em;
-    padding: 0.3em;
-    background-color: #F1F1F1;
-    line-height: 1.5em;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+	padding: 0.3em;
+	background-color: #F1F1F1;
+	line-height: 1.5em;
 }
 
 span.tag {
-    background-color: #C0C0C0;
-    margin: 5px;
+	background-color: #C0C0C0;
+	margin: 5px;
 }
 
 span.tag_selected {
-    background-color: #A0A0E0;
-    margin: 5px;
+	background-color: #A0A0E0;
+	margin: 5px;
 }
 
 /* ***************** ************** ************** */
+
 /* ***************** CLASSI RICORRENTI ************** */
-/* ***************** ************** ************** */
-.hidden{
-    display:none;
-}
-
-.floatClear{
-    clear:both;
-}
 
 /* ***************** ************** ************** */
+
+.hidden {
+	display: none;
+}
+
+.floatClear {
+	clear: both;
+}
+
+/* ***************** ************** ************** */
+
 /* ***************** HEADER ************** */
-/* ***************** ************** ************** */
-
-
-#title_bar h1{
-    padding: 13px 0 0 13px;
-}
-#title_bar h1 a{
-    font-size:1.7em;
-    color:#FFFFFF;
-    display: block;
-    width: 235px;
-    height: 97px;
-    background: transparent url(/images/core/logo.gif) top left no-repeat;
-    text-indent: -9999px;
-}
-
-#title_bar p.header_subtitle{
-    display: none;
-}
-
-div#title_bar{
-    height: 122px;
-    margin:0;
-    padding:0;
-    border:0;
-    width:100%;
-    background:#666 url(/images/core/header_bg.gif) top left repeat;
-}
 
 /* ***************** ************** ************** */
+
+#title_bar h1 {
+	/*padding: 13px 0 0 13px;*/
+}
+
+#title_bar h1 a {
+	font-size: 1.7em;
+	color: #FFF;
+	display: block;
+	width: 535px;
+	height: 17px;
+	/*background: transparent url(/images/core/logo.gif) top left no-repeat;*/
+	padding-left: 28px;
+	padding-top: 12px;
+}
+
+#title_bar h2.header_subtitle {
+	
+	width: 535px;
+	margin-left: 28px;
+	padding-top: 0px;
+	margin-top: 16px;
+	color: #cccccc;
+}
+
+div#title_bar {
+	height: 80px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	/*background: #666 url(/images/core/lucca.jpg) no-repeat 0px 0;*/
+	background: #567dbb;
+}
+
+/* ***************** ************** ************** */
+
 /* ***************** CONTENTS ************** */
+
 /* ***************** ************** ************** */
+
 #contents {
-    padding: 25px;
-    background:transparent url(/images/core/contents_top_left.gif) top left repeat-x;
+	padding: 25px;
+	background: transparent url(/images/core/contents_top_left.gif) top left repeat-x;
+	margin-bottom: 0px;
 }
 
 /* ***************** ************** ************** */
 /* ***************** FOOTER ************** */
 /* ***************** ************** ************** */
-/* tree: #footer h1, #footer p */
-#footer.open{
-    margin: 0 0 0 300px;
+#closebar {
+	background: transparent url(/images/core/contents_bottom_left.gif) top left repeat-x;
+}
+.clear {
+	clear: both;
+}
+#footer {
+	/*margin-top: 18px;*/
+	/*border-top: 5px solid #323232;*/
+	/*background: url(/images/demo/footerbg.gif);*/
+	background: transparent url(/images/core/contents_top_left.gif) repeat-x scroll left top;
+	color: #808080;
+	padding: 25px 0 0;
+	/*border-top-width:6px ;*/
+	font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+}
+.footwrap { 
+	margin-left: 7px; width: 90%; 
+	/*background: #666 url(/images/core/header_bg.gif);*/
+	
+}
+#footer ul {
+	float: left;
+	width: 30%;
+	margin-left:30px;
+	padding: 0px;
+	list-style-type: none;
 }
 
-/* !!!! SIDE BAR CHIUSO !!!! */
-#footer.closed{
-    margin-left:73px;
+#footer li {
+	padding: 8px 5px;
+		background: url(/images/demo/dot.gif) repeat-x bottom;
+	
 }
 
-#select-container {
-    margin-bottom: 3ex;
+
+#footer #col {
+	float: right;
+	width: 60%;
+	margin-top: 10px;
+}
+
+#footer #col p{
+
+}
+
+#footer #stickers {
+	float: right;
 }
 
 
 /* ***************** ************** ************** */
+
 /* ***************** Barbz demo stuff ************** */
+
 /* ***************** ************** ************** */
+
+.sources_list h1 {
+	margin-top: 15px;
+	}
+
 .sources_list ul {
 	width: 100%;
 	list-style: none;
@@ -162,56 +233,58 @@ div#title_bar{
 	width: 100%;
 	background: #f9f9f9;
 	margin: 0;
-	padding:0 }
+	padding: 0
+}
 
 .sources_list ul li p .source_type {
 	display: block;
 	float: left;
 	width: 10%;
-	padding:6px 1%;
-	/*background:#f8f8f8 url(img/type.png) repeat-x bottom;*/
-	/*border-bottom: 1px solid #ccc;*/
+	padding: 6px 1%;
+
+
+/*background:#f8f8f8 url(img/type.png) repeat-x bottom;*/
+
+
+/*border-bottom: 1px solid #ccc;*/
 	voice-family: "\"}\"";
-voice-family:inherit;
-	width:8%
+	voice-family: inherit;
+	width: 8%
 }
 
 .sources_list ul li p .source_title {
 	display: block;
 	float: left;
 	width: 45%;
-	font-size:12px ;	
+	font-size: 12px;
 	background: #f2f2f2;
 	font-weight: bold;
-	padding:6px 1% ;
+	padding: 6px 1%;
 	voice-family: "\"}\"";
-voice-family:inherit;
-	width:43%
+	voice-family: inherit;
+	width: 43%
 }
-
-
 
 .sources_list ul li p .source-data {
 	display: block;
 	float: left;
 	width: 35%;
-	padding:  7px 1% 7px 1%;
+	padding: 7px 1% 7px 1%;
 	voice-family: "\"}\"";
-voice-family:inherit;
-	width:33%
+	voice-family: inherit;
+	width: 33%
 }
 
 .sources_list ul li p .more {
 	width: 10%;
 	float: left;
-	padding: 6px 0;	font-size:12px ;	
+	padding: 6px 0;
+	font-size: 12px;
 	background: url(img/arrow.png) no-repeat right;
 	display: block;
 }
 
-
-
-.sources_list ul li p .more a{
+.sources_list ul li p .more a {
 	color: #999;
 }
 
@@ -225,7 +298,6 @@ div#tl {
 	margin-bottom: 30px;
 	margin-top: 30px;
 }
-
 
 .properties_list ul {
 	width: 100%;
@@ -244,33 +316,121 @@ div#tl {
 	width: 100%;
 	background: #f9f9f9;
 	margin: 0;
-	padding:0 }
+	padding: 0
+}
 
 .properties_list ul li p .predicate {
 	display: block;
 	float: left;
 	width: 10%;
-	padding:6px 1%;
-	/*background:#f8f8f8 url(img/type.png) repeat-x bottom;*/
-	/*border-bottom: 1px solid #ccc;*/
+	padding: 6px 1%;
+
+
+/*background:#f8f8f8 url(img/type.png) repeat-x bottom;*/
+
+
+/*border-bottom: 1px solid #ccc;*/
 	voice-family: "\"}\"";
-	voice-family:inherit;
-	width:8%
+	voice-family: inherit;
+	width: 8%
 }
 
 .properties_list ul li p .value {
 	display: block;
 	float: left;
 	width: 45%;
-	font-size:12px ;	
+	font-size: 12px;
 	background: #f2f2f2;
 	font-weight: bold;
-	padding:6px 1% ;
+	padding: 6px 1%;
 	voice-family: "\"}\"";
-	voice-family:inherit;
-	width:43%
+	voice-family: inherit;
+	width: 43%
 }
-.person hr
+
+.person hr {
+	margin-top: 30px;
+}
+
+/* ***************** ************** ************** */
+
+/* ***************** Pagination - barbz demo ************** */
+
+/* ***************** ************** ************** */
+
+.pagination {
+	padding: 3px;
+	margin: 3px;
+}
+
+.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #515151;
+	text-decoration: none;
+	color: #000;
+}
+
+.pagination a:hover, .pagination a:active {
+	border: 1px solid #515151;
+	color: #000;
+}
+
+.pagination span.current {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #515151;
+	font-weight: bold;
+	background-color: #515151;
+	color: #FFF;
+}
+
+.pagination span.disabled {
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border: 1px solid #eee;
+	color: #ddd;
+}
+
+/* ***************** ************** ************** */
+
+/* ***************** Random Stuff ************** */
+
+/* ***************** ************** ************** */
+
+.THCContent
 {
-	margin-top:30px;
+	padding-top: 5px;
+	border-top: 2px solid #ccc;
+}
+
+.THCContent ul
+{
+	list-style-position: inside;
+	margin-bottom: 5px;
+}
+
+
+/* keeps the filter by type select on top of the timeline*/
+
+#class-menu {
+	z-index: 100;
+}
+
+/* spaces the images in the sources default template */
+
+.source_images img {
+	margin: 2px;
+}
+
+/* hover effect on the images in the sources default template */
+
+.source_images img:hover {
+	border: 2px solid #515151;
+}
+
+/* spaces the images in the sources default template */
+
+#tl {
+	border: 5px solid #CDCDCD;
 }

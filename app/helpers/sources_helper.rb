@@ -2,13 +2,13 @@ module SourcesHelper
 
   # Link to the index
   def index_link
-    link_to 'index', :action => 'index'
+    link_to 'Index', :action => 'index'
   end
 
   # About parameter with the uri of the current source (if the is a current source,
   # blank string otherwise)
   def source_about
-    @source ? (' about ="' << @source.uri.to_s << '"') : ''
+    @source ? (' about="' << @source.uri.to_s << '"') : ''
   end
 
   # Checks if the current filter points to the given type
@@ -67,6 +67,33 @@ module SourcesHelper
       image = @type_map[t] || 'source'
       name = t.local_name.titleize
       result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
+        :action => 'index', :filter => t.to_name_s('+')
+      )
+    end
+    result
+  end
+  
+  def type_images_medium(types)
+    @type_map ||= { 
+      N::TALIA.Source => 'source',
+      N::FOAF.Group => 'group',
+      N::LUCCADOM.epoch => 'period',
+      N::LUCCADOM.building => 'building',
+      N::LUCCADOM.museum => 'museum',
+      N::LUCCADOM.epoch => 'period',
+      N::LUCCADOM.document => 'document',
+      N::LUCCADOM.artwork => 'artwork',
+      N::LUCCADOM.place => 'map',
+      N::LUCCADOM.city => 'map',
+      N::FOAF.Person => 'person',
+      N::LUCCADOM.church => 'building',
+      N::LUCCADOM.institution => 'institution'
+    }
+    result = ''
+    types.each do |t|
+      image = @type_map[t] || 'source'
+      name = t.local_name.titleize
+      result << link_to(image_tag("demo/types_medium/#{image}.png", :alt => name, :title => name, :width => "64px"),
         :action => 'index', :filter => t.to_name_s('+')
       )
     end
