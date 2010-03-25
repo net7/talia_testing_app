@@ -1,14 +1,42 @@
 <index-page>
 	<content: replace>
 		<sidebared-content>
-			<collection: replace>
-				<table-plus fields="this, uri, short_type">
-					<empty-message:>No sources match your criteria</empty-message:>
-				</table-plus>
+			<collection:>
+				<item:>
+					<% drag_id = this.to_uri.safe_encoded %>
+					<div id="#{drag_id}">
+						<card>
+							<before-heading:>
+								<if test="&this.with_acting_user(current_user) { this.update_permitted? }"><div class="drag_handle">&nbsp;</div></if>
+							</before-heading:>
+						</card>
+					</div>
+					<if test="&this.with_acting_user(current_user) { this.update_permitted? }">
+					<%= draggable_element(drag_id, 
+					    :handle => "'drag_handle'", 
+					    :revert => true, 
+					    :ghosting => true,
+					    :scroll => 'window' ) %>
+					</if>
+				</item:>
 			</collection:>
 			<aside:>
 				<h2>Collections</h2>
 				<collection with="&all_collections">
+					<item:>
+						<div id="#{this.to_uri.safe_encoded}">
+							<card/>
+						</div>
+					</item:>
+					<after-item:>
+					<if test="&this.with_acting_user(current_user) { this.update_permitted? }">
+					<%= drop_receiving_element(this.to_uri.safe_encoded,
+						:url => { :controller => 'admin/talia_sources', :action => 'assign_collection' },
+						:with => "'source=' + encodeURIComponent(element.id) + '&collection=#{this.to_uri.safe_encoded}'",
+						:hoverclass => 'drop_ready'
+					  ) %>
+					</if>
+					</after-item:>
 					<empty-message:>No collections found</empty-message>
 				</collection>
 			</aside:>

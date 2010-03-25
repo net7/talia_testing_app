@@ -1,0 +1,11 @@
+.drag_handle {
+	background: transparent url(/images/icons/arrow_out.png) top left no-repeat;
+	float: right;
+	width: 16px;
+	height: 16px;
+	cursor: move;
+}
+
+.drop_ready div.card {
+	border: solid 2px blue;
+}

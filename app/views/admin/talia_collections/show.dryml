@@ -1,0 +1,5 @@
+<show-page>
+	<content-body: >
+		<field-list fields="name" />
+	</content-body>
+</show-page>

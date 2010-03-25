@@ -7,7 +7,18 @@ class TaliaCollection < ActiveRecord::Base
     uri :string
   end
   
+  declare_attr_type :name, :string
+  attr_writer :real_collection
+  
   set_table_name "active_sources"
+  
+  def name=(name)
+    self.uri = (N::LOCAL + name).to_s
+  end
+  
+  def name
+    self.uri.nil? ? nil : self.uri.to_uri.local_name
+  end
   
   def create_permitted?
     acting_user.administrator?
@@ -18,7 +29,7 @@ class TaliaCollection < ActiveRecord::Base
   end
   
   def view_permitted?(field)
-    true
+    acting_user.signed_up?
   end
   
   def self.new(*args)
@@ -41,14 +52,21 @@ class TaliaCollection < ActiveRecord::Base
     TaliaCore::Collection.count(*args)
   end
   
-  def name 
-    N::URI.new(self.uri).to_name_s
+  def to_uri
+    self.uri.to_uri
+  end
+  
+  
+  def real_collection
+    @real_collection ||= TaliaCore::Collection.new(self.uri)
   end
   
   private
   
   def self.from_real_collection(real_collection)
-    TaliaCollection.send(:instantiate, real_collection.attributes)
+    collection = TaliaCollection.send(:instantiate, real_collection.attributes)
+    collection.real_collection = real_collection
+    collection
   end
   
 end

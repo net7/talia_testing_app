@@ -1,0 +1,7 @@
+<edit-page>
+	<form: for="TaliaCollection">
+		<field-list: replace>
+			<field-list: fields="name" />
+		</field-list>
+	</form>
+</edit-page>

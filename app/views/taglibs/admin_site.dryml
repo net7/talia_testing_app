@@ -10,6 +10,43 @@
 
 <def tag="app-name">Talia Admin Panel</def>
 
+<def tag="card" for="TaliaCollection">
+  <card class="talia-collection" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+	<body:>
+		Contains <%= this.real_collection.elements.size %> Sources
+	</body:>
+  </card>
+</def>
+
+<def tag="card" for="TaliaSource">
+  <card class="talia-source" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+	<body:>
+		<div><%= this.uri %> | <%= this.short_type %></div>
+		<div>
+			<% source_uri = this.to_uri.safe_encoded %>
+			<% can_update = this.with_acting_user(current_user) { this.update_permitted? } %>
+			<repeat with="&TaliaCore::Collection.find(:all, :find_through => [N::DCT.hasPart, this.to_uri])" join=", ">
+				<%= this.to_uri.local_name %> 
+				<if test="&can_update">
+				<remote-method-button method="disjoin_collection" label="x" 
+					params="&{:collection => this.to_uri.safe_encoded, :source => source_uri }" 
+					url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_collection')}"
+					spinner-next-to="#{source_uri}"
+					message="Deleting..."
+					/>
+				</if>
+			</repeat>
+		</div>
+	</body:>
+  </card>
+</def>
+
 <def tag="prop-language">
 	<b>Language:</b> <this.lang if="lang" />
 	<else>n/a (default)</else>
