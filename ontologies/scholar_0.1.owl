@@ -1,65 +1,25 @@
 <?xml version="1.0"?>
 <rdf:RDF
-    xmlns:foaf="http://xmlns.com/foaf/0.1/"
-    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-    xmlns:owl="http://www.w3.org/2002/07/owl#"
     xmlns="http://discovery-project.eu/ontologies/scholar/0.1/"
+    xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+    xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
   xml:base="http://discovery-project.eu/ontologies/scholar/0.1/">
   <owl:Ontology rdf:about=""/>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Object">
-    <rdfs:subClassOf>
-      <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
-    </rdfs:subClassOf>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >A material, concrete object.</rdfs:comment>
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Object</rdfs:label>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Source">
-    <rdfs:comment xml:lang="en">An artifact or document that is matter of study.</rdfs:comment>
-    <rdfs:label xml:lang="en">Source</rdfs:label>
-  </rdfs:Class>
   <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Event">
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Event</rdfs:label>
     <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >An event in time.</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/PrimarySource">
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Primary Source</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >An artifact taht is considered to be a primary material in a given domain (e.g. wrote by the author(s) that is(are) matter of study).</rdfs:comment>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Person">
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Person</rdfs:label>
-    <rdfs:comment xml:lang="en">A human beeing.</rdfs:comment>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Concept">
-    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
-    <rdfs:comment xml:lang="en">A concept, often an abstract thing, that is matter of philosophical studies. Rather than precisely define the concept, instances of this classes and of its subclasses are intended as 'topics', e.g. identifying generic aspects or areas in philosophical studies..</rdfs:comment>
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Concept</rdfs:label>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Place">
-    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >A place, something that has a precised and fixed geographical position (a city, a building, etc.)</rdfs:comment>
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Place</rdfs:label>
-  </rdfs:Class>
-  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/SecondarySource">
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >Secondary Source</rdfs:label>
-    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >An artifact that is considered to be secondary in a given domain (e.g. a commentary of a primary source wrote by a scholar).</rdfs:comment>
+    <rdfs:subClassOf>
+      <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    </rdfs:subClassOf>
   </rdfs:Class>
   <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/FictionalEntity">
     <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
@@ -68,42 +28,194 @@
     <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >Something that exists within a story, a literary work or a artwork in general. It can be a character of a movie (e.g. Batman), a place (e.g. Gotham City), a phisical object (e.g. the Bat-Mobile), etc.</rdfs:comment>
   </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Concept">
+    <rdfs:comment xml:lang="en">A Concept, often an abstract entity, that is matter of study. Instance of this class can be generically considered as topics, which Sources might mention. Subclasses of this class should refer to more specific definitions of the term 'concept'.</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Concept</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/PhisicalObject">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Object</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A material, concrete object. It can be, for example, a the pen used by an author or a chair where he/she used to sit on.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/PrimarySource">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >An artifact that is considered a primary material in a given domain (e.g. referrign to a specific author or philosophical movement).</rdfs:comment>
+    <rdfs:subClassOf>
+      <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    </rdfs:subClassOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Primary Source</rdfs:label>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Place">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Place</rdfs:label>
+    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A place, something that has a precised and fixed geographical position (a city, a building, etc.).</rdfs:comment>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Person">
+    <rdfs:comment xml:lang="en">A human beeing.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Person</rdfs:label>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/SecondarySource">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Secondary Source</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >An artifact that is considered a secondary material in a given domain (e.g. a commentary of a primary source wrote by a scholar).</rdfs:comment>
+    <rdfs:subClassOf>
+      <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    </rdfs:subClassOf>
+  </rdfs:Class>
+  <rdfs:Class rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/Source">
+    <rdfs:comment xml:lang="en">An artifact or document that is matter of study. It can be the digital representation of a real world artifact as well as a natively electronic document (e.g. a web page, a picture).</rdfs:comment>
+    <rdfs:label xml:lang="en">Source</rdfs:label>
+  </rdfs:Class>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isPartOf">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation links a Source to an other Source it is part of. For example, a book page can be a part of an entire book, as well as a picture or a text fragment can be parts of a web page.</rdfs:comment>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >is part of</rdfs:label>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasPart"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/inverse_of_hasSubject_2">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/mentions"/>
+    </owl:inverseOf>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isSubjectOf"/>
+    </rdfs:subPropertyOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isCommentedBy">
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >is commented by</rdfs:label>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isSubjectOf"/>
+    </rdfs:subPropertyOf>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/comments"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/comments">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasSubject"/>
+    </rdfs:subPropertyOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >comments</rdfs:label>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation links a Source to a Subject (concept, entity, etc.) it discusses or comments.</rdfs:comment>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isCommentedBy"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isSubjectOf">
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasSubject"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/defines">
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isDefinedBy"/>
+    </owl:inverseOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation links a Source to a Subject (concept, entity, etc.) it defines.</rdfs:comment>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasSubject"/>
+    </rdfs:subPropertyOf>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >defines</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo"/>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasSimilarContent">
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Thi relation links to Sources that have similar content.</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >has similar content</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo"/>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/agreesWith">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation links a Source X to an other Source Y that confirms the same vision or theory discussed in X.</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >agrees with</rdfs:label>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo"/>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isDefinedBy">
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isSubjectOf"/>
+    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/defines"/>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >is defined by</rdfs:label>
+  </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasAuthor">
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Person"/>
     <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >The author of a Source is the human being (Person) who produced it.</rdfs:comment>
-    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Person"/>
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >has author</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/quotes">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The act of quoting (referring explicitly to) a document or artifact (a Source).</rdfs:comment>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo"/>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >quotes</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/desagreesWith">
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation links a Source A to an other Source Y that disagrees with a vision or theory discussed in X.</rdfs:comment>
+    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >desagrees with</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo"/>
     <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasSubject">
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >has subject</rdfs:label>
+    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isSubjectOf"/>
     <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
     <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >The subject of a Source can be a Concept, a Person, a Place or whatever the Source talks about or mentions.</rdfs:comment>
+    >This relation links a Source to a Subject it is somehow related to. A Subject can be a concpts, an entity, a person , etc.</rdfs:comment>
   </owl:ObjectProperty>
   <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/hasPart">
-    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-    <owl:inverseOf>
-      <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isPartOf"/>
-    </owl:inverseOf>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
     <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
     >has part</rdfs:label>
-    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-  </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isPartOf">
-    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >A source is part of an other source when it is a component of it. For example a chapter can be part of a book, a sentence can be part of an essay, a picture can be part of a page, etc.</rdfs:comment>
+    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/isPartOf"/>
     <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/hasPart"/>
-    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
-    <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
-    >is part of</rdfs:label>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This relation link a Source ot a part of it and it is the inverse of the 'is part of' relation.</rdfs:comment>
   </owl:ObjectProperty>
-  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/isRelatedTo">
-    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+  <owl:ObjectProperty rdf:about="http://discovery-project.eu/ontologies/scholar/0.1/mentions">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The act of mentioning a subject.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Source"/>
+    <rdfs:subPropertyOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/hasSubject"/>
+    <rdfs:range rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/Subject"/>
+    <owl:inverseOf rdf:resource="http://discovery-project.eu/ontologies/scholar/0.1/inverse_of_hasSubject_2"/>
   </owl:ObjectProperty>
 </rdf:RDF>
 
-<!-- Created with Protege (with OWL Plugin 3.4, Build 125)  http://protege.stanford.edu -->
+<!-- Created with Protege (with OWL Plugin 3.4.1, Build 536)  http://protege.stanford.edu -->
