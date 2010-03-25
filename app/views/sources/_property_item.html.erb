@@ -1,10 +1,17 @@
-<li>
-  <p>
-    <span class="predicate"><%= property_item %></span>
-<span class="value">
+<tr>
+  <td>
+    <span class="predicate"><%= property_item %></span></td>
+<td><span class="value">
 <% for value in values %>
     <%= semantic_target(value)  %><br/>
     <% end %>
 </span>
-  </p>
-</li>
+<% if defined? uri %>
+	<% for value in values %>
+		<span class="rdfa_hidden" property="<%= uri %>">
+		<%= semantic_target(value)  %>
+		</span>
+	<% end %>
+<% end %>
+</td>
+</tr>

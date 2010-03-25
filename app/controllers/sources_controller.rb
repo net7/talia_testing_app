@@ -10,7 +10,7 @@ class SourcesController < ApplicationController
   def index
     @rdf_types ||= self.class.source_types
 
-    conditions = { :prefetch_relations => true, :include => :data_records }
+    conditions = { :prefetch_relations => true, :include => :data_records, :order => "uri"}
     if(filter = params[:filter])
       conditions.merge!(:find_through => [N::RDF.type, N::URI.make_uri(filter, '+')])
     end
@@ -19,6 +19,7 @@ class SourcesController < ApplicationController
     else
       @sources = TaliaCore::ActiveSource.find(:all, conditions)
     end
+    @conditions = conditions
   end
 
   # GET /sources/1
@@ -178,7 +179,7 @@ class SourcesController < ApplicationController
       Dir["#{dir}/*"].each do |template|
         next unless(File.file?(template))
         template = template_basename(template)
-        @template_map[(namsp_object + template).to_s.downcase] = "semantic_templates/#{namespace}/#{template}"
+        @template_map[(namesp_object + template).to_s.downcase] = "semantic_templates/#{namespace}/#{template}"
       end
     end
   

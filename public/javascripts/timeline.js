@@ -43,10 +43,12 @@ function TimelineRunner(params, tl_data) {
 				new_band.eventSource = this.eventSource;
 				new_band.date = Timeline.DateTime.parseIso8601DateTime(bands[band].date || '1900-01-01');
 				new_band.theme = this.theme;
+				new_band.overview = bands[band].overview
 				new_band.layout = (bands[band].layout || 'original');
-				if(band.syncWith) { new_band.syncWith = bands[band].syncWith; }
-				if(band.highlight) { new_band.highlight = bands[band].highlight; }
-				this.bands.push(Timeline.createBandInfo(new_band));
+				new_band_info = Timeline.createBandInfo(new_band)
+				if(bands[band].syncWith != null) { new_band_info.syncWith = bands[band].syncWith; }
+				if(bands[band].highlight != null) { new_band_info.highlight = bands[band].highlight; }
+				this.bands.push(new_band_info);
 			}
 			return this.bands;
 		}

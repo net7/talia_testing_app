@@ -14,14 +14,13 @@ $(document).ready(function()
 );
 //alert("ciao");
 </script>
-
-<%= content_for :title, title_for(@source) %>
-
 <div class="back"><%= index_link %></div>
 <br />
-<%= type_images_medium(@source.types) %>
-<h2><%= title_for(@source) %></h2>
-<h5><a href="#" class="show_properties">Show/Hide Source Properties ...</a> Show: <%= link_to("RDF", @source.to_uri.local_name + ".rdf") %> | <%= link_to("XML", @source.to_uri.local_name + ".xml") %></h5>
+<%= image_tag("templates/person-icon.png") %>
+<h2>
+	<%= @source[N::DCNS.title].first || @source[N::RDFS.label].first || @source.uri.to_name_s %>
+</h2>
+<h5><a href="#" class="show_properties">Show/Hide Source Properties ...</a></h5>
 <%= render(:partial => 'property_list') %>
 <br />
 <% for record in @source.data_records %>
@@ -39,6 +38,8 @@ $(document).ready(function()
   <%= render(:partial => 'data_list') %>
 <% end %>
 
+
+
 <% for record in @source.data_records %>
 	<% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
 		<% element_uri = (@source.uri + "#data#{record.id}").to_s %>
@@ -48,14 +49,13 @@ $(document).ready(function()
 		<%= thctag(element_uri, record.content_string) %>
 	<% end %>
 <% end %>
-
 <div class="source_images">
 <% for record in @source.data_records %>
 <% if(record.is_a?(TaliaCore::DataTypes::ImageData)) %>
 <% record_options = data_record_options(record) %>
 <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-<%= link_to("<img src=\"#{image_url}\" alt=\"source image\"/>", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last )%>
-	<img src="<%= image_url %>" alt="source image"/>
+<%= link_to("<img src=#{image_url}", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
+	<img src="<%= image_url %>" />
 <% end%>
 <% end%>
 </div>

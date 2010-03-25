@@ -20,3 +20,5 @@ namespaces:
   talias: http://trac.talia.discovery-project.eu/wiki/StructuralOntology#
   swicky: http://discovery-project.eu/ontologies/philoSpace/
   discovery: http://discovery-project.eu/ontologies/scholar/0.1/
+  wordnet: http://xmlns.com/wordnet/1.6/
+  geo: http://www.w3.org/2003/01/geo/wgs84_pos#
