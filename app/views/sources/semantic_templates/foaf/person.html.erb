@@ -53,7 +53,7 @@ $(document).ready(function()
 <% if(record.is_a?(TaliaCore::DataTypes::ImageData)) %>
 <% record_options = data_record_options(record) %>
 <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-<%= link_to("<img src=\"#{image_url}\"", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
+<%= link_to("<img src=\"#{image_url}\" alt=\"\"/>", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
 <% end%>
 <% end%>
 </div>
