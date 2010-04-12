@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 $(document).ready(function() 
     { 
         $("#properties_table").tablesorter();
@@ -12,7 +12,6 @@ $(document).ready(function()
 		}); 
     } 
 );
-//alert("ciao");
 </script>
 <div class="back"><%= index_link %></div>
 <br />
@@ -54,8 +53,7 @@ $(document).ready(function()
 <% if(record.is_a?(TaliaCore::DataTypes::ImageData)) %>
 <% record_options = data_record_options(record) %>
 <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-<%= link_to("<img src=#{image_url}", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
-	<img src="<%= image_url %>" />
+<%= link_to("<img src=\"#{image_url}\"", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
 <% end%>
 <% end%>
 </div>

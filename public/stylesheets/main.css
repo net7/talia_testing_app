@@ -154,7 +154,7 @@ div#title_bar {
 /* ***************** ************** ************** */
 /* ***************** FOOTER ************** */
 /* ***************** ************** ************** */
-#closebar {
+.closebar {
 	background: transparent url(/images/core/contents_bottom_left.gif) top left repeat-x;
 }
 .clear {
@@ -433,4 +433,8 @@ div#tl {
 
 #tl {
 	border: 5px solid #CDCDCD;
+}
+
+.rdfa_hidden {
+    display: none;
 }
