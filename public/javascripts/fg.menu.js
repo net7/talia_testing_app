@@ -328,8 +328,9 @@ Menu.prototype.drilldown = function(container, options) {
 		el.css({ height: options.maxHeight });
 	};
 	
-	var resetChildMenu = function(el){ el.removeClass('fg-menu-scroll').removeClass('fg-menu-current').height('auto'); };
-	
+//this fixes the problem that the menu pages, other than the first, shrink
+//		var resetChildMenu = function(el){ el.removeClass('fg-menu-scroll').removeClass('fg-menu-current').height('auto'); };
+	var resetChildMenu = function(el){ el.removeClass('fg-menu-scroll').removeClass('fg-menu-current').height(options.maxHeight); };
 	this.resetDrilldownMenu = function(){
 		$('.fg-menu-current').removeClass('fg-menu-current');
 		topList.animate({ left: 0 }, options.crossSpeed, function(){
