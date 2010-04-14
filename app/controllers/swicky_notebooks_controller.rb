@@ -50,7 +50,9 @@ class SwickyNotebooksController < ApplicationController
   end
   
   def annotated_fragments
-    coordinates = Swicky::Notebook.coordinates_for(URI.escape(params[:uri]).to_s)
+    unless params[:uri].nil?
+      coordinates = Swicky::Notebook.coordinates_for(URI.escape(params[:uri]).to_s)
+    end
     render :text => coordinates.to_json
   end
   

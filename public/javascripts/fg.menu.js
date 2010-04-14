@@ -411,7 +411,9 @@ Menu.prototype.drilldown = function(container, options) {
 						}
 						$('.fg-menu-current-crumb').removeClass('fg-menu-current-crumb');
 						var crumbText = $(this).find('span:eq(0)').text();
-						var newCrumb = $('<li class="fg-menu-current-crumb"><a href="javascript://" class="fg-menu-crumb">'+crumbText+'</a></li>');	
+// changed this so the last item of the breadcrumb (the one we're in) will provide a link to it's href
+//                                      	var newCrumb = $('<li class="fg-menu-current-crumb"><a href="javascript://" class="fg-menu-crumb">'+crumbText+'</a></li>');
+						var newCrumb = $('<li class="fg-menu-current-crumb"><a href="'+ $(this).attr('href')+'" class="fg-menu-crumb">'+crumbText+'</a></li>');
 						newCrumb
 							.appendTo(breadcrumb)
 							.find('a').click(function(){

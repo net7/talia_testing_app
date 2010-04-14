@@ -64,16 +64,20 @@ class SourcesController < ApplicationController
   # type dcns:name, it will try to call the method #dncs_name (if defined) before 
   # rendering the source.
   def dispatch
-    @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
-    @types = @source.types
-    @types.each do |type|
-      caller = type.to_name_s('_')
-      self.send(caller) if(self.respond_to?(caller))
-    end
-    respond_to do |format|
-      format.html { render :action => template_for(@source) }
-      format.xml { render :text => @source.to_xml }
-      format.rdf { render :text => @source.to_rdf }
+    if (TaliaCore::ActiveSource.exists?(params[:dispatch_uri])) 
+      @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
+      @types = @source.types
+      @types.each do |type|
+        caller = type.to_name_s('_')
+        self.send(caller) if(self.respond_to?(caller))
+      end
+      respond_to do |format|
+        format.html { render :action => template_for(@source) }
+        format.xml { render :text => @source.to_xml }
+        format.rdf { render :text => @source.to_rdf }
+      end
+    else
+      render :text => ''
     end
   end
 
@@ -97,7 +101,7 @@ class SourcesController < ApplicationController
     end
   end
   
-  private 
+  private
 
   # Hack around routing limitation: We use the @ instead of the dot as a delimiter
   def setup_format
