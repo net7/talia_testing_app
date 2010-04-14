@@ -6,20 +6,18 @@
     function(){ $(this).removeClass('ui-state-focus').addClass('ui-state-default'); }
   );
     	
-
     $('#class-menu').menu({
-      content: $('#class-menu-items').html(),
-      crumbDefaultText: ' '
+      content: $('#class-menu').next().html(),
+      backLink: false
     });
+
+
 
   });
 </script>
-
 <div id="select-container">
-<a tabindex="0" href="#class-menu-items" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="class-menu"><span class="ui-icon ui-icon-triangle-1-s"></span><%= button_text %></a>
-
-<div id="class-menu-items" class="hidden">
-  <%= tree_list(elements) { |element| item_block.call(element) } %>
-</div>
-
+  <a tabindex="0" href="#class-menu-items" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all" id="class-menu"><span class="ui-icon ui-icon-triangle-1-s"></span><%= button_text %></a>
+  <div id="class-menu-items" class="hidden">
+    <%= tree_list(elements) { |element| item_block.call(element) } %>
+  </div>
 </div>
