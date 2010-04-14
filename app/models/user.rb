@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def view_permitted?(field)
-    acting_user.administrator?
+    true
   end
 
 end
