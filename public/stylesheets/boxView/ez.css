@@ -1,0 +1,42 @@
+div.eztipContainer {
+	position: absolute;
+	padding: 15px;
+}
+div.eztipContainer div { position: relative; float: left; }
+div.eztipContainer div.eztipLeft { clear: both; }
+div.eztipContainer .eztipContent {
+    padding: 10px 10px 8px 10px;
+    background: url(ez/ez_bg.png) top left repeat;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    color: #FFF;
+    width: 200px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	font-size: 12px;
+	line-height: 20px;
+}
+
+
+div.eztipContainer.bottomleft{
+	background: url(ez/ez_bottomLeft_stem.png);
+	background-position: 0 bottom;
+	background-repeat: no-repeat;
+}
+
+div.eztipContainer.bottomright {
+	background: url(ez/ez_bottomRight_stem.png);
+	background-position: right bottom;
+	background-repeat: no-repeat;
+}
+
+div.eztipContainer.topleft {
+	background: url(ez/ez_topLeft_stem.png);
+	background-position: 0 top;
+	background-repeat: no-repeat;
+}
+
+div.eztipContainer.topright {
+	background: url(ez/ez_topRight_stem.png);
+	background-position: right top;
+	background-repeat: no-repeat;
+}

@@ -1,0 +1,994 @@
+* { padding: 0px; margin: 0px; border: 0; font-family: sans-serif; font-size: 10pt;}
+
+/*
+Tags definitions
+*/
+html, body {
+	border:0 none;
+	height:100%;
+	margin:0;
+	padding:0;
+	text-align:justify;
+	width:100%;
+}
+
+a, a:active {
+	outline: none;
+}
+
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+/*
+Page Sections
+*/
+#pageExt {
+	bottom:0;
+	left:0;
+	position:absolute;
+	right:0;
+	text-align:left;
+	top:0;
+	width:100%;
+}
+
+#pageContent {
+	position: absolute;
+	margin: 0; padding: 0; border: 0;
+	right: 0px;
+	top: 102px;
+	left: 217px;
+	overflow: hidden;
+}
+
+/*
+Header
+*/
+#pageHeader {
+	height: 101px;
+	margin: 0 0 0;
+	width: 100%;
+}
+	#pageHeader h1 {
+		display: block;
+		width: 542px;
+		height: 101px;
+		margin: 0;
+		padding: 0;
+		text-indent: -9999px;
+		position: absolute;
+		left: 0;
+	}
+	
+	#pageHeader p {
+		display: none;
+	}
+	
+	/* Preferences */
+	#pageHeader #header_preferences_wrapper {
+		position: absolute;
+		height: 33px; margin: 0; padding: 0 7px 0 0; 
+		top: 35px;
+		right: 20px;
+		background: url(images/preferences/preferences_right.gif) top right no-repeat;
+	}
+		#pageHeader #header_preferences_wrapper #header_preferences {
+			background: url(images/preferences/preferences_left.gif) top left no-repeat;
+			height: 33px; margin: 0; padding: 0 0 0 7px; 
+		}
+		
+			#pageHeader #header_preferences_wrapper #header_preferences ul {
+			background: url(images/preferences/preferences_bg.gif) top left repeat-x;
+			height: 33px; margin: 0; padding: 0; 
+				overflow: hidden;
+			}
+			
+				#pageHeader #header_preferences_wrapper #header_preferences ul li {
+					height: 33px; margin: 0; padding: 9px 10px; 
+					float: left;
+					overflow: hidden;
+					background: url(images/preferences/preferences_separator.gif) top right no-repeat;
+				}
+				#pageHeader #header_preferences_wrapper #header_preferences ul li.last {
+					background: none;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a {
+					text-indent: -9999px;
+					display: block;
+					width: 16px;
+					height: 16px;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a:hover {
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a#helpButton {
+					background: url(images/preferences/preferences_icon_help.gif) center center no-repeat;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a#undoButton {
+					background: url(images/preferences/preferences_icon_undo.gif) center center no-repeat;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a#introButton {
+					background: url(images/preferences/preferences_icon_home.gif) center center no-repeat;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a.inactive#undoButton {
+					background: url(images/preferences/preferences_icon_undo_inactive.gif) center center no-repeat;
+				}
+				
+				#pageHeader #header_preferences_wrapper #header_preferences ul li a#prefButton {
+					background: url(images/preferences/preferences_icon_settings.gif) center center no-repeat;
+				}
+				
+				
+
+/*
+Menu
+*/
+div#menu_container {
+	width: 216px;
+	margin: 0; padding: 0; border: 0;
+	position: absolute;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+	div#menu_container ul {
+		list-style-type: none;
+	}
+	div#menu_container h3 {
+		margin: 0;
+		width: 186px;
+		padding: 0 20px 0 10px;
+		height: 30px;
+		line-height: 30px;
+		font-size: 14px;
+		font-weight: normal;
+		text-transform: uppercase;
+	}
+
+	/* Primo livello */
+	div#menu_container ul li {
+		padding: 0;
+		width: 215px;
+	}
+		div#menu_container ul li a{
+			padding: 7px 7px 7px 10px;
+			display: block;
+			font-size: 12px;
+			text-decoration: none;
+		}
+		div#menu_container ul li a:hover{
+			text-decoration: underline;
+		}
+		
+	/* Secondo livello */
+	div#menu_container ul li ul li {
+		border-bottom: 0;
+	}
+		div#menu_container ul li ul li a{
+			padding: 7px 7px 7px 30px;
+			font-size: 11px;
+		}
+		
+	div#menu_container ul li a.menu.collapsed{
+		margin-left: 10px;
+		padding-left: 20px;
+	}
+	div#menu_container ul li a.menu.expanded {
+		margin-left: 10px;
+		padding-left: 20px;
+	}
+	
+	/* Input e label contesti */
+	div#menu_container ul li div.context{
+		padding: 7px 7px 7px 10px;
+	}
+	div#menu_container ul li div.context input{
+		padding: 7px 7px 7px 10px;
+		font-size: 12px;
+		text-decoration: none;
+	}
+	div#menu_container ul li div.context label{
+		padding: 7px 7px 7px 10px;
+		font-size: 12px;
+		text-decoration: none;
+	}
+	div#menu_container ul li a#menu_update {
+		margin-left: 10px;
+		padding-left: 20px;
+	}
+	div#menu_container ul li a#menu_update:hover {
+	}
+
+/*
+Load dialog
+*/
+#loadingDialog {
+	position: absolute;
+	padding: 0 30px 0 60px;
+	height: 33px;
+	right: 200px;
+	right: 165px;
+	top: 35px;
+	color: #ffffff;
+	z-index: 10;
+	line-height: 33px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	background-color: rgba(0,0,0, 0.6);
+}
+
+#loadingDialog img {
+	position: absolute;
+	top: 8px;
+	left:  30px;
+}
+
+
+
+/*
+BoxView and boxes
+*/
+.boxViewContainer {
+	background: #fff;
+}
+.boxViewContainer .box {
+	border: 0;
+	background: #fff;
+	position: absolute;
+	padding: 0;
+	margin: 0;
+}
+
+.boxViewContainer .box .boxContent {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.boxViewContainer div.box.yellow {
+	background: #fc7;
+}
+
+/* Expanded BOX */
+.boxViewContainer div.box.expanded div.boxHeader {
+	position: relative;
+	height: 30px;
+	border-bottom: 1px solid #fff;
+}
+
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.boxTool {
+	display: block;
+}
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.boxTool:hover {
+	cursor: pointer;
+}
+
+/* Icone Header Box*/
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.collapseTool{
+	background: transparent url(images/boxes/box_bar_expanded.png) center left no-repeat;
+	cursor: pointer;
+}
+.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.collapseTool{
+	background: transparent url(images/boxes/box_bar_collapsed.png) center left no-repeat;
+	cursor: pointer;
+}
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.removeTool{
+	background: transparent url(images/boxes/box_bar_close.png) center left no-repeat;
+	cursor: pointer;
+}
+.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.removeTool{
+	background: transparent url(images/boxes/box_bar_close.png) center left no-repeat;
+}
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.collapseTool:hover{
+	background: transparent url(images/boxes/box_bar_expanded_ro.png) center left no-repeat;
+}
+.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.collapseTool:hover{
+	background: transparent url(images/boxes/box_bar_collapsed_ro.png) center left no-repeat;
+}
+.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.removeTool:hover{
+	background: transparent url(images/boxes/box_bar_close_ro.png) center left no-repeat;
+}
+.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.removeTool:hover{
+	background: transparent url(images/boxes/box_bar_close_ro.png) center left no-repeat;
+}
+
+/* Intro */
+.boxViewContainer div.box.intro div.boxHeader, .boxViewContainer div.box.intro.collapsed, .boxViewContainer div.box.collapsed.intro div.boxCollapsedContent {
+	background-color: #635343;
+}
+.boxViewContainer div.box.expanded.intro div.boxContent {
+	padding: 0 20px;
+}
+
+/* Edition */
+.boxViewContainer div.box.edition div.boxHeader, .boxViewContainer div.box.edition.collapsed, .boxViewContainer div.box.collapsed.edition div.boxCollapsedContent {
+	background-color: #635343;
+}
+.boxViewContainer div.box.expanded.edition div.boxContent {
+	padding: 0 20px;
+	background-color: #ededed;
+}
+
+.boxViewContainer div.box.expanded.edition div.boxContent ul.edition {
+	margin-top: 15px;
+	list-style: none;
+	border-bottom: 1px solid #bbb;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+.boxViewContainer div.box.expanded.edition div.boxContent ul.edition:last-child {
+	border-bottom: 0;
+}
+
+.boxViewContainer div.box.expanded.edition div.boxContent ul.edition li {
+	margin-bottom: 8px;
+}
+
+
+/* Index */
+.boxViewContainer div.box.index div.boxHeader, .boxViewContainer div.box.index.collapsed, .boxViewContainer div.box.collapsed.index div.boxCollapsedContent {
+	background-color: #8e3418;
+}
+
+/* Trascription */
+.boxViewContainer div.box.transcription div.boxHeader, .boxViewContainer div.box.transcription.collapsed, .boxViewContainer div.box.collapsed.transcription div.boxCollapsedContent {
+	background-color: #e9bf5d;
+}
+
+/* Anastatica */
+.boxViewContainer div.box.facsimile div.boxHeader, .boxViewContainer div.box.facsimile.collapsed, .boxViewContainer div.box.collapsed.facsimile div.boxCollapsedContent {
+	background-color: #d78134;
+}
+
+/* Immagine */
+.boxViewContainer div.box.imageInfo div.boxHeader, .boxViewContainer div.box.imageInfo.collapsed, .boxViewContainer div.box.collapsed.imageInfo div.boxCollapsedContent {
+	background-color: #c94e23;
+}
+
+/* Quotation box, schede riscritture */
+.boxViewContainer div.box.quotation div.boxHeader, .boxViewContainer div.box.quotation.collapsed, .boxViewContainer div.box.collapsed.quotation div.boxCollapsedContent {
+	background-color: #5c3623;
+}
+
+
+
+
+	.boxViewContainer div.box.expanded div.boxHeader h3.boxHeaderTitle{
+		display: block;
+		font-family: Georgia, "Times New Roman", Times, serif;
+		line-height: 30px;
+		font-weight: normal;
+		color: #fff;
+		padding: 0 0 0 32px;
+		text-transform: uppercase;
+		
+	}
+	.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools {
+		position: absolute;
+		width: 100%;
+		height: 30px;
+		top:0;
+		left:0;
+	}
+	.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.collapseTool{
+		position: absolute;
+		display: block;
+		width: 15px;
+		height: 15px;
+		left: 7px;
+		top: 7px;
+		text-indent: -9999px;
+	}
+	.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.removeTool{
+		position: absolute;
+		display: block;
+		width: 15px;
+		height: 15px;
+		right:7px;
+		top: 7px;
+		text-indent: -9999px;
+	}
+	
+
+/* Loading BOX - Opacit� per box in fase di caricamento */ 
+.boxViewContainer div.box.transcription.expanded.loadingContent div.boxContent, .boxViewContainer div.box.facsimile.expanded.loadingContent div.boxContent, .boxViewContainer div.box.index.expanded.loadingContent div.boxContent { 
+	opacity: 0.5; 
+}
+	
+	
+
+/* Collapsed BOX */
+.boxViewContainer div.box.collapsed {
+	width: 30px;
+}
+
+.boxViewContainer div.box.collapsed div.boxHeader {
+	position: relative;
+	width: 30px;
+	height: 50px;
+	border-bottom: 0;
+}
+
+.boxViewContainer div.box.collapsed div.boxCollapsedContent {
+	/* text-indent: -9999px; */
+}
+
+
+.boxViewContainer div.box.collapsed div.boxCollapsedContent .dragOverlay {
+    width: 30px; 
+    z-index: 10000; 
+    position: absolute; 
+    left:0px;
+}
+
+	.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.collapseTool{
+		position: absolute;
+		display: block;
+		width: 15px;
+		height: 15px;
+		left: 7px;
+		top: 7px;
+		text-indent: -9999px;
+	}
+	.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.removeTool{
+		position: absolute;
+		display: block;
+		width: 15px;
+		height: 15px;
+		left: 7px;
+		top: 30px;
+		text-indent: -9999px;
+	}
+	.boxViewContainer div.box.collapsed div.boxHeader h3.boxHeaderTitle{
+		display: none;
+	}
+
+
+/*
+Widget
+*/
+.boxViewContainer div.box div.boxContent div.widget {
+	background-color: #ededed;
+}
+	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader {
+		position: relative;
+		background-color: #c2c2c2;
+		height: 26px;
+		border-bottom: 1px solid #FFF;
+		/* overflow: hidden; */
+	}
+	
+	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools{
+		position: absolute;
+		width: 100%;
+		height: 26px;
+		top:0;
+		left:0;
+	}
+		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p {
+			float: right;
+			display: block;
+			width: 27px;
+			height: 26px;
+			border-left: 1px solid #9d9d9d;
+		}
+		
+		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse{
+			float: left;
+			border: 0;
+		}
+				
+		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p a {
+			display: block;
+			width: 27px;
+			height: 26px;
+			text-indent: -9999px;
+			background: aqua;
+		}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.expanded {
+				background: transparent url(images/widget/widget_icon_expanded.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.collapsed {
+				background: transparent url(images/widget/widget_icon_collapsed.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.previous a {
+				background: transparent url(images/widget/widget_icon_back.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.next a {
+				background: transparent url(images/widget/widget_icon_forward.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.zoom a {
+				background: transparent url(images/widget/widget_icon_zoom.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.drag a {
+				background: transparent url(images/widget/widget_icon_drag.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.anastatica a {
+				background: transparent url(images/widget/widget_icon_anastatica.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.fenomeni a {
+				background: transparent url(images/widget/widget_icon_fenomeni.gif) top left no-repeat;}
+    		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.trascrizione a {
+    			background: transparent url(images/widget/widget_icon_trascrizione.gif) top left no-repeat;}
+		
+	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader h3 {
+		display: block;
+		line-height: 28px;
+		font-size: 12px;
+		font-weight: bold;
+		color: #555555;
+		font-family: Arial, Helvetica, sans-serif;
+		padding-left: 30px;
+	}
+
+
+	.boxViewContainer div.box div.boxContent div.widget div.widgetContent.collapsed { display: none; }
+	.boxViewContainer div.box div.boxContent div.widget div.widgetContent.expanded { display: block; }
+
+	.boxViewContainer div.box div.boxContent div.widget div.widgetContent {
+		padding: 10px;
+		font-size: 12px;
+		color: #514f4c;
+	}
+	
+	/* Formattazione interna ai WIDGET CONTENT */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent {
+		font-size: 12px;
+		line-height: 20px;
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField {
+        margin-bottom: 8px;
+    }
+    /* SIMONE: aggiunto per far andare a capo tutte e due le span dei fields della scheda immagine */ 
+    .boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_title {
+        display:block;
+    }
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_content.expanded {
+	    display:block;
+    }
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_content.collapsed {
+	    display:none;
+    }
+
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p, .boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent span {
+		line-height: 20px;
+		color: #514f4c;
+	}
+	
+	/* Formattazione testi trascrizioni */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head span,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription a,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span a,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head a,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head span a {
+		font-family: Georgia, Times, Times New Roman, serif;
+		font-size: 14px;
+		/* color: #5a4c39; */
+		color: #343434;
+	}
+	
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword{
+		font-family: Georgia, Times, Times New Roman, serif;
+		font-size: 14px;	
+		color: #8e3121;
+	}
+
+	/* SIMONE 06/01: link quotations_rewriting (riscritture), dentro le trascrizioni. Attivi (cliccabili) se il box e' highlight */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight a.quotation_link {
+		text-decoration: none;
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight a.quotation_link:hover {
+		text-decoration: none;
+		cursor: default;
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight.selected a.quotation_link {
+		text-decoration: none;
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight.selected a.quotation_link:hover {
+		text-decoration: none;
+		background: #f00;
+		background: #feff5c;
+		cursor: pointer;
+	}
+
+	
+	/* SIMONE 20/12: aggiunto dopo l'introduzione di IMT nel frontend del doni */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword.highlight,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword:hover {
+		font-family: Georgia, Times, Times New Roman, serif;
+		font-size: 14px;	
+		color: #cc0000;
+		text-decoration: underline;
+		background: #fc0;
+	}
+	
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title {
+		font-size: 12px;
+		font-family:Arial, Helvetica, sans-serif;
+		line-height: 20px;
+		color: #808080;
+		padding-left: 15px;
+	}
+	
+	/* Icona expand collapse dei titoli INTERNI ai widget */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title.expanded {
+		background-image: url(images/widget/widget_inner_icon_expanded.gif);
+		background-position: 0px 3px;
+		background-repeat: no-repeat;
+	}
+	
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title.collapsed {
+		background-image: url(images/widget/widget_inner_icon_collapsed.gif);
+		background-position: 0px 3px;
+		background-repeat: no-repeat;
+	}
+	
+	/* Formattazione lista */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent ul {
+		list-style: circle;
+		list-style-image: url(images/list/list_image.gif);
+		list-style-position: inside;
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent ul li {
+	}
+	
+	/* Formattazione bibliografia */
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.image-bibliography {
+	}
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.image-bibliography span.bibl_title{
+		font-style: italic;
+	}
+	
+/* Widget */
+div.box.collapsed div.boxCollapsedHeader, 
+div.box.collapsed div.boxCollapsedContent,
+div.box.expanded div.boxContent,
+div.box.expanded span.boxHeaderTitle {
+	display: block;
+}
+
+div.box.expanded div.boxCollapsedHeader, 
+div.box.expanded div.boxCollapsedContent,
+div.box.collapsed div.boxContent,
+div.box.collapsed h3.boxHeaderTitle {
+	display: none;
+}
+
+
+
+/* Risultati di ricerca - Index box */
+div.box..indexx div.boxContent {
+}
+	div.box.index div.boxContent ul {
+		list-style-type: none;
+		margin: 0 0 0 0;
+	}
+	div.box.index div.boxContent ul li{
+		/* border-bottom: 1px solid #fff; */
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node {
+		position: relative;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node h3{
+		background-color: #c2c2c2;
+		height: 28px;
+		display: block;
+		line-height: 28px;
+		font-size: 12px;
+		font-weight: bold;
+		color: #555555;
+		/* font-family: Arial, Verdana, Helvetica, sans-serif; */
+		font-family:Arial, Helvetica, sans-serif;
+		border-bottom: 1px solid #fff;
+		padding-left: 35px;
+		z-index: 1000;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node h3 a{
+		font-size: 12px;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools {
+		position: absolute;
+		width: 100%;
+		height: 28px;
+		top:0;
+		left:0;
+		z-index: 0;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.vista{
+		display: none;
+	}
+	
+	/* Swithcer tra vista Tree/List */
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools.list p.vista, div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools.tree p.vista {
+		display: block;
+		text-indent: -9999px;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools.list p.vista a{
+		display: block;
+		width: 28px;
+		height: 28px;
+		text-indent: -9999px;
+		background: transparent url(images/widget/widget_icon_tree_view.gif) center center no-repeat;
+	}
+
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools.tree p.vista a{
+		display: block;
+		width: 28px;
+		height: 28px;
+		text-indent: -9999px;
+		background: transparent url(images/widget/widget_icon_list_view.gif) center center no-repeat;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p {
+		float: right;
+		display: block;
+		width: 27px;
+		height: 28px;
+		z-index: 0;
+	}
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse{
+		float: left;
+		border: 0;
+	}
+	
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse {
+		position: absolute;
+		left: 15px; top: 6px;
+		width: 15px;
+		height: 15px;
+	}
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse a{
+		display: block;
+		width: 15px;
+		height: 15px;
+		text-indent: -9999px;
+		z-index: 0;
+	}
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+		background: transparent url(images/boxes/search_result_collapsed_1.gif) center left no-repeat;
+	}
+	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+		background: transparent url(images/boxes/search_result_expanded_1.gif) center left no-repeat;
+	}
+	
+		/* Secondo livello */
+		div.box.index div.boxContent ul li ul li div.box_index_node h3{
+			background-color: #d3d3d3;
+			font-size: 12px;
+			font-weight: normal;
+			color: #555555;
+			padding-left: 45px;
+		}
+		div.box.index div.boxContent ul li ul li div.box_index_node h3 a { 
+			font-size: 12px;
+		}
+		
+		div.box.index div.boxContent ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse {
+			left: 25px;
+		}
+		div.box.index div.boxContent ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+			background: transparent url(images/boxes/search_result_collapsed_2.gif) center left no-repeat;
+		}
+		div.box.index div.boxContent ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+			background: transparent url(images/boxes/search_result_expanded_2.gif) center left no-repeat;
+		}	
+				
+				
+			
+			
+			/* Terzo livello */
+			div.box.index div.boxContent ul li ul li ul li div.box_index_node h3{
+				background-color: #e3e3e3;
+				font-size: 11px;
+				font-weight: normal;
+				color: #555555;
+				padding-left: 55px;
+			}
+			div.box.index div.boxContent ul li ul li ul li div.box_index_node h3 a {
+				font-size: 11px;
+			}
+			
+			div.box.index div.boxContent ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse {
+				left: 35px;
+			}
+			div.box.index div.boxContent ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+				background: transparent url(images/boxes/search_result_collapsed_3.gif) center left no-repeat;
+			}
+			div.box.index div.boxContent ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+				background: transparent url(images/boxes/search_result_expanded_3.gif) center left no-repeat;
+			}
+			
+		
+				/* Quarto livello */
+				div.box.index div.boxContent ul li ul li ul li ul li div.box_index_node h3{ padding-left: 65px;}
+				div.box.index div.boxContent ul li ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse { left: 45px;}
+				/* Quinto livello */
+				div.box.index div.boxContent ul li ul li ul li ul li ul li div.box_index_node h3{ padding-left: 75px;}
+				div.box.index div.boxContent ul li ul li ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse { left: 55px;}
+				/* Sesto livello */
+				div.box.index div.boxContent ul li ul li ul li ul li ul li ul li div.box_index_node h3{ padding-left: 85px;}
+				div.box.index div.boxContent ul li ul li ul li ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse { left: 65px;}
+				/* Settimo livello */
+				div.box.index div.boxContent ul li ul li ul li ul li ul li ul li ul li div.box_index_node h3{ padding-left: 95px;}
+				div.box.index div.boxContent ul li ul li ul li ul li ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse { left: 75px;}
+	
+	
+	
+	/* Foglie ! */
+	div.box div.boxContent div.box_index_leaf {
+		padding: 10px 15px;
+		border-bottom: 1px solid #d3d3d3;
+	}
+		div.box div.boxContent div.box_index_leaf h4 {
+			font-size: 14px;
+			font-weight: bold;
+			font-family:Arial, Helvetica, sans-serif;
+			margin-bottom: 3px;
+			color: #333333;
+		}
+		div.box div.boxContent div.box_index_leaf h4 a {
+			text-decoration: none;
+			color: #8e3121;
+		}
+		div.box div.boxContent div.box_index_leaf h4 a:hover {
+			text-decoration: underline;
+		}
+		div.box div.boxContent div.box_index_leaf p {
+			font-size: 11px;
+		}
+		
+		/* SIMONE 03/01: thumbnails negli indici .... sistemare! */
+		div.box div.boxContent div.indexThumb {
+			padding: 5px;
+			float: left;
+			position: relative;
+			width: 70px;
+			text-align: center;
+			clear:both;
+		}
+		div.box div.boxContent div.indexThumb img {
+			height: 40px;
+		}
+		div.box div.boxContent ul li div.indexThumb { padding-left: 15px; }
+		div.box div.boxContent ul li  ul li div.indexThumb { padding-left: 25px; }
+		div.box div.boxContent ul li  ul li  ul li div.indexThumb { padding-left: 35px; }
+		div.box div.boxContent ul li  ul li  ul li  ul li div.indexThumb { padding-left: 45px; }
+		div.box div.boxContent ul li  ul li  ul li  ul li  ul li div.indexThumb { padding-left: 55px; }
+		
+		
+	/* Indentazione in base al livello */
+	div.box div.boxContent ul li div.box_index_leaf { padding-left: 15px; }
+	div.box div.boxContent ul li  ul li div.box_index_leaf { padding-left: 25px; }
+	div.box div.boxContent ul li  ul li  ul li div.box_index_leaf { padding-left: 35px; }
+	div.box div.boxContent ul li  ul li  ul li  ul li div.box_index_leaf { padding-left: 45px; }
+	div.box div.boxContent ul li  ul li  ul li  ul li  ul li div.box_index_leaf { padding-left: 55px; }
+
+
+/* Questo sta dentro a div.box div.boxContent div.widgetHeader */
+div.fenomeni.hidden { display:none; }
+div.fenomeni { z-index: 10; background: #c2c2c2; padding: 6px; border: 1px solid #9d9d9d}
+div.fenomeni ul {
+	list-style: none;
+}
+div.fenomeni ul li {
+	font-size: 10px;
+	margin-bottom: 10px;
+}
+div.fenomeni ul li a { font-size: 10px; }
+
+div.fenomeni a.selected { background: #ffff99;}
+
+/*  Questo e' nella div.box div.boxContent div.widgetContent. Viene aggiunta la classe
+    selected alle span.highlight
+ */
+span.highlight.selected { background: #ffff99; }
+
+
+/*
+Homepage o Introduzione
+*/
+div.intro {
+}
+
+div.intro h4 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	font-size: 20px;
+	margin-bottom: 10px;
+	margin-top: 15px;
+	color: #635343;
+}
+
+div.intro h5 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	font-style: italic;
+	font-size: 18px;
+	margin-bottom: 10px;
+	color: #555;
+}
+
+div.intro h6.top_subtitile {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-weight: normal;
+	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color: #635343;
+	line-height: 20px;
+}
+
+div.intro h6 {
+}
+
+div.intro p img {
+	float: left;
+	/*
+	padding: 4px;
+	background-color: #eee;
+	border: 1px solid #bbb;
+	*/
+	margin: 0 15px 15px 0;
+}
+
+div.intro p {
+	color: #333;
+	font-size: 14px;
+	line-height: 22px;
+}
+
+div.intro p.small {
+	font-size: 11px;
+}
+
+div.intro p b, div.intro p strong, div.intro p em, div.intro p i{
+	font-size: 14px;
+}
+
+div.intro p {
+	color: #333;
+	font-size: 14px;
+	line-height: 22px;
+}
+
+div.intro p a {
+}
+
+div.intro p a:hover {
+}
+
+div.intro ul.home_list {
+	list-style: none;
+	list-style-image: url(images/list_image_1.gif);
+	list-style-position: inside;
+	margin: 10px;
+	line-height: 30px;
+}
+
+div.intro ul.home_list li {
+	font-size: 14px;
+	line-height: 20px;
+	color: #333;
+	line-height: 24px;
+}
+
+div.intro ul.home_list li span{
+	font-size: 14px;
+	font-style: italic;
+	color: #777;
+}
+
+div.intro ul.small, div.intro ul.small li, div.intro ul.small li span {
+	font-size: 11px;
+}

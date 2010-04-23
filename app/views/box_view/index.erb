@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= page_title %> </title>
+
+
+    <%= stylesheet_link_tag 'boxView/frontend.css' %>
+    <%= stylesheet_link_tag 'boxView/style.css' %>
+    <%= stylesheet_link_tag 'boxView/ez.css' %>
+    <%= stylesheet_link_tag 'boxView/jquery-ui-1.7.2.custom.css' %>
+
+
+    <%= javascript_include_tag 'jquery-1.4.1.min' %>
+    <%= javascript_include_tag 'jquery-ui-1.7.1.custom.min' %>
+    <%= javascript_include_tag 'boxView/eztip.js' %>
+    <%= javascript_include_tag 'boxView/jquery.anchorMan.js' %>
+    <%= javascript_include_tag 'boxView/jquery.boxview.js' %>
+    <%= javascript_include_tag 'boxView/frontend.js' %>
+    <%= javascript_include_tag 'boxView/errors.js' %>
+    <%= javascript_include_tag 'boxView/menu.js' %>
+    <%= javascript_include_tag 'boxView/utilities.js' %>
+    <%= javascript_include_tag 'boxView/prefs.js' %>
+    <%= javascript_include_tag 'boxView/jquery.base64.js' %>
+  </head>
+  <body>
+
+    <div id="prefDialog" title="Preferenze">
+      <form><fieldset>
+          <label for="prefsAnimations">Animazioni</label>
+          <input type="checkbox" id="prefsAnimations" class="text ui-widget-content ui-corner-all" />
+          <br />
+
+          <label for="prefsUseCookie">Salva le preferenze con un cookie</label>
+          <input type="checkbox" id="prefsUseCookie" class="text ui-widget-content ui-corner-all" />
+          <br />
+
+        </fieldset></form>
+    </div>
+
+    <div id='errorDialog'></div>
+
+    <div id='loadingDialog'>
+      <img src="css/images/loader/ajax_loader.gif" alt="Caricamento in corso" />
+      <p>Caricamento in corso</p>
+    </div>
+
+    <div id="pageExt">
+      <div id="pageHeader">
+        <h1><%= @title %></h1>
+        <p><%= @small_title %> </p>
+        <div id="header_preferences_wrapper">
+          <div id="header_preferences">
+            <ul>
+              <li><a class="eztip static_resource" href="/boxView/dispatch?method=getIntro" id="introButton" title="Introduzione">Introduzione</a></li>
+              <!-- <li><a class="eztip" href="#" id="helpButton" title="Help">Help</a></li> -->
+              <li><a class="eztip inactive" href="#" id="undoButton" title="Undo!">Undo!</a></li>
+              <li class="last"><a class="eztip" href="#" id="prefButton" title="Modifica le tue preferenze">Preferenze</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="menu_container"></div>
+      <div id="pageContent"></div>
+    </div>
+
+  </body>
+</html>

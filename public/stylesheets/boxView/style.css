@@ -1,0 +1,85 @@
+/*
+Css addetto allo stile dell'interfaccia:
+colori e font
+*/
+
+/*
+Tags definitions
+*/
+html, body {
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+body {
+	background: #FFF url(images/body_bg.gif) top left repeat-y;
+}
+
+a {
+	color: #8e3121;
+}
+
+/*
+Page Sections
+*/
+#pageContent {
+	background: #ccc;
+}
+
+
+/*
+Header
+*/
+#pageHeader {
+	background: #30261d url(images/header/Header_bg.gif) top left repeat-x;
+}
+	#pageHeader h1{
+		background: #000000 url(images/header/Header_h1.gif) top left no-repeat;
+	}
+
+/*
+Menu
+*/
+	div#menu_container h3 {
+		background: #1f1f1f url(images/menu/menu_container_h3_bg.gif) top left repeat-x;
+		color: #FFFFFF;
+		font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	}
+
+	/* Primo livello */
+	div#menu_container ul li {
+		background: #e4e4e4;
+		border-bottom: 1px solid #cdcdcd;
+		border-right: 1px solid #cdcdcd;
+	}
+		div#menu_container ul li a{
+			color: #333333;
+		}
+		
+	/* Secondo livello */
+	div#menu_container ul li ul li {
+		border-top: 1px solid #cdcdcd;
+	}
+		div#menu_container ul li ul li a{
+			color: #666666;
+		}
+		
+	div#menu_container ul li a.menu.collapsed{
+		background: transparent url(images/menu/sublevel_collapsed.gif) center left no-repeat;
+	}
+	div#menu_container ul li a.menu.expanded {
+		background: transparent url(images/menu/sublevel_expanded.gif) center left no-repeat;
+	}
+	
+	div#menu_container ul li div.context input{
+		color: #333333;
+	}
+	div#menu_container ul li div.context label{
+		color: #333333;
+	}
+	div#menu_container ul li a#menu_update {
+		background: transparent url(images/menu/refresh_icon.gif) center left no-repeat;
+	}
+	div#menu_container ul li a#menu_update:hover {
+		background: transparent url(images/menu/refresh_icon_animated.gif) center left no-repeat;
+	}
+	
