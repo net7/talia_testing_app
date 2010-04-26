@@ -9,13 +9,12 @@ module BoxViewHelper
   end
 
   private
- 
   def semantic_submenu_for (elements)
     result = ''
     return '' if elements.nil?
     elements.each do |k,v|
       if v.empty?
-        result << "<li class='menu_subitem'><a class='indexLink' id='#{k.to_name_s('+')}' href='/boxView?method=filter&resource=#{Base64.encode64(k.to_name_s('+'))}&filter=#{k.to_name_s('+')}'>#{k.to_name_s('+')}</a></li>"
+        result << "<li class='menu_subitem'><a class='indexLink' id='#{k.to_name_s('+')}' href='/boxView?method=filter&resource=#{Base64.encode64(k.to_name_s('+'))}&type=#{k.to_name_s('+')}'>#{k.to_name_s('+')}</a></li>"
       else
         result << "<li class='menu_item'><a class='menu collapsed' href='#'>#{k.to_name_s('+')}</a>"
         result << "<ul style='display: none;'>"

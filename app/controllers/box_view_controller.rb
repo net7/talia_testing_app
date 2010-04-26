@@ -56,10 +56,12 @@ class BoxViewController < ApplicationController
 
   # Display a list of items, of the given RDF type
   def render_filter
-    @elements = TaliaCore::ActiveSource.find(:all, :find_through => [N::RDF.type, N::URI.make_uri(params[:filter], '+')])
+
+    filter = params[:type]
+    @elements = TaliaCore::ActiveSource.find(:all, :find_through => [N::RDF.type, N::URI.make_uri(filter, '+')])
 
     html = render_to_string :item_list
-    data = {'box' => (params[:filter]).split('+').last.pluralize}
+    data = {'box' => filter.split('+').last.pluralize}
     render_json(0, html, data)
   end
 
