@@ -32,7 +32,7 @@ function getParametersFromUrl(url) {
     // No resource for these methods, but resource will be
     // used as res_id, so just fake one
     switch (data_values['method']) {
-/*        case "getTranscription" :
+        /*        case "getTranscription" :
         case "getFacsimile" :
         case "getImageInfo" :
         case "getQuotation" :
@@ -40,7 +40,7 @@ function getParametersFromUrl(url) {
             break;*/
         case 'getIntro':
         case 'getEdition':
-//        default:
+            //        default:
             data_values['resource'] = $.base64Encode(data_values['method']);
             break;
     //default:
@@ -86,6 +86,16 @@ function getBoxInfoFromMethod(method) {
         case "getHelp" :
             return {
                 boxType: "help",
+                vertPrefix: ""
+            };
+        case "filter":
+            return {
+                boxType: "index",
+                vertPrefix: ""
+            };
+        case "getSource":
+            return {
+                boxType: "quotation",
                 vertPrefix: ""
             };
         default :

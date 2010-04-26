@@ -66,8 +66,10 @@ class BoxViewController < ApplicationController
   # A source has been requested.  
   # We deal with it here, and display an appropriate box
   def render_source
+    source_uri = Base64.decode64(params[:resource])
+    @source = TaliaCore::ActiveSource.find(source_uri)
     html = render_to_string :source
-    data = {'box' => TaliaCore::Source.find(Base64.decode64(params[:resource])).uri.local_name.to_s.gsub('_', ' ')}
+    data = {'box' => TaliaCore::Source.find(source_uri).uri.local_name.to_s.gsub('_', ' ')}
 
     render_json(0, html, data)
   end
