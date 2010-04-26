@@ -27,7 +27,7 @@ class BoxViewController < ApplicationController
   def dispatch
     error_code = NO_ERRORS
 
-    case params['method']
+    case params[:method]
     when 'getIntro'
       html = render_to_string :intro
       data = {'box' => "welcome"}
@@ -39,40 +39,43 @@ class BoxViewController < ApplicationController
       render_filter and return
     else
       error_code = ERROR_UNKNOWN_METHOD
-      html = "Unable to fulfil the request! (Unknown method: #{params['method']}"
+      html = "Unable to fulfil the request! (Unknown method: #{params[:method]}"
     end
 
     render_json(error_code, html, data)
   end
 
-  # You get redirected here if you've asked for getMenu in the dispatcher action
+  # Display the left side menu
   def render_menu
     @elements = N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)} 
 
     html = render_to_string :menu
     data = ''
-
     render_json(0, html, data)
   end
 
-  # display a list of items, of the given RDF type
+  # Display a list of items, of the given RDF type
   def render_filter
-    @elements = TaliaCore::ActiveSource.find(:all, :find_through => [N::RDF.type, N::URI.make_uri(params[:type], '+')])
+    @elements = TaliaCore::ActiveSource.find(:all, :find_through => [N::RDF.type, N::URI.make_uri(params[:filter], '+')])
 
     html = render_to_string :item_list
-    data = {'box' => (params[:type]).split('+').last.pluralize}
+    data = {'box' => (params[:filter]).split('+').last.pluralize}
     render_json(0, html, data)
-
   end
 
+  # A source has been requested.  
+  # We deal with it here, and display an appropriate box
   def render_source
     html = render_to_string :source
-    data = ''
+    data = {'box' => TaliaCore::Source.find(Base64.decode64(params[:resource])).uri.local_name.to_s.gsub('_', ' ')}
+
     render_json(0, html, data)
-    
   end
 
+
   private
+
+  # Serves the data in the format required by the javascript driving the User Interface
   def render_json(error, html, data)
     render :json => {'error' => error,
       'html' => html,
