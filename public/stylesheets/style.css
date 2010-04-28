@@ -1,19 +1,18 @@
-/* @override http://0.0.0.0:5000/stylesheets/main.css?1267787717 */
-
 /* tables */
 table.tablesorter {
-	font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
-	background-color: #CDCDCD;
 	margin:10px 0pt 15px;
-	font-size: 9pt;
+	font-size: 12px;
 	width: 50%;
 	text-align: left;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	background-color: #e6f4fd;
-	border: 1px solid #FFF;
-	font-size: 10pt;
+	background-color: #a19284;
+	height: 25px;
+	line-height: 25px;
+	/* border: 1px solid #FFF; */
+	font-size: 14px;
 	padding: 4px;
+	color: #9bd7ff;
 }
 table.tablesorter thead tr .header {
 	background-image: url(/images/tablesorter/bg.gif);
@@ -28,7 +27,7 @@ table.tablesorter tbody td {
 	vertical-align: top;
 }
 table.tablesorter tbody tr.odd td {
-	background-color:#EEE;
+	background-color:#e7e0d8;
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(/images/tablesorter/asc.gif);
@@ -37,5 +36,5 @@ table.tablesorter thead tr .headerSortDown {
 	background-image: url(/images/tablesorter/desc.gif);
 }
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
-background-color: #8dbdd8;
+	background-color: #49423c;
 }

@@ -17,21 +17,21 @@ body {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
 	font-size: 0.8125em;
-	background: #FFF url(/images/core/left_edge.gif) top left repeat-y;
+	background-color: #eeebe5;
 }
 
 /* DEFINIZIONE TAG */
 
 a {
-	color: #355a8e;
+	color: #3d4e86;
 	text-decoration: none;
 	outline: none;
 }
 
 a:hover {
-	color: #355a8e;
+	color: #3d4e86;
 	text-decoration: underline;
 	background-color: transparent;
 }
@@ -105,38 +105,37 @@ span.tag_selected {
 
 /* ***************** ************** ************** */
 
-#title_bar h1 {
-	/*padding: 13px 0 0 13px;*/
-}
-
-#title_bar h1 a {
-	font-size: 1.7em;
-	color: #FFF;
-	display: block;
-	width: 535px;
-	height: 17px;
-	/*background: transparent url(/images/core/logo.gif) top left no-repeat;*/
-	padding-left: 28px;
-	padding-top: 12px;
-}
-
-#title_bar h2.header_subtitle {
-	
-	width: 535px;
-	margin-left: 28px;
-	padding-top: 0px;
-	margin-top: 16px;
-	color: #cccccc;
-}
-
-div#title_bar {
-	height: 80px;
+#title_bar {
+	height: 128px;
 	margin: 0;
 	padding: 0;
 	border: 0;
 	width: 100%;
-	/*background: #666 url(/images/core/lucca.jpg) no-repeat 0px 0;*/
-	background: #567dbb;
+	background: #493e35 url(img/title_bar_bg.gif) top left repeat-x;
+}
+
+#title_bar h1 {
+	padding: 24px 0 0 28px;
+}
+
+#title_bar h1 a {
+	width: 351px;
+	height: 28px;
+	display: block;
+	text-indent: -9999px;
+	background: url(img/title_bar_titolo_1.gif) top left no-repeat;
+	background-position: 0 0;
+}
+
+#title_bar h1 a:hover {
+	background-position: 0 -28px;
+}
+
+#title_bar h2.header_subtitle {
+	margin-left: 28px;
+	font-size: 44px;
+	font-weight: normal;
+	color: #9bd7ff;
 }
 
 /* ***************** ************** ************** */
@@ -147,7 +146,6 @@ div#title_bar {
 
 #contents {
 	padding: 25px;
-	background: transparent url(/images/core/contents_top_left.gif) top left repeat-x;
 	margin-bottom: 0px;
 }
 
@@ -155,27 +153,42 @@ div#title_bar {
 /* ***************** FOOTER ************** */
 /* ***************** ************** ************** */
 .closebar {
-	background: transparent url(/images/core/contents_bottom_left.gif) top left repeat-x;
+	display: none;
+	/* background: transparent url(/images/core/contents_bottom_left.gif) top left repeat-x; */
 }
 .clear {
 	clear: both;
 }
 #footer {
-	/*margin-top: 18px;*/
-	/*border-top: 5px solid #323232;*/
-	/*background: url(/images/demo/footerbg.gif);*/
-	background: transparent url(/images/core/contents_top_left.gif) repeat-x scroll left top;
-	color: #808080;
-	padding: 25px 0 0;
+	background: #ddd0c4 url(img/footer_bg.gif) top left repeat-x;
+	color: #605040;
+	padding: 40px 0 25px 0;
 	/*border-top-width:6px ;*/
-	font-family: Avenir, "Lucida Grande", Verdana, "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
-	font-size: 0.9em;
+	clear: both;
+	float: left;
+	font-size: 14px;
+	width: 100%;
 }
-.footwrap { 
-	margin-left: 7px; width: 90%; 
-	/*background: #666 url(/images/core/header_bg.gif);*/
-	
+#footer p {
+	color: #605040;
 }
+#footer .footer_left {
+	width: 46%;
+	float: left;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+#footer .footer_right {
+	width: 46%;
+	float: right;
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+#footer p small{
+	font-size: 11px;
+}
+
 #footer ul {
 	float: left;
 	width: 30%;
@@ -190,6 +203,22 @@ div#title_bar {
 	
 }
 
+.muruca_sticker {
+	display: block;
+	text-indent: -9999px;
+	width: 81px;
+	height: 46px;
+	background: url(img/footer_logo_muruca.jpg) top left no-repeat;
+	margin-bottom: 10px;
+}
+
+.talia_sticker {
+	width: 110px;
+	height: 46px;
+	display: block;
+	text-indent: -9999px;
+	background: url(img/footer_logo_talia.jpg) top left no-repeat;
+}
 
 #footer #col {
 	float: right;
@@ -202,7 +231,6 @@ div#title_bar {
 }
 
 #footer #stickers {
-	float: right;
 }
 
 
@@ -366,26 +394,31 @@ div#tl {
 .pagination a {
 	padding: 2px 5px 2px 5px;
 	margin: 2px;
-	border: 1px solid #515151;
+	/* border: 1px solid #515151; */
+	background: #9bd7ff;
+	font-size: 12px;
+	font-weight: bold;
 	text-decoration: none;
-	color: #000;
+	color: #605040;
 }
 
 .pagination a:hover, .pagination a:active {
-	border: 1px solid #515151;
+	/* border: 1px solid #515151; */
 	color: #000;
 }
 
 .pagination span.current {
 	padding: 2px 5px 2px 5px;
 	margin: 2px;
-	border: 1px solid #515151;
+	border: 2px solid #605040;
+	font-size: 12px;
 	font-weight: bold;
-	background-color: #515151;
+	background-color: #605040;
 	color: #FFF;
 }
 
 .pagination span.disabled {
+	display: none;
 	padding: 2px 5px 2px 5px;
 	margin: 2px;
 	border: 1px solid #eee;
