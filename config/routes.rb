@@ -31,9 +31,20 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'sources/:action/:id', :controller => 'sources'
   map.resources :sources, :requirements => { :id => /.+/  }
 
+  map.connect 'boxView/', :controller => 'boxView', :action => 'index'
+  map.connect 'boxView/dispatch', :controller => 'boxView', :action => 'dispatch'
+ 
+  map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
+  map.resources :requirements => { :id => /.+/}
+
+ 
+
   # Default semantic dispatch
   map.connect ':dispatch_uri.:format', :controller => 'sources', :action => 'dispatch',
     :requirements => { :dispatch_uri => /[^\.]+/ }
+
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
 

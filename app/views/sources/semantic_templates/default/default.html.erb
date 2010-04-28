@@ -54,7 +54,6 @@ $(document).ready(function()
 <% record_options = data_record_options(record) %>
 <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
 <%= link_to("<img src=\"#{image_url}\" alt=\"source image\"/>", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last )%>
-	<img src="<%= image_url %>" alt="source image"/>
 <% end%>
 <% end%>
 </div>

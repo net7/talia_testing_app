@@ -26,19 +26,29 @@ module SourcesHelper
     (source[N::DCNS.title].first || source[N::RDF.label].first || N::URI.new(source.uri).local_name.titleize)
   end
 
+  # Creates a link to an external resources (warns that you are leaving the site)
+  def external_link_to(element, predicate)
+    # We check if this is in the list of defined links to deal with in different ways
+    
+
+    # this is just an external link
+    link_to("#{element.uri} (external link)", element.uri.to_s)
+  end
 
   # If the element is a resource or an uri-like element, create a link to that element (if it's just a string, it
   # is just passed through). 
   #
   # If the element is in the "local" namespace, the helper will automatically create a correct URI, even if the
   # current app doesn't run on the "local" domain. Otherwise it will use the URI itself for the link URI.
-  def semantic_target(element)
+  def semantic_target(element, predicate)
     if(element.respond_to?(:uri))
       uri = element.to_uri
       if(uri.local?)
         link_to(uri.to_name_s, :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
+      elsif(predicate == N::RDF.type.to_s)
+        link_to(uri.to_name_s, :controller => 'sources', :params => {:filter => uri.to_name_s('+')})
       else
-        link_to(uri.to_name_s, uri.to_s)
+        external_link_to(element, predicate)
       end
     else
       element
@@ -48,7 +58,7 @@ module SourcesHelper
   
   
   def type_images(types)
-    @type_map ||= { 
+    @type_map ||= {
       N::TALIA.Source => 'source',
       N::FOAF.Group => 'group',
       N::LUCCADOM.epoch => 'period',
@@ -74,7 +84,7 @@ module SourcesHelper
   end
   
   def type_images_medium(types)
-    @type_map ||= { 
+    @type_map ||= {
       N::TALIA.Source => 'source',
       N::FOAF.Group => 'group',
       N::LUCCADOM.epoch => 'period',

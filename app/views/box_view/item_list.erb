@@ -1,0 +1,19 @@
+
+  <div class="box_index_node">
+<ul>
+<% @elements.each do |e| %>
+      <li>
+<!--        <div class="box_index_node">-->
+          <div class="box_index_leaf">
+          <h3>
+            <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64(e.to_s) %>&type=source"><%=  e.uri.local_name.to_s.gsub('_', ' ') %> </a>
+          </h3>
+        </div>
+      </li>
+    <% end %>
+</ul>
+  </div>
+
+    <!--
+<ul><li><div class="box_index_node"><h3>A</h3><div class="boxIndexNodeTools"><p class="collapse"><a title="Collassa/espandi questo nodo" class="list collapsed"
+-->

@@ -1,2 +1,6 @@
 nbproject
 log
+data
+/sesame*
+vendor
+talia_demo_data
