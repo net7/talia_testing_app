@@ -1,2 +1,34 @@
 <h3>Classes</h3>
-<%= semantic_menu_for(@elements) %>
+<%#= semantic_menu_for(@elements) %>
+
+
+<ul>
+  <li class='menu_item'>
+    <a class='menu collapsed' href='#'>Santuaries</a>
+    <ul style='display: none;'>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Mosque', :label => 'Mosques'}) %>
+    </ul>
+  </li>
+
+  <li class='menu_item'>
+    <a class='menu collapsed' href='#'>Places</a>
+    <ul style='display: none;'>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+City', :label => 'Cities'}) %>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Historical_place', :label => 'Historical Places'}) %>
+    </ul>
+  </li>
+
+  <li class='menu_item'>
+    <a class='menu collapsed' href='#'>Persons</a>
+    <ul style='display: none;'>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Artist', :label => 'Artists'}) %>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Caliph', :label => 'Caliphs'}) %>
+    </ul>
+  </li>
+
+
+  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Person', :label => 'All Person'}) %>
+  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Event', :label => 'Events'}) %>
+  <%= render(:partial => 'menu_entry', :locals => {:type => 'foaf+Organization', :label => 'Organizations'}) %>
+
+</ul>

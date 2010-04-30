@@ -19,6 +19,13 @@ class SourcesController < ApplicationController
     else
       @sources = TaliaCore::ActiveSource.find(:all, conditions)
     end
+
+#    qry = ActiveRDF::Query.new.select(:s)
+#    if(filter = params[:filter])
+#      qry.where(:s, N::RDF.type, N::URI.make_uri(filter, '+')).execute
+#    end
+#    @sources = qry.execute
+
     @conditions = conditions
   end
 

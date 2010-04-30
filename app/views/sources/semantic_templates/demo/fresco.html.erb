@@ -1,0 +1,26 @@
+<%= render(:partial => 'properties_wrapper') %>
+
+<h3 class="toggle">Data</h3>
+<div>
+  <% unless @source.demo.inspired_by.first.nil? %>
+
+    Inspired by: <% @source.demo.inspired_by.each do |inspiration| %>
+      <%= link_to(title_for(TaliaCore::ActiveSource.find(inspiration.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => inspiration.uri.local_name}) %> <br/>
+      <% end %>
+    <%  end %>
+    Authors: <%  @source.inverse[N::DEMO.author_of].each do |author| %>
+      <%=  link_to(title_for(TaliaCore::ActiveSource.find(author.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => author.uri.local_name}) %><br/>
+    <% end %>
+    <% unless @source.inverse[N::DEMO.depicted_in].first.nil? %>
+
+      Depicts: <% @source.inverse[N::DEMO.depicted_in].each do |depiction|%>
+        <%= link_to(title_for(TaliaCore::ActiveSource.find(depiction.uri.to_s)),
+          { :controller => 'sources',
+            :action => 'dispatch',
+            :dispatch_uri => depiction.uri.local_name}) %><br/>
+      <% end %>
+    <% end %>
+
+  </div>
+  <br/>
+  <%= render(:partial => 'source_data') %>

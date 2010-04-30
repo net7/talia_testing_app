@@ -7,7 +7,7 @@
     <% elsif record.is_a?(TaliaCore::DataTypes::ImageData) %>
       <% record_options = data_record_options(record) %>
       <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-      <%= link_to("<img src=\"#{image_url}\" alt=\"\"/>", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
+      <%= link_to("<img src=\"#{image_url}\" alt=\"\" class=\"resizeme\" />", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last ) %>
     <% end %>
   <% end %>
 
@@ -21,4 +21,15 @@
 	<% end %>
 <% end %>
 
+</div>
+<div>
+    <% for record in @source.data_records %>
+      <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
+        <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
+        <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
+          <h2>This element has <%= ncount %> annotations</h2>
+        <% end %>
+        <%= thctag(element_uri, record.content_string) %>
+      <% end %>
+    <% end %>
 </div>

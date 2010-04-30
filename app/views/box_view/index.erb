@@ -24,6 +24,8 @@
     <%= javascript_include_tag 'boxView/utilities.js' %>
     <%= javascript_include_tag 'boxView/prefs.js' %>
     <%= javascript_include_tag 'boxView/jquery.base64.js' %>
+
+    <%= render :partial => 'shared/swicky_ui_head' %>
   </head>
   <body>
 
@@ -43,9 +45,9 @@
     <div id='errorDialog'></div>
 
     <div id='loadingDialog'>
-<!--
-<img src="css/images/loader/ajax_loader.gif" alt="Caricamento in corso" />
--->
+      <!--
+      <img src="css/images/loader/ajax_loader.gif" alt="Caricamento in corso" />
+      -->
       <p>Loading...</p>
     </div>
 

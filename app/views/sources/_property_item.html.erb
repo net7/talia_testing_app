@@ -6,7 +6,9 @@
         <% if defined? uri %>
           <%  predicate = uri || nil %>
         <% end %>
-        <%= semantic_target(value, predicate)  %><br/>
+        <% unless (value == N::TALIA.Source) || (value == N::TALIA.ActiveSource) %>
+          <%= semantic_target(value, predicate)  %><br/>
+        <% end %>
       <% end %>
     </span>
     <% if defined? uri %>

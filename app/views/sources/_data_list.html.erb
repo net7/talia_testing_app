@@ -7,7 +7,13 @@
 	</tr> 
 	</thead>
 	<tbody>
-   <% for record in @source.data_records %>
+
+    <% if (!records.nil? rescue false)
+       data_records = records
+    else 
+      data_records = @source.data_records
+    end %>
+   <% for record in data_records %>
      <tr>
          <% record_options = data_record_options(record) %>
          <td><span class="predicate">

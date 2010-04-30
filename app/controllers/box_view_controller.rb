@@ -17,7 +17,7 @@ class BoxViewController < ApplicationController
   # GET /boxView/
   def index
     @title = "boxed navigation"
-    @small_title = "sottotitolo"
+    @small_title = "Boxed navigation Demo"
   end
 
   # GET /boxView/dispatch?method=XX
@@ -56,9 +56,11 @@ class BoxViewController < ApplicationController
 
   # Display a list of items, of the given RDF type
   def render_filter
-
     filter = params[:type]
-    @elements = TaliaCore::ActiveSource.find(:all, :find_through => [N::RDF.type, N::URI.make_uri(filter, '+')])
+
+    qry = ActiveRDF::Query.new.select(:t)
+    qry.where(:t, N::RDF.type, N::URI.make_uri(filter, '+'))
+    @elements = qry.execute
 
     html = render_to_string :item_list
     data = {'box' => filter.split('+').last.pluralize}
@@ -71,7 +73,7 @@ class BoxViewController < ApplicationController
     source_uri = Base64.decode64(params[:resource])
     @source = TaliaCore::ActiveSource.find(source_uri)
     html = render_to_string :source
-    data = {'box' => TaliaCore::Source.find(source_uri).uri.local_name.to_s.gsub('_', ' ')}
+    data = {'box' => TaliaCore::ActiveSource.find(source_uri).uri.to_uri.local_name.to_s.gsub('_', ' ')}
 
     render_json(0, html, data)
   end
@@ -81,10 +83,22 @@ class BoxViewController < ApplicationController
 
   # Serves the data in the format required by the javascript driving the User Interface
   def render_json(error, html, data)
+    # javascript script "error.js" will complain if we pass a real json object as we could
+    # by using the following code (aka the correct way to pass json)
     render :json => {'error' => error,
       'html' => html,
       'data' => data
     }
+
+    # hence we render a string
+
+#    json_data = {'error' => error,
+#      'html' => html,
+#      'data' => data
+#    }
+#
+#    render :inline => json_data.to_json('html')
+
   end
 
 
