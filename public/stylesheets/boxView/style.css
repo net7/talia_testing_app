@@ -30,10 +30,13 @@ Page Sections
 Header
 */
 #pageHeader {
-	background: #30261d url(images/header/Header_bg.gif) top left repeat-x;
+	background: #8fbedd url(images/title_bar_bg.gif) bottom left repeat-x;
 }
 	#pageHeader h1{
-		background: #000000 url(images/header/Header_h1.gif) top left no-repeat;
+		background: url(images/title_bar_titolo_1.gif) top left no-repeat;
+	}
+	#pageHeader p {
+		color: #3e3228;
 	}
 
 /*
