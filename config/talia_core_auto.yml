@@ -22,6 +22,7 @@ namespaces:
   taliadom: http://trac.talia.discovery-project.eu/wiki/SampleDomainOntology#
   foaf: http://xmlns.com/foaf/0.1/
   hyper: http://trac.talia.discovery-project.eu/wiki/HyperOntology#
+  demo: http://ontologies.muruca.org/demo3#
 default_namespace_uri: http://default.dummy/
 start_page_editions: 
 - facsimile
@@ -31,3 +32,4 @@ start_page_editions:
 iip_server_uri: http://localhost:/fcgi-bin/iipsrv.fcgi
 auto_ontologies: ontologies
 vips_command: /opt/local/bin/vips
+convert_command: /opt/local/bin/convert

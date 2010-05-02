@@ -163,6 +163,7 @@ module SourcesHelper
   
   def data_icons(data_records)
     result = ''
+    
     data_records.each do |rec|
       link_data = data_record_options(rec)
       result << link_to(
@@ -171,7 +172,11 @@ module SourcesHelper
           :action => 'show',
           :id => rec.id },
         link_data.last
-      )
+      # we have both imagedata and iipdata of the images, we only show the IipData one
+      # as it will show the thumbnails (instead of very large images, which make no sense
+      # in the overlay)
+      # png, though, will be shown here
+      ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
     end
     
     result

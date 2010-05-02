@@ -1,4 +1,4 @@
-<% non_image_data_records = [] %>
+<% non_iip_data_records = [] %>
 
 <% if data_records_contain_objects_of_type?(@source.data_records, TaliaCore::DataTypes::IipData)  %>
 <h3 class="toggle closed">Images</h3>
@@ -7,19 +7,22 @@
 
     <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
       <%= iip_flash_viewer(record, 600, 600)%>
-    <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData)) %>
+    <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && !record.mime.include?('image/png')) %>
+     <%#*images, unless when they are png, are already inserted as IipData objects%>
     <% else %>
-      <%  non_image_data_records << record  %>
+      <%  non_iip_data_records << record  %>
     <%  end %>
 
   <% end %>
 </div>
+<% else %>
+ <% non_iip_data_records = @source.data_records %>
 <% end %>
 
-<% if(non_image_data_records.size > 0) %>
+<% if(non_iip_data_records.size > 0) %>
   <h3 class="toggle">Data Records</h3>
   <div>
-    <%= render(:partial => 'data_list', :locals => {:records => non_image_data_records}) %>
+    <%= render(:partial => 'data_list', :locals => {:records => non_iip_data_records}) %>
   </div>
 <% end %>
 
