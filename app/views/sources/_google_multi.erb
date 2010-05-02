@@ -1,0 +1,28 @@
+<h3 class="toggle">Map</h3>
+<div id="map">
+
+  <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAOY6Zv9NunttIT5fALwpiRhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQqmgWagvLoTUIzsSG7cbelkvUAMQ" type="text/javascript">
+  </script>
+
+  <script type="text/javascript">
+
+    google.load("maps", "2.x");
+
+    $(document).ready(function(){
+
+      var map = new GMap2(document.getElementById('map_canvas'));
+      var location = new GLatLng('<%= coordinates.first.first %>' , '<%= coordinates.first.last %>');
+      map.setCenter(location, 5);
+      map.addControl(new GSmallMapControl());
+      <% for coordinate in coordinates %>
+        <% lat, lang = coordinate %>
+        var point = new GLatLng('<%= lat %>', '<%= lang %>');
+        marker = new GMarker(point);
+        map.addOverlay(marker);
+      <% end %>
+    });
+
+  </script>
+  <div id="map_canvas" style="width: 500px; height: 300px"></div>
+
+</div>
