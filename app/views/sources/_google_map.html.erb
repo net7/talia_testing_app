@@ -1,5 +1,5 @@
 
-<% if !(coordinates = @source.demo::coordinates.first).nil? %>
+<% if !(coordinates = @source[N::DEMO.coordinates].first).nil? %>
   <h3 class="toggle">Map</h3>
   <div id="map">
 

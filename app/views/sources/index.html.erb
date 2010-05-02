@@ -59,7 +59,7 @@ $(document).ready(function()
 	</thead>
 	<tbody>
 <% for source in @sources %>
-<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource) || (!source.is_a?(TaliaCore::Source) && !source.is_a(TaliaCore::ActiveSource))) %>
+<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource) || (!source.is_a?(TaliaCore::Source) && !source.is_a?(TaliaCore::ActiveSource))) %>
 
 
 <tr class="<%= cycle("even", "odd") %>" about="<%= source.uri %>">
