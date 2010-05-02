@@ -72,7 +72,13 @@ class BoxViewController < ApplicationController
   def render_source
     source_uri = Base64.decode64(params[:resource])
     @source = TaliaCore::ActiveSource.find(source_uri)
-    html = render_to_string :source
+    
+    types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
+    if  N::DEMO.Person.in? types
+      html = render_to_string :person
+    else
+      html = render_to_string :source
+    end
     data = {'box' => TaliaCore::ActiveSource.find(source_uri).uri.to_uri.local_name.to_s.gsub('_', ' ')}
 
     render_json(0, html, data)
@@ -92,12 +98,12 @@ class BoxViewController < ApplicationController
 
     # hence we render a string
 
-#    json_data = {'error' => error,
-#      'html' => html,
-#      'data' => data
-#    }
-#
-#    render :inline => json_data.to_json('html')
+    #    json_data = {'error' => error,
+    #      'html' => html,
+    #      'data' => data
+    #    }
+    #
+    #    render :inline => json_data.to_json('html')
 
   end
 

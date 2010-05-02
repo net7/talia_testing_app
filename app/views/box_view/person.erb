@@ -1,0 +1,21 @@
+<div>
+
+<% if !@source[N::DEMO.birth_date].empty? %>
+Was born
+<%  if !@source[N::DEMO.birthplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first.to_s) %><% end %>
+on <%= @source[N::DEMO.birth_date].first %>. <br/>
+<% end %>
+
+<% if !@source[N::DEMO.death_date].empty? %>
+Has died
+<%  if !@source[N::DEMO.deathplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first.to_s) %><% end %>
+on <%= @source[N::DEMO.death_date].first %>. <br/>
+<% end %>
+</div>
+<br/>
+
+<% if !@source[N::DCNS.description].empty? %>
+<div>
+<%= @source[N::DCNS.description].first %> <br/>
+</div>
+<% end %>
