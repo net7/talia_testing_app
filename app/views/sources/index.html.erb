@@ -19,7 +19,9 @@
                 ], :data => { :source_finder => @conditions, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
 </div>
 
+<!--
 <h3 class="toggle closed">Sources map</h3>
+-->
 <%
     sources = TaliaCore::ActiveSource.find(:all, :prefetch_relations => true) 
     coordinates = []
