@@ -12,20 +12,16 @@ class SourcesController < ApplicationController
 
     conditions = { :prefetch_relations => true, :include => :data_records, :order => "uri"}
     if(filter = params[:filter])
-      conditions.merge!(:find_through => [N::RDF.type, N::URI.make_uri(filter, '+')])
+      uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, N::URI.make_uri(filter, '+')).execute
+      conditions.merge!(:conditions => { :uri => uris.collect { |ur| ur.to_s } })
     end
+    puts conditions.inspect
     if(will_paginate?)
       @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
     else
       @sources = TaliaCore::ActiveSource.find(:all, conditions)
     end
-
-#    qry = ActiveRDF::Query.new.select(:s)
-#    if(filter = params[:filter])
-#      qry.where(:s, N::RDF.type, N::URI.make_uri(filter, '+')).execute
-#    end
-#    @sources = qry.execute
-
+    
     @conditions = conditions
   end
 
