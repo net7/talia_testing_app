@@ -11,3 +11,4 @@ development:
   type: sesame
   location: ./sesame_development.db
   backend: native
+  inferencing: true

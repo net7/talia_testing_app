@@ -8,16 +8,16 @@ development:
   host: localhost
   password: talia
   username: talia
-  database: talia_2_3_new_talia_development
+  database: demo_development
 production:
   adapter: jdbcmysql
   host: localhost
   password: talia
   username: talia
-  database: talia_2_3_new_talia_production
+  database: demo_production
 test:
   adapter: jdbcmysql
   host: localhost
   password: talia
   username: talia
-  database: talia_2_3_new_talia_test
+  database: demo_talia_test
