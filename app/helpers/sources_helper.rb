@@ -21,8 +21,30 @@ module SourcesHelper
     #    if (ctype == N::RDFS.Resource)
     #      link_to 'Resource', :action => 'index', :filter => ctype.to_name_s('+')
     #    else
-    link_to ctype.local_name, :action => 'index', :filter => ctype.to_name_s('+')
+    link_to label_for(ctype), :action => 'index', :filter => ctype.to_name_s('+')
     #    end
+  end
+
+
+  def label_for(element)
+    potential_labels = ActiveRDF::Query.new(N::URI).select(:label).where(element.to_uri, N::RDFS.label, :label).execute
+    if(potential_labels.blank?)
+      element.to_uri.local_name
+    else
+      property = nil
+      potential_labels.each do |label|
+        prop_string = TaliaCore::PropertyString.parse(label)
+        if(prop_string.lang == I18n.locale.to_s)
+          property = prop_string
+          break;
+        elsif(prop_string.lang == I18n.default_locale)
+          property = prop_string
+        elsif(prop_string.lang.blank? && property.blank?)
+          property = prop_string
+        end
+      end
+      property
+    end
   end
 
   # Gets the title for a source
@@ -33,7 +55,7 @@ module SourcesHelper
   # Creates a link to an external resources (warns that you are leaving the site)
   def external_link_to(element, predicate)
     # We check if this is in the list of defined links to deal with in different ways
-    
+
     #TODO: for the demo we only deal with owl:SameAs
     #extend it to use a set of configured predicates
 
@@ -73,9 +95,9 @@ module SourcesHelper
       element
     end
   end
-  
-  
-  
+
+
+
   def type_images(types)
     @type_map ||= {
       N::TALIA.Source => 'source',
@@ -113,12 +135,12 @@ module SourcesHelper
       name = t.local_name.titleize
 
       result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
-        :action => 'index', :filter => t.to_name_s('+')
+      :action => 'index', :filter => t.to_name_s('+')
       ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
     end
     result
   end
-  
+
   def type_images_medium(types)
     @type_map ||= {
       N::TALIA.Source => 'source',
@@ -155,52 +177,52 @@ module SourcesHelper
       image = @type_map[t] || 'source'
       name = t.local_name.titleize
       result << link_to(image_tag("demo/types_medium/#{image}.png", :alt => name, :title => name, :width => "64px"),
-        :action => 'index', :filter => t.to_name_s('+')
+      :action => 'index', :filter => t.to_name_s('+')
       ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
     end
     result
   end
-  
+
   def data_icons(data_records)
     result = ''
-    
+
     data_records.each do |rec|
       link_data = data_record_options(rec)
       result << link_to(
-        image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
-        { :controller => 'source_data',
-          :action => 'show',
-          :id => rec.id },
+      image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
+      { :controller => 'source_data',
+        :action => 'show',
+        :id => rec.id },
         link_data.last
-      # we have both imagedata and iipdata of the images, we only show the IipData one
-      # as it will show the thumbnails (instead of very large images, which make no sense
-      # in the overlay)
-      # png, though, will be shown here
-      ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
+        # we have both imagedata and iipdata of the images, we only show the IipData one
+        # as it will show the thumbnails (instead of very large images, which make no sense
+        # in the overlay)
+        # png, though, will be shown here
+        ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
+      end
+
+      result
     end
-    
-    result
-  end
 
-  def data_records_contain_objects_of_type?(data_records, type)
-    data_records.each do |dr|
-      return true if dr.is_a?(type)
+    def data_records_contain_objects_of_type?(data_records, type)
+      data_records.each do |dr|
+        return true if dr.is_a?(type)
+      end
+      return false
     end
-    return false
-  end
 
-  private
+    private
 
-  def data_record_options(record)
-    if(record.mime.include?('image/'))
-      ['image', {:class => 'cbox_image'}]
-    elsif(record.mime.include?('text/'))
-      ['text', {:class =>'cbox_inline' }]
-    elsif(record.mime == 'application/xml')
-      ['text', {:class => 'cbox_inline'}]
-    else
-      ['gear', {}]
+    def data_record_options(record)
+      if(record.mime.include?('image/'))
+        ['image', {:class => 'cbox_image'}]
+      elsif(record.mime.include?('text/'))
+        ['text', {:class =>'cbox_inline' }]
+      elsif(record.mime == 'application/xml')
+        ['text', {:class => 'cbox_inline'}]
+      else
+        ['gear', {}]
+      end
     end
-  end
 
-end
+  end
