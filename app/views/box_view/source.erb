@@ -6,17 +6,7 @@
       <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
       <img src="<%= image_url %>" alt="" class="resizeme" /><br/>
     <% elsif record.is_a?(TaliaCore::DataTypes::ImageData) %>
-  
-    <% end %>
-  <% end %>
 
-  <% for record in @source.data_records %>
-    <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-      <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
-      <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-        <h2>This element has <%= ncount %> annotations</h2>
-      <% end %>
-      <%= thctag(element_uri, record.content_string) %>
     <% end %>
   <% end %>
 
