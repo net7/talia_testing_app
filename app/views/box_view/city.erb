@@ -1,0 +1,57 @@
+<div>
+
+<% if !@source[N::DEMO.birth_date].empty? %>
+Was born
+<%  if !@source[N::DEMO.birthplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first.to_s) %><% end %>
+on <%= @source[N::DEMO.birth_date].first %>. <br/>
+<% end %>
+
+<% if !@source[N::DEMO.death_date].empty? %>
+Has died
+<%  if !@source[N::DEMO.deathplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first.to_s) %><% end %>
+on <%= @source[N::DEMO.death_date].first %>. <br/>
+<% end %>
+</div>
+<br/>
+
+<% if !(coordinates = @source[N::DEMO.coordinates].first).nil? %>
+  <div id="map">
+
+  <%
+    lat = coordinates.split(',').first
+    lng = coordinates.split(',').last
+
+  %>
+    <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAOY6Zv9NunttIT5fALwpiRhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQqmgWagvLoTUIzsSG7cbelkvUAMQ" type="text/javascript">
+    </script>
+
+    <script type="text/javascript">
+
+      google.load("maps", "2.x");
+
+      $(document).ready(function(){
+
+        var lat = '<%= lat %>';
+        var lng = '<%= lng %>';
+
+        var map = new GMap2(document.getElementById('map_canvas'));
+        var location = new GLatLng(lat , lng);
+        map.setCenter(location, 5);
+        map.addControl(new GSmallMapControl());
+
+        var point = new GLatLng(lat , lng);
+        marker = new GMarker(point);
+        map.addOverlay(marker);
+      });
+ 
+    </script>
+    <div id="map_canvas" style="width: 100px; height: 100px"></div>
+
+  </div>
+<% end %>
+
+<% if !@source[N::DCNS.description].empty? %>
+<div>
+<%= @source[N::DCNS.description].first %> <br/>
+</div>
+<% end %>

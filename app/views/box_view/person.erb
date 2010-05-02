@@ -1,21 +1,33 @@
 <div>
 
-<% if !@source[N::DEMO.birth_date].empty? %>
-Was born
-<%  if !@source[N::DEMO.birthplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first.to_s) %><% end %>
-on <%= @source[N::DEMO.birth_date].first %>. <br/>
-<% end %>
+  <% if !@source[N::DEMO.birth_date].empty? %>
+    Was born
 
-<% if !@source[N::DEMO.death_date].empty? %>
-Has died
-<%  if !@source[N::DEMO.deathplace].empty? %> in <%= title_for TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first.to_s) %><% end %>
-on <%= @source[N::DEMO.death_date].first %>. <br/>
-<% end %>
+    <%  unless @source[N::DEMO.birthplace].empty? %> in
+      <% birthplace = TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first) %>
+      <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64(birthplace.to_s) %>&type=source">
+        <%= title_for(birthplace) %>
+      </a>
+    <% end %>
+    on <%= @source[N::DEMO.birth_date].first %>. <br/>
+  <% end %>
+
+  <% if !@source[N::DEMO.death_date].empty? %>
+    Has died
+    <%  unless @source[N::DEMO.deathplace].empty? %> in
+      <% deathplace = TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first) %>
+      <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64(deathplace.to_s) %>&type=source">
+        <%= title_for(deathplace) %>
+      </a>
+    <% end %>
+    on <%= @source[N::DEMO.death_date].first %>. <br/>
+  <% end %>
+
 </div>
 <br/>
 
 <% if !@source[N::DCNS.description].empty? %>
-<div>
-<%= @source[N::DCNS.description].first %> <br/>
-</div>
+  <div>
+    <%= @source[N::DCNS.description].first %> <br/>
+  </div>
 <% end %>
