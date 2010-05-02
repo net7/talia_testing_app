@@ -76,6 +76,8 @@ class BoxViewController < ApplicationController
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
     if  N::DEMO.Person.in? types
       html = render_to_string :person
+    elsif N::DEMO.City.in? types
+      html = render_to_string :city
     else
       html = render_to_string :source
     end
