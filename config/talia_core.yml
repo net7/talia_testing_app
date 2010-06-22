@@ -28,5 +28,5 @@ site_name: TALIA DEMO3
 iip_root_directory_location: iip_root
 data_directory_location: data
 iip_server_uri: http://localhost:/fcgi-bin/iipsrv.fcgi
-vips_command: /opt/local/bin/vips
+vips_command: /usr/local/bin/vips
 convert_command: /usr/local/bin/convert

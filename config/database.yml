@@ -6,18 +6,18 @@
 development: 
   adapter: jdbcmysql
   host: localhost
-  password: talia
   username: talia
+  password: talia
   database: demo_development
 production:
   adapter: jdbcmysql
   host: localhost
-  password: talia
   username: talia
+  password: talia
   database: demo_production
 test:
   adapter: jdbcmysql
   host: localhost
-  password: talia
   username: talia
+  password: talia
   database: demo_talia_test

@@ -31,8 +31,7 @@
         end
     end
 %>
-<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } %>
-
+<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
 
 <h3 class="toggle">Filter</h3>
 <div id="home_filter">
