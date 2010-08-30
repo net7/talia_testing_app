@@ -1,7 +1,7 @@
 --- 
 rdf_connection_file: rdfstore
 ardf_log_level: 0
-local_uri: http://localhost:5000/
+local_uri: http://localhost:3000/
 default_namespace_uri: http://default.dummy/
 standalone_db: true
 db_file: database
@@ -24,9 +24,11 @@ namespaces:
   wordnet: http://xmlns.com/wordnet/1.6/
   geo: http://www.w3.org/2003/01/geo/wgs84_pos#
   demo: http://ontologies.muruca.org/demo3#
-site_name: TALIA DEMO3
-iip_root_directory_location: iip_root
-data_directory_location: data
-iip_server_uri: http://localhost:/fcgi-bin/iipsrv.fcgi
-vips_command: /usr/local/bin/vips
-convert_command: /usr/local/bin/convert
+  bibo: http://purl.org/ontology/bibo/
+  schop: http://purl.org/schopenhauersource/ontology/
+site_name: Schopenhauer Source
+iip_root_directory_location: /home/danilo/Dropbox/Progetti/schopenhauer/schopenhauer_source/iip_root
+data_directory_location: /home/danilo/Dropbox/Progetti/schopenhauer/schopenhauer_source/data
+iip_server_uri: http://localhost/fcgi-bin/iipsrv.fcgi
+vips_command: /usr/bin/vips
+convert_command: /usr/bin/convert
