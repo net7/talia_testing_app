@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.admin '/admin', :controller => 'admin/front', :action => 'index'
   map.connect '/admin/import/:action', :controller => 'admin/import'
   map.connect '/admin/talia_sources/:action/:id', :controller => 'admin/talia_sources'
-  
+
   
   map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'
   map.resources :swicky_notebooks, :path_prefix => 'users/:user_name'
@@ -80,7 +80,7 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
+   map.root :controller => "sources", :action => 'index'
 
   # See how all your routes lay out with "rake routes"
 
