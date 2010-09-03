@@ -25,6 +25,10 @@ module SourcesHelper
     #    end
   end
 
+  # returns the google map key, found in the talia_core.yml configuration file
+  def googlemap_key
+    TaliaCore::CONFIG['googlemap_key']
+  end
 
   def label_for(element)
     potential_labels = ActiveRDF::Query.new(N::URI).select(:label).where(element.to_uri, N::RDFS.label, :label).execute
