@@ -96,7 +96,7 @@ function getBoxInfoFromMethod(method) {
         case "getSource":
             return {
                 boxType: "quotation",
-                vertPrefix: ""
+                vertPrefix: "Source"
             };
         default :
             return {

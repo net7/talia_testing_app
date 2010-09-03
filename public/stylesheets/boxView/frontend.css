@@ -365,7 +365,8 @@ BoxView and boxes
 
 /* Quotation box, schede riscritture */
 .boxViewContainer div.box.quotation div.boxHeader, .boxViewContainer div.box.quotation.collapsed, .boxViewContainer div.box.collapsed.quotation div.boxCollapsedContent {
-	background-color: #5c3623;
+	background-color: #e9bf5d;
+	/*background-color: #5c3623;*/
 }
 
 

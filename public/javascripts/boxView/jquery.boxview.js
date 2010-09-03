@@ -229,10 +229,10 @@
             var ret = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+ width +'" height="'+ height +'" id="movie" align="middle">'+
             	      '<param name="allowScriptAccess" value="sameDomain" />'+
             	      '<param name="allowFullScreen" value="false" />'+
-            	      '<param name="movie" value="css/vertical_title.swf?title='+ title +'" />'+
+            	      '<param name="movie" value="stylesheets/boxView/vertical_title.swf?title='+ title +'" />'+
             	      '<param name="quality" value="high" />'+
             	      '<param name="wmode" value="transparent">'+
-            	      '<embed src="css/vertical_title.swf?title='+ title +'" quality="high" wmode="transparent" width="'+ width +'" height="'+ height +'" name="movie" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'+
+            	      '<embed src="stylesheets/boxView/vertical_title.swf?title='+ title +'" quality="high" wmode="transparent" width="'+ width +'" height="'+ height +'" name="movie" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />'+
                       '</object>';
             return ret;
             

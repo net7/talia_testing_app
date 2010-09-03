@@ -4,8 +4,9 @@
 
 <ul>
   <li class='menu_item'>
-    <a class='menu collapsed' href='#'>Santuaries</a>
+    <a class='menu collapsed' href='#'>Sanctuaries</a>
     <ul style='display: none;'>
+	  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Sanctuary', :label => 'All'}) %>
       <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Mosque', :label => 'Mosques'}) %>
     </ul>
   </li>
@@ -30,5 +31,6 @@
   <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Person', :label => 'All Person'}) %>
   <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Event', :label => 'Events'}) %>
   <%= render(:partial => 'menu_entry', :locals => {:type => 'foaf+Organization', :label => 'Organizations'}) %>
-
+  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Transcription', :label => 'Transcriptions'}) %>
+  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Manuscript', :label => 'Manuscripts'}) %>
 </ul>
