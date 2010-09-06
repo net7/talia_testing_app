@@ -15,11 +15,12 @@ class SourcesController < ApplicationController
       uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, N::URI.make_uri(filter, '+')).execute
       conditions.merge!(:conditions => { :uri => uris.collect { |ur| ur.to_s } })
     end
-    puts conditions.inspect
     if(will_paginate?)
-      @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
+      #      @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
+      @sources = TaliaCore::Source.paginate(conditions.merge(:page => params[:page]))
     else
-      @sources = TaliaCore::ActiveSource.find(:all, conditions)
+      #      @sources = TaliaCore::ActiveSource.find(:all, conditions)
+      @sources = TaliaCore::Source.find(:all, conditions)
     end
     
     @conditions = conditions
@@ -29,7 +30,8 @@ class SourcesController < ApplicationController
   # GET /sources/1.xml
   def show
     raise(ActiveRecord::RecordNotFound) unless(ActiveSource.exists?(params[:id]))
-    @source = ActiveSource.find(params[:id])
+#    @source = ActiveSource.find(params[:id])
+    @source = Source.find(params[:id])
     respond_to do |format|
       format.xml { render :text => @source.to_xml }
       format.rdf { render :text => @source.to_rdf }
@@ -67,9 +69,12 @@ class SourcesController < ApplicationController
   # type dcns:name, it will try to call the method #dncs_name (if defined) before 
   # rendering the source.
   def dispatch
-    if (TaliaCore::ActiveSource.exists?(params[:dispatch_uri])) 
-      @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
-      @types = @source.types
+#    if (TaliaCore::ActiveSource.exists?(params[:dispatch_uri]))
+#      @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
+    if (TaliaCore::Source.exists?(params[:dispatch_uri]))
+      @source = TaliaCore::Source.find(params[:dispatch_uri], :prefetch_relations => true)
+
+    @types = @source.types
       @types.each do |type|
         caller = type.to_name_s('_')
         self.send(caller) if(self.respond_to?(caller))
@@ -91,11 +96,14 @@ class SourcesController < ApplicationController
       s_uri_parts = s_uri.split(':')
       options = { :limit => 10 }
       @records = if(s_uri.include?('://'))
-        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
+#        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
+        TaliaCore::Source.find_by_partial_uri(s_uri, options)
       elsif(s_uri_parts.size == 2)
-        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
+#        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
+        TaliaCore::Source.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
       else
-        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
+#        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
+        TaliaCore::Source.find_by_uri_token(s_uri, options)
       end
 
       render :inline => "<%= content_tag(:ul, @records.map { |rec| content_tag(:li, h(N::URI.new(rec.uri).to_name_s)) }) %>"

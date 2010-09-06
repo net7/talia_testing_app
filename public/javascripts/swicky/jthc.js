@@ -161,13 +161,13 @@ $(function() {
                 dataType: 'json',
                 type: 'POST',
                 success: function(data) { 
-                    
+                    if (data && data.lenght){
                     // TODO: sanity checks on length? 
                     self.log("## Got "+data.length+" new fragments for: "+uri);
 
                     var n = data.length;
                     
-                    if (n) {
+//                    if (n) {
 
                         for (var i=0; i<n; i++) {
                             var xp = data[i];
@@ -176,7 +176,7 @@ $(function() {
                         }
                         
                         self.askForXPointers();
-
+                    
                     } else {
                         self.log("## No fragments associated to "+uri);
                     }

@@ -1,4 +1,4 @@
-<h3 class="toggle">Sources timeline</h3>
+  <h3 class="toggle">Sources timeline</h3>
 <div id="home_timeline">
 <%= timeline('tl', 
 	:bands => [{
@@ -23,11 +23,13 @@
 <h3 class="toggle closed">Sources map</h3>
 -->
 <%
-    sources = TaliaCore::ActiveSource.find(:all, :prefetch_relations => true) 
+    #sources = TaliaCore::ActiveSource.find(:all, :prefetch_relations => true)
+    #sources = TaliaCore::ActiveSource.find(:all, @conditions)
+    sources = TaliaCore::Source.find(:all, @conditions)
     coordinates = []
     sources.each do |src|
         unless(src[N::DEMO.coordinates].blank?)
-            coordinates << src[N::DEMO.coordinates].first.split(',')
+            coordinates << {:uri => src.uri, :title => title_for(src), :coordinates => src[N::DEMO.coordinates].first.split(',')}
         end
     end
 %>

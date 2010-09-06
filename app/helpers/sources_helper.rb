@@ -88,7 +88,8 @@ module SourcesHelper
       #      end
       uri = element.to_uri
       if(uri.local?)
-        link_to(title_for(TaliaCore::ActiveSource.find(uri.to_s)), :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
+        #        link_to(title_for(TaliaCore::ActiveSource.find(uri.to_s)), :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
+        link_to(title_for(TaliaCore::Source.find(uri.to_s)), :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
       elsif(predicate == N::RDF.type.to_s)
         link_to(uri.to_name_s, :controller => 'sources', :params => {:filter => uri.to_name_s('+')})
       else
@@ -139,7 +140,7 @@ module SourcesHelper
       name = t.local_name.titleize
 
       result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
-      :action => 'index', :filter => t.to_name_s('+')
+        :action => 'index', :filter => t.to_name_s('+')
       ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
     end
     result
@@ -181,7 +182,7 @@ module SourcesHelper
       image = @type_map[t] || 'source'
       name = t.local_name.titleize
       result << link_to(image_tag("demo/types_medium/#{image}.png", :alt => name, :title => name, :width => "64px"),
-      :action => 'index', :filter => t.to_name_s('+')
+        :action => 'index', :filter => t.to_name_s('+')
       ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
     end
     result
@@ -193,40 +194,40 @@ module SourcesHelper
     data_records.each do |rec|
       link_data = data_record_options(rec)
       result << link_to(
-      image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
-      { :controller => 'source_data',
-        :action => 'show',
-        :id => rec.id },
+        image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
+        { :controller => 'source_data',
+          :action => 'show',
+          :id => rec.id },
         link_data.last
         # we have both imagedata and iipdata of the images, we only show the IipData one
         # as it will show the thumbnails (instead of very large images, which make no sense
         # in the overlay)
         # png, though, will be shown here
-        ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
-      end
-
-      result
+      ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
     end
 
-    def data_records_contain_objects_of_type?(data_records, type)
-      data_records.each do |dr|
-        return true if dr.is_a?(type)
-      end
-      return false
-    end
-
-    private
-
-    def data_record_options(record)
-      if(record.mime.include?('image/'))
-        ['image', {:class => 'cbox_image'}]
-      elsif(record.mime.include?('text/'))
-        ['text', {:class =>'cbox_inline' }]
-      elsif(record.mime == 'application/xml')
-        ['text', {:class => 'cbox_inline'}]
-      else
-        ['gear', {}]
-      end
-    end
-
+    result
   end
+
+  def data_records_contain_objects_of_type?(data_records, type)
+    data_records.each do |dr|
+      return true if dr.is_a?(type)
+    end
+    return false
+  end
+
+  private
+
+  def data_record_options(record)
+    if(record.mime.include?('image/'))
+      ['image', {:class => 'cbox_image'}]
+    elsif(record.mime.include?('text/'))
+      ['text', {:class =>'cbox_inline' }]
+    elsif(record.mime == 'application/xml')
+      ['text', {:class => 'cbox_inline'}]
+    else
+      ['gear', {}]
+    end
+  end
+
+end
