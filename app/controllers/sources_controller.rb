@@ -59,38 +59,90 @@ class SourcesController < ApplicationController
     render :text => predicates, :status => status
   end
   
-  # Semantic dispatch. This will try to auto-handle URLs that are not otherwise
-  # caught and see if a source exists. If the source exists, the system will
-  # try to figure out how to render it. In this case, all relations on the source are
-  # automaticaly prefetched when it's loaded.
+
+  # Semantic dispatch. This method will try to auto-handle URLs that are not otherwise
+  # caught and try to handle them.
   #
+  # This method is designed with the Linked Open Data standard in mind: depending on the 
+  # requested format, as determined either by HTTP_ACCEPT header or :format, this action will issue a 
+  # "HTTP/1.1 303 See Other" response pointing to a url specific to the determined format. E.g.:
+  # http://localhost:3000/data/Whatever will render data in rdf format
+  # http://localhost:3000/page/Whatever will render data in html format
+  # http://localhost:3000/xml/Whatever will render data in xml format
+  # The last one is not specified by LOD, but we also have xml format and it looks good this way.
+  # The actual URLs we will be redirected to will be determined in config/routes.rb, of course, 
+  # and they will have to point to one of #dispatch_html, #dispatch_rdf or #dispatch_xml methods.
+  #
+  # LOD reference: http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
+  def dispatch
+    # /**/
+    ActionController::Base.use_accept_header = true
+    case request.format
+      when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
+      when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
+      else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri]
+    end
+  end
+
+  # This action will display the view for a source forcing output format to HTML, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
   #
   # The dispatch also supports callbacks in the controller: If you have a source with
   # type dcns:name, it will try to call the method #dncs_name (if defined) before 
   # rendering the source.
-  def dispatch
-#    if (TaliaCore::ActiveSource.exists?(params[:dispatch_uri]))
-#      @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
-    if (TaliaCore::Source.exists?(params[:dispatch_uri]))
-      @source = TaliaCore::Source.find(params[:dispatch_uri], :prefetch_relations => true)
-
-    @types = @source.types
-      @types.each do |type|
-        caller = type.to_name_s('_')
-        self.send(caller) if(self.respond_to?(caller))
-      end
-      respond_to do |format|
-        format.html { render :action => template_for(@source) }
-        format.xml { render :text => @source.to_xml }
-        format.rdf { render :text => @source.to_rdf }
-      end
+  def dispatch_html
+    # If we come here, it means that we want HTML, no matter what :format says
+    request.format = 'html'
+    if source
+      callback
+      render :action => template_for(source)
     else
       render :text => ''
-    end
+    end 
+  end
+
+  # This action will display the view for a source forcing output format to RDF, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
+  #
+  # The dispatch also supports callbacks in the controller: If you have a source with
+  # type dcns:name, it will try to call the method #dncs_name (if defined) before 
+  # rendering the source.
+  def dispatch_rdf
+    # If we come here, it means that we want RDF, no matter what :format says
+    request.format = 'rdf'
+    if source
+      callback
+      render :text => @source.to_rdf
+    else
+      render :text => ''
+    end 
+  end
+
+  # This action will display the view for a source forcing output format to XML, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
+  #
+  # The dispatch also supports callbacks in the controller: If you have a source with
+  # type dcns:name, it will try to call the method #dncs_name (if defined) before 
+  # rendering the source.
+  def dispatch_xml
+    # If we come here, it means that we want XML, no matter what :format says
+    request.format = 'xml'
+    if source
+      callback
+      render :text => @source.to_xml
+    else
+      render :text => ''
+    end 
   end
 
   # Autocompletion actions
-  
+
   def auto_complete_for_uri
     if(s_uri = params[:record][:source])
       s_uri_parts = s_uri.split(':')
@@ -113,6 +165,25 @@ class SourcesController < ApplicationController
   end
   
   private
+
+  #/**/
+  def source
+    return @source if @source
+    if TaliaCore::Source.exists?(params[:dispatch_uri])
+      @source = TaliaCore::Source.find params[:dispatch_uri], :prefetch_relations => true
+    else
+      @source = false
+    end
+  end
+  
+  # /**/
+  def callback
+    @types = source.types
+    @types.each do |type|
+      caller = type.to_name_s('_')
+      self.send(caller) if(self.respond_to?(caller))
+    end
+  end
 
   # Hack around routing limitation: We use the @ instead of the dot as a delimiter
   def setup_format

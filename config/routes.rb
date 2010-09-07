@@ -41,12 +41,18 @@ ActionController::Routing::Routes.draw do |map|
 
  
 
+  # Linked Open Data formatted requests
+  # http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
+  map.connect 'data/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_rdf',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
+  map.connect 'page/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_html',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
+  # Not a LOD format per-se, but the request for Talia XML with a similarly formatted url
+  map.connect 'xml/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_xml',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
   # Default semantic dispatch
   map.connect ':dispatch_uri.:format', :controller => 'sources', :action => 'dispatch',
     :requirements => { :dispatch_uri => /[^\.]+/ }
-
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
 
