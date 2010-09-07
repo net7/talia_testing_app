@@ -1,14 +1,14 @@
 --- 
 rdf_connection_file: rdfstore
 ardf_log_level: 0
-local_uri: http://localhost:5000/
+local_uri: http://localhost:3000/
 default_namespace_uri: http://default.dummy/
 standalone_db: true
 db_file: database
 thumb_options: 
   height: "200"
   width: "200"
-namespaces: 
+namespaces:
   dcns: http://purl.org/dc/elements/1.1/
   dct: http://purl.org/dc/terms/
   dcmit: http://purl.org/dc/dcmitype/
@@ -24,9 +24,13 @@ namespaces:
   wordnet: http://xmlns.com/wordnet/1.6/
   geo: http://www.w3.org/2003/01/geo/wgs84_pos#
   demo: http://ontologies.muruca.org/demo3#
-site_name: TALIA DEMO3
+site_name: TALIA DEMO (ARABICA)
+admin_email: admin@example.org
 iip_root_directory_location: iip_root
 data_directory_location: data
-iip_server_uri: http://localhost:/fcgi-bin/iipsrv.fcgi
+iip_server_uri: http://localhost/fcgi-bin/iipsrv.fcgi
 vips_command: /usr/local/bin/vips
-convert_command: /usr/local/bin/convert
+convert_command: /usr/bin/convert
+oai:
+  prefix: oai:talia
+  repository_name: Talia OAI Interface
