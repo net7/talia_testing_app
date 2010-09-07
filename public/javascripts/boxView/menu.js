@@ -2,7 +2,6 @@
 // value of the opened A elements
 var openMenuElements = {};
 
-
 // On doc.ready menu initialization
 $(document).ready(function() {
    
@@ -16,13 +15,15 @@ $(document).ready(function() {
 
 });
 
-
 // Asks, through ajax, for the whole menu, given some context
 function getMenu(givenContexts) {
 
     var len = 0;
-	if (myPrefs.get('animations'))
-	    len = myPrefs.get('animationsLength');
+
+    if (typeof(myPrefs) != "undefined") {
+	    if (myPrefs.get('animations'))
+	        len = myPrefs.get('animationsLength');
+    } 
 
 	$('div#menu_container').fadeTo(len, "0.3");
 
@@ -107,14 +108,3 @@ $('div#menu_container.collapsed').live("dblclick", function() {
     $('div#pageContent').css({left: menuExpWidth+1});
     myBoxView.resize();
 });
-
-
-// TODO: Catch-all: REMOVE THIS! :)
-
-// Menu's item links click action
-/*
-$('div#menu_container a').live("click", function() {
-    console.log("Cliccato su "+ $(this).html());
-    return false;
-});
-*/

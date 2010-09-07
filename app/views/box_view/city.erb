@@ -14,7 +14,10 @@ on <%= @source[N::DEMO.death_date].first %>. <br/>
 </div>
 <br/>
 
-<%= render(:partial => 'sources/google_map') %>
+<%= 
+    
+    render(:partial => 'sources/google_map') 
+%>
 
 <% if !@source[N::DCNS.description].empty? %>
 <div>

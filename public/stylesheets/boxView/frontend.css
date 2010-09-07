@@ -433,6 +433,25 @@ BoxView and boxes
 }
 
 
+/* Testo del box header quando è collassato */
+.boxViewContainer div.box.collapsed div.boxCollapsedContent .flashcontainer {
+	display: block;
+	white-space: nowrap;
+	
+	/* Rotation */
+	-moz-transform-origin: top left;
+	-webkit-transform-origin: top left;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);	
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	
+	position: absolute;
+	overflow: hidden;
+	bottom: 2px;
+	left:7px;
+}
+
+
 .boxViewContainer div.box.collapsed div.boxCollapsedContent .dragOverlay {
     width: 30px; 
     z-index: 10000; 

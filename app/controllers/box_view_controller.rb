@@ -77,7 +77,10 @@ class BoxViewController < ApplicationController
     if  N::DEMO.Person.in? types
       html = render_to_string :person
     elsif N::DEMO.City.in? types
-      html = render_to_string :city
+      html = render_to_string :boxview_google_map
+      
+      coordinates = @source[N::DEMO.coordinates].first
+      maps_data = { :lat => coordinates.split(',').first, :lng => coordinates.split(',').last }
     else
       html = render_to_string :source
     end

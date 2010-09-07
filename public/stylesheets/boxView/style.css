@@ -86,3 +86,22 @@ Menu
 		background: transparent url(images/menu/refresh_icon_animated.gif) center left no-repeat;
 	}
 	
+	/* Collapsed boxes vertical content */
+	.boxViewContainer div.box.collapsed div.boxCollapsedContent .flashcontainer{
+  	font-family: Georgia, "Times New Roman", Times, serif;
+  	color: #fff;
+  	font-weight: normal;
+  }
+  
+  /* Box types */ 
+  /* 'source' */
+  .boxViewContainer div.box.source div.boxHeader, .boxViewContainer div.box.source.collapsed, .boxViewContainer div.box.collapsed.source div.boxCollapsedContent {
+  	background-color: #d78134;
+  }
+  /* 'filter' */
+  .boxViewContainer div.box.filter div.boxHeader, .boxViewContainer div.box.filter.collapsed, .boxViewContainer div.box.collapsed.filter div.boxCollapsedContent {
+  	background-color: #fc0;
+  }
+
+
+

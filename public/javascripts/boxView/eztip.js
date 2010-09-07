@@ -1,9 +1,15 @@
-$(function() {
+/*
+Modificata da 	Giulio Andreini
+Data 			08/07/2010
+Da testare su IE
+*/
+
+$(function(){
 
 	var eztipCode = 
             "<div class='eztipContainer' id='#eztipid#'>"+
                 "   <div class='eztipContent'>#eztipcontent#</div>"+
-                "</div>";
+			"</div>";
 
 
  	// eztip constructor
@@ -18,26 +24,32 @@ $(function() {
 	$.eztip.defaults = {
 
         // Time in ms before show and hide the tooltip
-        showDelay: 750,
-	    hideDelay: 500,
+        showDelay: 2000, /// 0
+	    hideDelay: 250, /// 0
+	    
 	    // Time in ms the user has to stay on the element to force it's hide action
-	    forcedHideDelay: 5000,
+	    forcedHideDelay: 4000, /// 5000
 
         // Use some animation to show and hide the tooltip?
         // Duration time in ms of every animation
-	    animateShow: true,
-	    animateHide: true,
-	    animationLength: 250,
+	    animateShow: true, /// true
+	    animateHide: true, /// true
+	    animationLength: 250, /// 250 
         
 	    // Offset to position the tip
-	    leftOffset: -10,
-	    topOffset: 2,
+	    leftOffset: 0,
+	    topOffset: 0, /// 2
+
+	    // If the stem is TOT pixel from the border, tell it here
+	    horizStemOffset: 10, // calcolato considerando 5pixel di spostamento dello stem + la sua larghezza (10) diviso 2: 5 + (10/2)
+	    vertStemOffset: 0,
 	    
-	    // Length in pixels of the in-animation
-	    introMoveExtent: 25,
+	    // Duration in ms of the show and hide animations
+	    introDuration: 150, /// 500
+	    hideDuration: 150, /// 500
 	    
-	    // For each content: show this tip this number of times, 0 for unlimited
-	    showNumPerContent: 10,
+	    // For each content: show this tip this number of times, -1 for unlimited
+	    showNumPerContent: -1,
 	    
 	    // default CSS selector of elements to be tipped
 	    selector: '.eztip',
@@ -84,9 +96,7 @@ $(function() {
                 // Must do this even if showNumPerContent=0, so the user can decide later to change
                 // the number and see the tooltips
                 if ($(this).data('id') == null) {
-
-                    self.setContent(this, tipContent);
-                    
+                    self.firstSetContent(this, tipContent);
                 } // id data(id) == null
 
 
@@ -127,35 +137,40 @@ $(function() {
                 } else {
 
                     var el = this;
-
+					
                     // Every mouse over we refresh the tip position
                     var elPos = $(el).offset(),
+                        // Calcola larghezza e altezza tenendo in considerazione i valori padding del CSS
                         elWidth = $(el).width() + parseInt($(el).css('padding-left').replace('px','')) + parseInt($(el).css('padding-right').replace('px','')),
                         elHeight = $(el).height() + parseInt($(el).css('padding-top').replace('px','')) + parseInt($(el).css('padding-bottom').replace('px','')),
                         docHeight = $(document).height(),
                         docWidth = $(document).width(),
-                        tipWidth = tip.width() + self.options.introMoveExtent + self.options.leftOffset,
-                        tipHeight = tip.height()  + self.options.introMoveExtent + self.options.topOffset,
+                        // Calcola larghezza e altezza del tip tenendo in considerazione i valori padding del CSS
+                        tipWidth = tip.width() + parseInt(tip.css('padding-left').replace('px','')) + parseInt(tip.css('padding-right').replace('px','')) + self.options.leftOffset,
+                        tipHeight = tip.height() + parseInt(tip.css('padding-top').replace('px','')) + parseInt(tip.css('padding-bottom').replace('px','')) + self.options.topOffset,
+                        totalHorizOffset = self.options.leftOffset + self.options.horizStemOffset,
+                        totalVertOffset = self.options.topOffset + self.options.vertStemOffset,
                         vAlign, hAlign;
 
-                    var tipLeft = elPos.left + (elWidth/2) + self.options.leftOffset,
-                        tipIntroLeft = tipLeft + self.options.introMoveExtent;
+					// Logica di posizionamento del tip baloon
+					// Posizione orizzontale...
+                    // First we position it on the right side, if it it's too much, we correct
+                    // the positions and put it on the other side
+                    var tipLeft = elPos.left + (elWidth/2) - self.options.horizStemOffset; //  + totalHorizOffset - 5; // Da sistemare
                     // Tip goes beyond the right border
                     if (tipLeft + tipWidth >= docWidth) {
                         hAlign = 'right';
-                        tipLeft = tipLeft - tipWidth - 2*self.options.leftOffset;
-                        tipIntroLeft = tipLeft - self.options.introMoveExtent;
+                        tipLeft = elPos.left + (elWidth/2) - tipWidth + self.options.horizStemOffset;
                     } else {
                         hAlign = 'left';
                     }
                     
-                    var tipTop = elPos.top + elHeight + self.options.topOffset,
-                        tipIntroTop = tipTop + self.options.introMoveExtent;
+                    // ..posizione verticale
+                    var tipTop = elPos.top + elHeight + totalVertOffset;
                     // Tip goes beyond the bottom border
                     if (tipTop + tipHeight >= docHeight) {
                         vAlign = 'bottom';
-                        tipTop = tipTop - elHeight - tipHeight - 2*self.options.topOffset;
-                        tipIntroTop = tipTop - self.options.introMoveExtent;
+                        tipTop = elPos.top - tipHeight;
                     } else {
                         vAlign = 'top';
                     }
@@ -169,12 +184,7 @@ $(function() {
                             self.options.tipCounter[tipContent]++;
                             $(el).data('showTimer', null);
                             $(el).data('isActive', true);
-                            if (self.options.introMoveExtent > 0) {
-                                // Moving intro: put it a bit away and move it to its position
-                                tip.css({opacity: 0.0, left: tipIntroLeft + 'px', top: tipIntroTop + 'px'}).show();
-                                tip.animate({opacity: 1.0, left: tipLeft + 'px', top: tipTop + 'px'}, self.options.showLength);
-                            } else 
-                                tip.css({left: tipLeft + 'px', top: tipTop + 'px'}).hide().fadeIn(self.options.showLength);
+                           	tip.css({left: tipLeft + 'px', top: tipTop + 'px'}).hide().fadeIn(self.options.introDuration);
                             return false;
                         }, 
                         self.options.showDelay)
@@ -187,13 +197,11 @@ $(function() {
                     function() {
                         $(el).data('hideTimer', null);
                         $(el).data('isActive', false);
-                        tip.fadeOut(self.options.hideLength);
+                        tip.fadeOut(self.options.hideDuration);
                         return false;
                     }, 
                     self.options.forcedHideDelay)
                 );
-                
-                
                 return false;
             }); // MouseOver function
 
@@ -249,20 +257,39 @@ $(function() {
 
         },
 
-        setContent : function (obj, content) {
+        firstSetContent : function (obj, content) {
             var self = this;
 
-            // No content > no tooltip
+            // No content > no tooltip: reset it!
             if ($(obj).attr('title') == "" && typeof(content) == "undefined") 
                 return false;
         
             self.initTooltip(obj);
-            
-            var code = eztipCode.replace('#eztipid#', $(obj).data('id')).replace('#eztipcontent#', content);
-            $(obj).data('tipContent', content);
-            $(obj).data('code', code);
+            self.setContent(obj, content);
+
+            // Reset title, we know it!
             $(obj).attr('title', '');
 
+        },
+
+        setContent : function (obj, content) {
+            var code = eztipCode.replace('#eztipid#', $(obj).data('id')).replace('#eztipcontent#', content);
+            $(obj).data('code', code);
+            $(obj).data('tipContent', content);
+        },
+
+        // Can be safely called from outside to replace the content of any tip
+        replaceContent : function (obj, content) {
+            // Set the content
+            this.setContent(obj, content);
+            $(obj).attr('title', content);
+            
+            // Tip already initialized: must replace the content in the proper div as well
+            if ($(obj).data('id') != null) {
+                $('#'+ $(obj).data('id')).detach();
+                $('body').append($(obj).data('code'));
+                $('#'+ $(obj).data('id')).hide();
+            }
         },
 
     	// Generates an N items random hash code, to use as id
