@@ -7,7 +7,9 @@
 
       <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
         <%= iip_flash_viewer(record, 600, 600)%>
-      <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && !record.mime.include?('image/png')) %>
+      <%# elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && !record.mime.include?('image/png')) %>
+
+      <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && data_record_has_an_iip_related(@source, record)) %>
       <%#*images, unless when they are png, are already inserted as IipData objects%>
       <% else %>
         <%  non_iip_data_records << record  %>
@@ -44,7 +46,7 @@
 <% elsif !@source[N::DCNS.description].empty? %>
   <h3 class="toggle">Description</h3>
   <div>
-<%= @source[N::DCNS.description].first %>
+    <%= @source[N::DCNS.description].first %>
   </div>
 <% end %>
 

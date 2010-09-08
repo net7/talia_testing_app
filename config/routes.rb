@@ -8,6 +8,8 @@ ActionController::Routing::Routes.draw do |map|
   map.admin '/admin', :controller => 'admin/front', :action => 'index'
   map.connect '/admin/import/:action', :controller => 'admin/import'
   map.connect '/admin/talia_sources/:action/:id', :controller => 'admin/talia_sources'
+  map.connect '/admin/talia_collections/:action/:id', :controller => 'admin/talia_collections'
+
 
   
   map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'
@@ -39,14 +41,21 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
   map.resources :requirements => { :id => /.+/}
 
- 
+  # Semantic sitemap
+  map.connect '/sitemap.xml', :controller => 'ontologies', :action => 'index'
 
+  # Linked Open Data formatted requests
+  # http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
+  map.connect 'data/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_rdf',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
+  map.connect 'page/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_html',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
+  # Not a LOD format per-se, but the request for Talia XML with a similarly formatted url
+  map.connect 'xml/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_xml',
+    :requirements => { :dispatch_uri => /[^\.]+/ }
   # Default semantic dispatch
   map.connect ':dispatch_uri.:format', :controller => 'sources', :action => 'dispatch',
     :requirements => { :dispatch_uri => /[^\.]+/ }
-
-
-
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -79,10 +88,10 @@ ActionController::Routing::Routes.draw do |map|
   #     admin.resources :products
   #   end
 
+  # See how all your routes lay out with "rake routes"
+
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
    map.root :controller => "sources", :action => 'index'
-
-  # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
