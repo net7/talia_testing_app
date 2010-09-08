@@ -37,6 +37,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect 'boxView/', :controller => 'boxView', :action => 'index'
   map.connect 'boxView/dispatch', :controller => 'boxView', :action => 'dispatch'
+  map.connect 'boxView/graph_xml/:id', :controller => 'boxView', :action => 'graph_xml'
  
   map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
   map.resources :requirements => { :id => /.+/}

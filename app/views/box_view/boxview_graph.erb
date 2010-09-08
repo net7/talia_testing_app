@@ -1,0 +1,34 @@
+<%
+    id = "graph_#{@source_name.gsub(' ', '_')}"
+%>
+
+<div class='widget'>
+    <div class='widgetHeader'>
+        <h3 class='widgetHeaderTitle'>Graph</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded'>
+        SWFObject initialization, pick up values from /something/to_xml, into some resizeme div
+        <br /><br />
+        <% @source.direct_predicates.each do |p| %>
+            <%= p %> --- <%= @source[p].values_with_lang(I18n.locale.to_s) %><br />
+        <% end %>
+        <br /><br />
+            <div id="<%= "container_#{id}" %>" class='resizeme' style='width: 400px; height: 400px;'>
+                <div id="<%= id %>">Il grafo va qui.</div>
+            </div>
+            
+        <script type="text/javascript"> 
+			// <![CDATA[
+			var so = new SWFObject("/GraphGear.swf", "<%= id %>", "400", "400", "8");
+			so.addVariable("graphXMLFile", "/boxView/graph_xml/<%= Base64.encode64s(@source.uri.to_s) %>"); // rename to your xml file
+			so.addParam("allowScriptAccess", "always");
+			so.addParam("scale", "noborder");
+			so.addParam("salign", "tl");
+            so.write("<%= "container_#{id}" %>");           
+			// ]]>
+		</script>
+    </div>
+</div>

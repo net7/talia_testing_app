@@ -11,6 +11,7 @@
     <%= stylesheet_link_tag 'boxView/ez.css' %>
     <%= stylesheet_link_tag 'boxView/jquery-ui-1.7.2.custom.css' %>
 
+    <%= javascript_include_tag 'swfobject' %>
     <%= javascript_include_tag 'jquery-1.4.1.min' %>
     <%= javascript_include_tag 'jquery-ui-1.7.1.custom.min' %>
     <%= javascript_include_tag 'boxView/eztip.js' %>
@@ -104,7 +105,7 @@
   }
 
   // TODO: move this code somewhere else
-  function fake_initialize() { console.log ('gmap initialized'); }
+  function fake_initialize() { }
   function loadScript() {
     var script = document.createElement("script");
     script.type = "text/javascript";

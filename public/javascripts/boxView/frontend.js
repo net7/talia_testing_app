@@ -44,7 +44,7 @@ $(document).ready(function() {
         "animateCollapse": false,
         "animateResize": false,
         "animationLength": 400, 
-        "debug": true,
+        "debug": false,
         "encodeResId": false,
         "onRemove": function() { updateUndoButton(); myAnchorMan.set_section("bv", myBoxView.getAnchorManDesc()); },
         "onSort": function() { myAnchorMan.set_section("bv", myBoxView.getAnchorManDesc()); },
@@ -67,7 +67,7 @@ $(document).ready(function() {
     // .. and preferences
     myPrefs = new $.doniPrefs({ boxView: myBoxView, eztip: myEztip, bookmarks: myBookmarks, debug: false });
 
-    myAnchorMan = new $.anchorMan({debug: true, "checkBackButtonTimerMS": 250, "useCookie": false});
+    myAnchorMan = new $.anchorMan({debug: false, "checkBackButtonTimerMS": 250, "useCookie": false});
 	myAnchorMan.add_callbacks("bv", {	
 	    "onAdd": 
 			function(myId, myResId, ty, co, qstring) {
@@ -200,8 +200,6 @@ $('a.quotation_link').live("click", function() {
 });
 
 function _loadResource(link, givenHref, givenId, givenCollapsed) {
-
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ LOAD RESOURCE "+link+" - ", givenHref);
 
     // Set last link as "last_visited", other visited to "visited"
     if (typeof link.addClass == "function") {
