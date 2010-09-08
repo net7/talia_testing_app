@@ -5,46 +5,55 @@
 <include src="taglibs/auto/admin/rapid/cards"/>
 <include src="taglibs/auto/admin/rapid/pages"/>
 <include src="taglibs/auto/admin/rapid/forms"/>
+<include src="taglibs/cards"/>
+<include src="taglibs/forms"/>
+
 
 <set-theme name="clean"/>
 
 <def tag="app-name">Talia Admin Panel</def>
 
-<def tag="card" for="TaliaCollection">
-  <card class="talia-collection" param="default" merge>
-    <header: param>
-      <h4 param="heading"><a><name/></a></h4>
-    </header:>
-	<body:>
-		Contains <%= this.real_collection.elements.size %> Sources
-	</body:>
-  </card>
+
+<def tag="single-connection" attrs="typename, attribute, type, options">
+    <% typename ||= (this.class.name.underscore || type.underscore) %>
+    <% options ||= type.constantize.all.collect { |el| [ "#{el.name}", el.uri.to_s ] }.sort %>
+    <% attribute_el       = this.send(attribute.to_sym) %>
+    <if test              = "&attribute_el.blank?">
+        <select-menu name = "#{typename}[#{attribute}]"
+            options       = "&options"
+            first-option  = "&I18n.t('text_page.select_one')" />
+    </if>
+    <else>
+        <select-menu name = "#{typename}[#{attribute}]"
+            options       = "&options"
+            selected      = "&attribute_el.uri.to_s" />
+    </else>
 </def>
 
-<def tag="card" for="TaliaSource">
-  <card class="talia-source" param="default" merge>
-    <header: param>
-      <h4 param="heading"><a><name/></a></h4>
-    </header:>
-	<body:>
-		<div><%= this.uri %> | <%= this.short_type %></div>
-		<div>
-			<% source_uri = this.to_uri.safe_encoded %>
-			<% can_update = this.with_acting_user(current_user) { this.update_permitted? } %>
-			<repeat with="&TaliaCore::Collection.find(:all, :find_through => [N::DCT.hasPart, this.to_uri])" join=", ">
-				<%= this.to_uri.local_name %> 
-				<if test="&can_update">
-				<remote-method-button method="disjoin_collection" label="x" 
-					params="&{:collection => this.to_uri.safe_encoded, :source => source_uri }" 
-					url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_collection')}"
-					spinner-next-to="#{source_uri}"
-					message="Deleting..."
-					/>
-				</if>
-			</repeat>
-		</div>
-	</body:>
-  </card>
+<def tag="collection-sidebar">
+	<h2><ht key="talia_collections.model_name_plural">Collections</ht></h2>
+	<collection>
+		<item:>
+			<div id="#{this.to_uri.safe_encoded}">
+				<card/>
+			</div>
+		</item:>
+		<after-item:>
+			<if test="&this.updatable_by?(current_user)">
+				<%= drop_receiving_element(this.to_uri.safe_encoded,
+				:url => { :controller => 'admin/talia_sources', :action => 'assign_collection' },
+				:with => "'source=' + encodeURIComponent(element.id) + '&collection=#{this.to_uri.safe_encoded}'",
+				:hoverclass => 'drop_ready'
+				) %>
+			</if>
+		</after-item:>
+		<empty-message:><ht key="talia_collections.empty_message">No collections found</ht></empty-message>
+	</collection>
+</def>
+
+
+<def tag="delete-icon">
+    <delete-button image='../images/icons/cross.png' class="button-float" />
 </def>
 
 <def tag="prop-language">
@@ -79,7 +88,7 @@
 		</header:>
 		<body:><p><%= this.uri.to_s %></p></body:>
 	</card>
-	
+
 </def>
 
 <def tag="property-card">
@@ -93,19 +102,18 @@
 		<property-card repeat param/>
 	</repeat:>
 </def>
-
 <def tag="sidebared-content">
 	<section-group>
 		<section param="main-content">
 			<header param="content-header">
 				<h2 param="heading">
-         				<ht key="talia_sources.index.heading">
+         				<ht key="#{model.name.tableize}.index.heading">
 						<%= model.name.titleize.pluralize %>
          				</ht>
        			</h2>
 
 				<p param="count" if>
-					<ht key="talia_sources.collection.count" count="&this.size">
+					<ht key="#{model.name.tableize}.collection.count" count="&this.size">
 						There <count prefix="are"/>
 					</ht>
 				</p>
@@ -113,11 +121,11 @@
 
 			<section param="content-body">
 				<a action="new" to="&model" param="new-link">
-					<ht key="talia_sources.actions.new">New <%= model.name.titleize %></ht>
+					<ht key="#{model.name.tableize}.actions.new">New <%= model.name.titleize %></ht>
 				</a>
 
 				<page-nav param="top-page-nav"/>
-				
+
 				<section>
 					<collection param />
 				</section>
@@ -130,16 +138,15 @@
 <def tag="main-nav">
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/admin">Home</nav-item>
-    <% models = Hobo::Model.all_models.select { |m| linkable?(m, :index) }.sort_by &:name -%>
+    <% models = Hobo::Model.all_models.select { |m| linkable?(m, :index) && not_hidden?(m) }.sort_by &:name -%>
     <repeat with="&models">
       <nav-item><ht key="#{this.name.tableize}.nav_item"><%= this.view_hints.model_name_plural %></ht></nav-item>
     </repeat>
-	<nav-item href="#{url_for(:controller => 'admin/import', :action => 'index')}">Import</nav-item>
   </navigation>
 </def>
 
-<extend tag="page">
-  <old-page merge without-live-search>
-	<app-name: replace><h1><a href="#{base_url}/admin/"><app-name/></a></h1></app-name>
-  </old-page>
-</extend>
+<%#*<extend tag="page">%>
+  <%#*<old-page merge without-live-search>%>
+	<%#*<app-name: replace><h1><a href="#{base_url}/admin/"><app-name/></a></h1></app-name>%>
+  <%#*</old-page>%>
+<%#*</extend>%>

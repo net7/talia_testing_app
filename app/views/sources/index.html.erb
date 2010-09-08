@@ -37,7 +37,9 @@
 
 <h3 class="toggle">Filter</h3>
 <div id="home_filter">
+<%#= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
 <%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
+
 </div>
 
 
@@ -53,7 +55,7 @@ $(document).ready(function()
 
 <div class="sources_list">
 
-<h3>Sources found: <%= @sources.total_entries  %></h3>
+<%#*<h3>Sources found: <%= @sources.total_entries  %></h3>%>
 
 
 <table id="sources_table" class="tablesorter" style="width:100%;">
@@ -78,7 +80,7 @@ $(document).ready(function()
 	<span class="source_title" property="dc:title"><%= title_for(source) %></span>
  </td>
  <td>
-	<span class="source-data"><%= data_icons(source.data_records) %></span>
+	<span class="source-data"><%= data_icons(source) %></span>
  </td>
  <td>
 	<span class="more"> <%= link_to 'more...', :action => 'dispatch', :dispatch_uri => N::URI.new(source.uri).local_name %></span>
@@ -89,4 +91,4 @@ $(document).ready(function()
 </table>
 </div>
 
-<%= will_paginate @sources %>
+<%#= will_paginate @sources %>

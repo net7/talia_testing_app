@@ -1,5 +1,30 @@
+<% can_edit_stuff = @talia_collection.updatable_by?(current_user) %>
 <show-page>
 	<content-body: >
-		<field-list fields="name" />
+		<field-list fields="title" />	
+		<collection with="&this.real_source.elements" id="collection_order">
+			<item: id="item_#{this.id}">
+		      <div class="ordering-handle" if="&can_edit_stuff">&uarr;<br/>&darr;</div>
+		      <card />
+		    </item:>
+			<empty-message:>This collection is empty</empty-message:>
+		</collection>
+		<%= if Hobo::Dryml.last_if
+		        opts = { :url => { :controller => 'talia_collections', :action => 'reorder', :id => @talia_collection.to_uri.safe_encoded},
+		                 :constraint => :vertical,
+		                 :overlap => :vertical,
+		                 :scroll => :window,
+		                 :handle => 'ordering-handle',
+		                 :complete => [visual_effect(:highlight, 'book_order')]
+		                }
+		        sortable_element 'collection_order', opts
+		      end # FIXME: Make unobstrusive
+		   %>
 	</content-body>
 </show-page>
+
+<%#*<show-page>%>
+	<%#*<content-body: >%>
+		<%#*<field-list fields="name" />%>
+	<%#*</content-body>%>
+<%#*</show-page>%>

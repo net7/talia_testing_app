@@ -30,7 +30,7 @@ module TimelineHelper
     data = options.delete(:data)
     options[:timelineElement] = timeline_element
     timeline = Timeline.new(:config => options, :data => data)
-    render(:partial => 'shared/timeline', :object => timeline, :locals => { :element_id => timeline_element })
+    render(:partial => 'shared/timeline', :object => timeline, :locals => { :element_id => timeline_element }) unless timeline.empty?
   end
   
 end
