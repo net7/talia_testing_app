@@ -12,7 +12,9 @@ var myBoxView = null,
     ajaxMethod = "get",
     ajaxApiUrl = "/boxView/dispatch",
     // List of boxes we are currently loading
-    boxesBeingLoaded = {};
+    boxesBeingLoaded = {},
+    // Google maps loaded, the key is the box id
+    gmaps = [];
 
 $(document).ready(function() {
 

@@ -280,7 +280,7 @@
             if (this.options.resizemeImagesForceMaxWidth && resizemeWidth > this.options.resizemeImagesMaxWidth)
                 resizemeWidth = this.options.resizemeImagesMaxWidth;
 
-    		// Autoresize "resizeme" class: img just set the width, divs are flash containers
+    		// Autoresize "resizeme" class: img just set the width, divs are flash or map containers
     		// need to get the ratio and act concordingly
     		var img = $("#" + this.boxOptions[i].id + " img.resizeme"),
                 obj = $("#" + this.boxOptions[i].id + " div.resizeme"),
@@ -290,10 +290,17 @@
     			if (img.width() != resizemeWidth)
     			    if (this.options.animateResize) {
     				    img.animate({width: resizemeWidth}, this.options.animationLength);
-                        obj.animate({width: resizemeWidth, height: objHeight}, this.options.animationLength);
+                        obj.animate({width: resizemeWidth, height: objHeight}, 
+                                    this.options.animationLength, 
+                                    function() { 
+                                        if (obj.attr('about')) 
+                                            google.maps.event.trigger(gmaps[obj.attr('about')], 'resize'); 
+                                     });
     				} else {
                         img.css({width: resizemeWidth});
                         obj.css({width: resizemeWidth, height: objHeight});
+                        if (obj.attr('about')) 
+                            google.maps.event.trigger(gmaps[obj.attr('about')], 'resize'); 
 				    }
 
         } // if !this.dragging

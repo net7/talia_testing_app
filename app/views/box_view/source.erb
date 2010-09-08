@@ -1,24 +1,51 @@
-<div>
-  <% for record in @source.data_records %>
-    <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
+<div class='widget'>
 
-    <%#= iip_flash_viewer(record, 600, 600)%>
-      <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-      <img src="<%= image_url %>" alt="" class="resizeme" /><br/>
-    <% elsif record.is_a?(TaliaCore::DataTypes::ImageData) %>
+<% 
+    # TODO: do a real check to see if there's images or not
+    if @source.data_records %>
 
-    <% end %>
-  <% end %>
+    <div class='widgetHeader'>
+        <h3 class='widgetHeaderTitle'>Images</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded'>
+      <% for record in @source.data_records %>
+        <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
 
-</div>
-<div>
-  <% for record in @source.data_records %>
-    <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-      <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
-      <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-        <h2>This element has <%= ncount %> annotations</h2>
+        <%#= iip_flash_viewer(record, 600, 600)%>
+          <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
+          <img src="<%= image_url %>" alt="" class="resizeme" /><br /><br />
+        <% elsif record.is_a?(TaliaCore::DataTypes::ImageData) %>
+
+        <% end %>
       <% end %>
-      <%= thctag(element_uri, record.content_string) %>
-    <% end %>
-  <% end %>
+    </div>
+<% end %>  
+
+
+<% 
+    # TODO: do a real check to see if there's annotations or not
+    if @source.data_records %>
+    <div class='widgetHeader'>
+        <h3 class='widgetHeaderTitle'>Annotations</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded'>
+      <% for record in @source.data_records %>
+        <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
+          <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
+          <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
+            <h2>This element has <%= ncount %> annotations</h2>
+          <% end %>
+          <%= thctag(element_uri, record.content_string) %>
+        <% end %>
+      <% end %>
+    </div>
+<% end %>
+    
+    
 </div>

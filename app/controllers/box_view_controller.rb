@@ -72,19 +72,17 @@ class BoxViewController < ApplicationController
   def render_source
     source_uri = Base64.decode64(params[:resource])
     @source = TaliaCore::ActiveSource.find(source_uri)
-    
+    @source_name = @source.uri.to_uri.local_name.to_s.gsub('_', ' ')
+      
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
     if  N::DEMO.Person.in? types
       html = render_to_string :person
     elsif N::DEMO.City.in? types
       html = render_to_string :boxview_google_map
-      
-      coordinates = @source[N::DEMO.coordinates].first
-      maps_data = { :lat => coordinates.split(',').first, :lng => coordinates.split(',').last }
     else
       html = render_to_string :source
     end
-    data = {'box' => TaliaCore::ActiveSource.find(source_uri).uri.to_uri.local_name.to_s.gsub('_', ' ')}
+    data = {'box' => @source_name}
 
     render_json(0, html, data)
   end

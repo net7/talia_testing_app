@@ -3,6 +3,7 @@
         if !(coordinates = @source[N::DEMO.coordinates].first).nil? 
             lat = coordinates.split(',').first
             lng = coordinates.split(',').last
+            about = @source_name.gsub('_', ' ')
 %>
 
     <div class='widgetHeader'>
@@ -12,7 +13,10 @@
     	</div>
     </div>
     <div class='widgetContent expanded'>
+        <div class="map_canvas resizeme" style='width: 400px; height: 400px' about="<%= about %>"></div>
         <script type="text/javascript">
+            // FIXME: added static dimension of the map_canvas to allow the map to pan to the
+            // given marker .. 
             (function() {
                 var lat = '<%= lat %>',
                     lng = '<%= lng %>',
@@ -21,19 +25,15 @@
                         zoom: 4,
                         center: myLatlng,
                         mapTypeId: google.maps.MapTypeId.HYBRID
-                    };
-                var map = new google.maps.Map($(".map_canvas:last")[0], myOptions);
-                var marker = new google.maps.Marker({
-                    position: myLatlng, 
-                    map: map
-                });
+                    },
+                    map = new google.maps.Map($(".map_canvas[about='<%= about %>']")[0], myOptions),
+                    marker = new google.maps.Marker({
+                        position: myLatlng, 
+                        map: map
+                    });
+                gmaps['<%= about %>'] = map;
             })();
-            // TODO: boxview should call some GMaps resize event on resize
-            // im afraid this has to be moved in some proper javascript function
-            // that tracks the map object and the id of the box to call resize on .. 
-            // or use some [about] attribute to access it ... 
         </script>
-        <div class="map_canvas resizeme"></div>
     </div>
 
 <% end %>
