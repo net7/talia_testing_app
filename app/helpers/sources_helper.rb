@@ -182,7 +182,7 @@ module SourcesHelper
 
       result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
         :action => 'index', :filter => t.to_name_s('+')
-      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
     end
     result
   end
@@ -224,7 +224,7 @@ module SourcesHelper
       name = t.local_name.titleize
       result << link_to(image_tag("demo/types_medium/#{image}.png", :alt => name, :title => name, :width => "64px"),
         :action => 'index', :filter => t.to_name_s('+')
-      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
     end
     result
   end
