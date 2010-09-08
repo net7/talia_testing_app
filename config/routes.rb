@@ -41,7 +41,8 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
   map.resources :requirements => { :id => /.+/}
 
- 
+  # Semantic sitemap
+  map.connect '/sitemap.xml', :controller => 'ontologies', :action => 'index'
 
   # Linked Open Data formatted requests
   # http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
@@ -87,10 +88,10 @@ ActionController::Routing::Routes.draw do |map|
   #     admin.resources :products
   #   end
 
+  # See how all your routes lay out with "rake routes"
+
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
    map.root :controller => "sources", :action => 'index'
-
-  # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
