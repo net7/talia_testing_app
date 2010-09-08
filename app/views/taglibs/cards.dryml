@@ -1,0 +1,119 @@
+
+<def tag="card" for="TaliaSource">
+  <card class="talia-source" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a><delete-icon /></h4>
+    </header:>
+    <body:>
+
+      <source-collections />
+      <source-files/>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="TaliaCollection">
+  <card class="talia-collection" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><%= this.title %></a><delete-icon /></h4>
+    </header:>
+    <body:>
+
+      <ht key="talia_collections.side_collection.count" count="&this.real_source.elements.size">
+			Contains <%= this.real_source.elements.size %> Sources
+      </ht>
+
+    </body:>
+  </card>
+</def>
+
+
+<def tag="card-with-drag-handle">
+  <% drag_id = this.to_uri.safe_encoded %>
+  <div id="#{drag_id}">
+    <card>
+      <before-heading:>
+        <if test="&this.updatable_by?(current_user)"><div class="drag_handle">&nbsp;</div></if>
+      </before-heading:>
+    </card>
+  </div>
+  <if test="&this.updatable_by?(current_user)">
+    <%= draggable_element(drag_id,
+      :handle => "'drag_handle'",
+      :revert => true,
+      :ghosting => true,
+      :scroll => 'window' ) %>
+  </if>
+</def>
+
+<def tag="source-files">
+  <% source_uri = this.to_uri.safe_encoded %>
+  <% source = this %>
+  <% can_update = this.updatable_by?(current_user) %>
+  <div id="#{source_uri}_files">
+    <if test="&!this.data_records.blank?">
+
+      <ht key="taliasource.files">Files</ht>:<br/>
+      <repeat with="&this.data_records.find(:all)">
+        <if test="&this.class != TaliaCore::DataTypes::IipData">
+
+          <a href="&url_for(:controller => '/source_data', :action => :show, :disposition => :attachment, :id => this.id)">
+
+            <%= this.location %>
+          </a>
+          <if test="&can_update">
+            <remote-method-button method="delete_file" label="x"
+                                  params="&{:file_class => this.class, :source => source_uri, :file_location => this.location }"
+                                  url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_file')}"
+                                 
+                                  message="Deleting..."
+                                  confirm="Confirm file deletion? (can't be reverted)"
+                                  />
+          </if><br/>
+        </if>
+      </repeat>
+    </if>
+  </div>
+</def>
+
+<def tag="source-collections">
+  <% source_uri = this.to_uri.safe_encoded %>
+  <% can_update = this.updatable_by?(current_user) %>
+  <repeat with="&TaliaCore::Collection.find(:all, :find_through => [N::DCT.hasPart, this.to_uri])" join=", ">
+    <%= this.title || this.to_uri.local_name %>
+    <if test="&can_update">
+      <remote-method-button method="disjoin_collection" label="x"
+                            params="&{:collection => this.to_uri.safe_encoded, :source => source_uri }"
+                            url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_collection')}"
+                            spinner-next-to="#{source_uri}"
+                            message="Deleting..."
+                            />
+    </if>
+  </repeat>
+</def>
+
+
+<def tag="field-edit-table" polymorphic>
+  <table class="field-list">
+    <do param="content" />
+  </table>
+</def>
+
+<def tag="field-row" attrs="fieldname">
+  <tr>
+    <th class="#{fieldname}-label" param="label"><ht key="#{this.class.name.tableize}.#{fieldname}"><%= fieldname.titleize %></ht></th>
+<td class="#{fieldname}-view" param="view"><base-card-link with="&this[fieldname.to_sym]" /></td>
+</tr>
+</def>
+
+<def tag="field-edit-row" attrs="fieldname">
+  <field-row fieldname="&fieldname">
+    <view:><input field="&fieldname" /></view:>
+  </field-row>
+</def>
+
+<def tag="single-connection-row" attrs="fieldname">
+  <field-row fieldname="&fieldname">
+    <view:><single-connection attribute="&fieldname" merge /></view:>
+  </field-row>
+</def>
