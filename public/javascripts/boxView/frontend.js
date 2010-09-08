@@ -201,7 +201,7 @@ $('a.quotation_link').live("click", function() {
 
 function _loadResource(link, givenHref, givenId, givenCollapsed) {
 
-    // console.log("LOAD RESOURCE "+link+" - ", givenHref);
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@ LOAD RESOURCE "+link+" - ", givenHref);
 
     // Set last link as "last_visited", other visited to "visited"
     if (typeof link.addClass == "function") {
@@ -215,7 +215,7 @@ function _loadResource(link, givenHref, givenId, givenCollapsed) {
         context = data_values['contexts'],
         info = getBoxInfoFromMethod(data_values['method']);
 
-    if (data_values['method'] == "getIndex")
+    if (data_values['method'] == "filter")
         return _loadIndex(link, givenHref, givenCollapsed);
     
     $.ajax({
@@ -278,8 +278,6 @@ $('div#menu_container a.indexLink').live("click", function() {
 });
 
 function _loadIndex(link, givenHref, givenCollapsed) {
-
-    // console.log("LOAD INDEX "+link+" - ", givenHref);
 
     var href = (typeof(givenHref) == 'undefined') ? link.attr('href') : givenHref,
         collapsed = (typeof(givenCollapsed) == 'undefined') ? 0 : parseInt(givenCollapsed),
