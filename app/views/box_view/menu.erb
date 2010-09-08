@@ -24,11 +24,10 @@
     <ul style='display: none;'>
       <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Artist', :label => 'Artists'}) %>
       <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Caliph', :label => 'Caliphs'}) %>
+      <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Person', :label => 'All Person'}) %>
     </ul>
   </li>
 
-
-  <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Person', :label => 'All Person'}) %>
   <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Event', :label => 'Events'}) %>
   <%= render(:partial => 'menu_entry', :locals => {:type => 'foaf+Organization', :label => 'Organizations'}) %>
   <%= render(:partial => 'menu_entry', :locals => {:type => 'demo+Transcription', :label => 'Transcriptions'}) %>

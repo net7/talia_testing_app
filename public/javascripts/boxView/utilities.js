@@ -73,7 +73,7 @@ function getBoxInfoFromMethod(method) {
         case 'getSource':
             return {boxType: 'source', vertPrefix: "Source: "};
         case 'filter':
-            return {boxType: 'filter', vertPrefix: "Filter: "};
+            return {boxType: 'index', vertPrefix: "Index: "};
         default : 
             console.log("############### Unknown method "+method);
             return {boxType: "resourceBox", vertPrefix: "??? Tipo di box???: "};

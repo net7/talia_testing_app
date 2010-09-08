@@ -67,7 +67,7 @@ $(document).ready(function() {
     // .. and preferences
     myPrefs = new $.doniPrefs({ boxView: myBoxView, eztip: myEztip, bookmarks: myBookmarks, debug: false });
 
-    myAnchorMan = new $.anchorMan({debug: false, "checkBackButtonTimerMS": 250, "useCookie": false});
+    myAnchorMan = new $.anchorMan({debug: true, "checkBackButtonTimerMS": 250, "useCookie": false});
 	myAnchorMan.add_callbacks("bv", {	
 	    "onAdd": 
 			function(myId, myResId, ty, co, qstring) {
