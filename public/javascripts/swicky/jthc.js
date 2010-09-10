@@ -63,7 +63,8 @@ $(function() {
              
              // Use the about attribute of the body tag as well
              //this.uris.push($('body').attr('about'));
-             this.uris.push(window.location);
+             var page_url = window.location + '';
+             this.uris.push(page_url);
 
              for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
