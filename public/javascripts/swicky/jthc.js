@@ -62,8 +62,9 @@ $(function() {
              this.uris = THCTag.getContentURIs();
              
              // Use the about attribute of the body tag as well
-             this.uris.push($('body').attr('about'));
-             
+             //this.uris.push($('body').attr('about'));
+             this.uris.push(window.location);
+
              for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
             
