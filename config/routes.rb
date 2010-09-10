@@ -42,7 +42,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :requirements => { :id => /.+/}
 
   # Semantic sitemap
-  map.connect '/sitemap.xml', :controller => 'ontologies', :action => 'index'
+  # TODO: ontologies controller is NOT a sitemap, it is used by swickynotes to get local ontologies.
+  #       when actually adding an ontology, the controller can be used as an example though, as its results
+  #       are very similar.
+  # map.connect '/sitemap.xml', :controller => 'ontologies', :action => 'index'
 
   # Linked Open Data formatted requests
   # http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/

@@ -98,6 +98,7 @@ class SourcesController < ApplicationController
   def dispatch_html
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
+    response.content_type = Mime::HTML
     if source
       callback
       render :action => template_for(source)
@@ -117,6 +118,7 @@ class SourcesController < ApplicationController
   def dispatch_rdf
     # If we come here, it means that we want RDF, no matter what :format says
     request.format = 'rdf'
+    response.content_type = Mime::RDF
     if source
       callback
       render :text => @source.to_rdf
@@ -136,6 +138,7 @@ class SourcesController < ApplicationController
   def dispatch_xml
     # If we come here, it means that we want XML, no matter what :format says
     request.format = 'xml'
+    response.content_type = Mime::XML
     if source
       callback
       render :text => @source.to_xml

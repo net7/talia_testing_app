@@ -11,4 +11,12 @@ class OaiController < ApplicationController
     end
     render :text => response, :content_type => 'text/xml'
   end
+
+  # Don't need i18n here
+  def set_locale
+  end
+
+  def default_url_options(options={})
+    {}
+  end
 end
