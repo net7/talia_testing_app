@@ -46,7 +46,7 @@
 <% elsif !@source[N::DCNS.description].empty? %>
   <h3 class="toggle">Description</h3>
   <div>
-    <%= @source[N::DCNS.description].first %>
+    <%= @source[N::DCNS.description].values_with_lang(I18n.locale.to_s).first %>
   </div>
 <% end %>
 
