@@ -69,9 +69,9 @@ module SourcesHelper
     elsif source[N::RDFS.label].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::RDFS.label].first.nil?
       source[N::RDFS.label].values_with_lang(I18n.locale.to_s).first
     elsif source[N::DCNS.title].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::DCNS.title].first.nil?
-      source[N::DCNS.title].first
+      source[N::DCNS.title].first.to_s
     else
-      source[N::DCNS.title]
+      source[N::DCNS.title].to_s
     end
     
 
@@ -253,6 +253,21 @@ module SourcesHelper
       #                ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
     end
 
+    result
+  end
+
+  # Returns a list of all images related to sources. To be used by amazon_scroller
+  def source_images_amazon_scroller(sources)
+    result = []
+    sources.each do |s|
+      if (images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+        images.each do |image|
+          has_iip = data_record_has_an_iip_related(s, image)
+          image = has_iip || image
+          result << {:uri => s.uri.to_s, :title => title_for(s), :image => image}
+        end
+      end
+    end
     result
   end
 
