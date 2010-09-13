@@ -1012,7 +1012,7 @@ THCTagCore.Annotate = {
 		deselect.setAttribute("about", xpointer);
 		
 		var icon = document.createElement('img');
-		icon.setAttribute("src","stylesheets/swicky/icons/cross.png");
+		icon.setAttribute("src","/stylesheets/swicky/icons/cross.png");
 		// icon.setAttribute('onclick', "THCTagCore.Annotate.deselectFragment(); return false;");
 		icon.setAttribute("style", "cursor:pointer; border:none;padding:1px;margin:0px;position:static;display:inline;");
 		icon.setAttribute("alt", "[close]");
@@ -1044,7 +1044,7 @@ THCTagCore.Annotate = {
         //imageIcon.setAttribute("id", elementName + "-icon");
         imageIcon.setAttribute("id", hash + "-icon");
         imageIcon.setAttribute("class", thcButtonName);
-        imageIcon.setAttribute("src", "stylesheets/swicky/baloon.png");
+        imageIcon.setAttribute("src", "/stylesheets/swicky/baloostn.png");
         imageIcon.setAttribute("alt", "[note]");
         imageIcon.setAttribute("style", "cursor:pointer; border:none;padding:2px;margin:0px;position:static;display:inline;");
         selectionLink.appendChild(imageIcon);

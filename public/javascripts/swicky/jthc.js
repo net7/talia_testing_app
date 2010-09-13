@@ -62,8 +62,10 @@ $(function() {
              this.uris = THCTag.getContentURIs();
              
              // Use the about attribute of the body tag as well
-             this.uris.push($('body').attr('about'));
-             
+             //this.uris.push($('body').attr('about'));
+             var page_url = window.location + '';
+             this.uris.push(page_url);
+
              for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
             
@@ -161,7 +163,7 @@ $(function() {
                 dataType: 'json',
                 type: 'POST',
                 success: function(data) { 
-                    if (data && data.lenght){
+                    if (data){
                     // TODO: sanity checks on length? 
                     self.log("## Got "+data.length+" new fragments for: "+uri);
 
@@ -176,7 +178,7 @@ $(function() {
                         }
                         
                         self.askForXPointers();
-                    
+//                    }
                     } else {
                         self.log("## No fragments associated to "+uri);
                     }

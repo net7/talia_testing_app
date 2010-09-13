@@ -14,4 +14,16 @@ class FileWorker < Workling::Base
     source.save!
   end
 
+  def web_import(options)
+    logger.debug("\033[35m\033[4m\033[1mFileWorker\033[0m Begin to process import file #{options[:file_name]}")
+    puts options.inspect
+    ENV['xml'] = options[:file_name]
+    importer = TaliaUtil::ImportJobHelper.new(logger, TaliaUtil::BarProgressor)
+    importer.do_import
+    logger.info("\033[35m\033[4m\033[1mFileWorker\033[0m Successfully attached file (#{options[:file_name]})")
+  rescue Exception => e
+    logger.error("\033[35m\033[4m\033[1mFileeWorker\033[0m Could not attach the file with #{options[:file_name]}: #{e.message}")
+    e.backtrace.each { |msg| logger.debug msg }
+  end
+
 end

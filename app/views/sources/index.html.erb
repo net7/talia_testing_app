@@ -19,12 +19,11 @@
                 ], :data => { :source_finder => @conditions, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
 </div>
 
+
 <!--
 <h3 class="toggle closed">Sources map</h3>
 -->
 <%
-    #sources = TaliaCore::ActiveSource.find(:all, :prefetch_relations => true)
-    #sources = TaliaCore::ActiveSource.find(:all, @conditions)
     sources = TaliaCore::Source.find(:all, @conditions)
     coordinates = []
     sources.each do |src|
@@ -35,10 +34,15 @@
 %>
 <%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
 
+
+<% sources = TaliaCore::Source.find(:all, @conditions) %>
+  <%= render :partial => 'amazon_scroller', :locals => {:sources => sources} %>
+
+
 <h3 class="toggle">Filter</h3>
 <div id="home_filter">
 <%#= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
-<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
+<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
 
 </div>
 
@@ -55,10 +59,15 @@ $(document).ready(function()
 
 <div class="sources_list">
 
-<%#*<h3>Sources found: <%= @sources.total_entries  %></h3>%>
+<h3>Sources found:
+  <%= @sources.total_entries  %>
+  <%#=  @sources.count %>
 
+  <% if @filter %> (Showing only <%= label_for(@filter) %>)<% end %>
 
-<table id="sources_table" class="tablesorter" style="width:100%;">
+</h3>
+
+  <table id="sources_table" class="tablesorter" style="width:100%;">
 	<thead> 
 	<tr> 
 	    <th>Types</th> 
@@ -91,4 +100,4 @@ $(document).ready(function()
 </table>
 </div>
 
-<%#= will_paginate @sources %>
+<%= will_paginate @sources %>

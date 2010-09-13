@@ -1,6 +1,7 @@
 <edit-page>
-  <after-content:>
-    <source-files/>
-  </after-content:>
+  <section class="content-body">
+    <field-list replace fields="name" />
+                        <source-files/>
+  </section>
 </edit-page>
 

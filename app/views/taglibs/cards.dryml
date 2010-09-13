@@ -5,7 +5,7 @@
       <h4 param="heading"><a><name/></a><delete-icon /></h4>
     </header:>
     <body:>
-
+      (<%= this.uri %>)
       <source-collections />
       <source-files/>
     </body:>

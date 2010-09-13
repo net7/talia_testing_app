@@ -1,7 +1,7 @@
 <show-page>
 	<content-body: replace>
 		<section class="content-body">
-			<field-list replace fields="name" />
+			<field-list replace fields="name, uri" />
                         <source-files/>
                 </section>
 	</content-body:>

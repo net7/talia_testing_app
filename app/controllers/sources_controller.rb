@@ -10,21 +10,22 @@ class SourcesController < ApplicationController
   def index
     @rdf_types ||= self.class.source_types
 
-#    conditions = {}
     conditions = { :prefetch_relations => true, :include => :data_records, :order => "uri"}
+
     if(filter = params[:filter])
-      uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, N::URI.make_uri(filter, '+')).execute
+      @filter = N::URI.make_uri(filter, '+')
+      uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, @filter).execute
       conditions.merge!(:conditions => { :uri => uris.collect { |ur| ur.to_s } })
     end
     if(will_paginate?)
       #     @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
-      @sources = TaliaCore::Source.paginate(conditions.merge(:page => params[:page]))
+      @sources = TaliaSource.paginate(conditions.merge(:page => params[:page]))
     else
       #      @sources = TaliaCore::ActiveSource.find(:all, conditions)
-      @sources = TaliaCore::Source.find(:all, conditions)
+      @sources = TaliaSource.find(:all, conditions)
     end
 
-    @sources = TaliaCore::Source.find(:all, conditions)
+
 
     @conditions = conditions
   end
@@ -98,6 +99,7 @@ class SourcesController < ApplicationController
   def dispatch_html
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
+    response.content_type = Mime::HTML
     if source
       callback
       render :action => template_for(source)
@@ -117,6 +119,7 @@ class SourcesController < ApplicationController
   def dispatch_rdf
     # If we come here, it means that we want RDF, no matter what :format says
     request.format = 'rdf'
+    response.content_type = Mime::RDF
     if source
       callback
       render :text => @source.to_rdf
@@ -136,6 +139,7 @@ class SourcesController < ApplicationController
   def dispatch_xml
     # If we come here, it means that we want XML, no matter what :format says
     request.format = 'xml'
+    response.content_type = Mime::XML
     if source
       callback
       render :text => @source.to_xml
