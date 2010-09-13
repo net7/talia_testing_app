@@ -35,7 +35,9 @@
 <%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
 
 
-<% sources = TaliaCore::Source.find(:all, @conditions) %>
+<% # we already have sources from the google_multi partial above
+   # uncomment this if moved away
+   # sources = TaliaCore::Source.find(:all, @conditions) %> 
   <%= render :partial => 'amazon_scroller', :locals => {:sources => sources} %>
 
 
