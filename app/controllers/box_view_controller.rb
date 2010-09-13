@@ -90,9 +90,6 @@ class BoxViewController < ApplicationController
 
   def graph_xml
     
-    puts "11111111111111111111"
-    puts params.inspect
-
     source_uri = Base64.decode64(params[:id])
     @source = TaliaCore::ActiveSource.find(source_uri)
 
@@ -100,6 +97,7 @@ class BoxViewController < ApplicationController
 
     xml.graph(:title => '', :bgcolor => 'ffffff', :linecolor => 'cccccc', :viewmode => 'display', :hideLabel => true) {
 
+      # Root node, bigger and with a different color
       xml.node(:id => Base64.encode64s(@source.uri.to_s), :text => '', :scale => 140, :color => 'cc9900', :textcolor => "ff0000", :hideLabel => true)
 
       @source.direct_predicates.each do |p|
@@ -107,7 +105,8 @@ class BoxViewController < ApplicationController
       end
 
       @source.direct_predicates.each do |p|
-        xml.edge(:sourceNode => Base64.encode64s(p.uri.to_s), :targetNode => Base64.encode64s(@source.uri.to_s), :label => 'Relazione', :textcolor => "000000")
+        uri = p.to_uri
+        xml.edge(:sourceNode => Base64.encode64s(p.uri.to_s), :targetNode => Base64.encode64s(@source.uri.to_s), :label => p.to_name_s, :textcolor => "000000")
       end
     }
     render :xml => xml

@@ -10,8 +10,6 @@
     	</div>
     </div>
     <div class='widgetContent expanded'>
-        SWFObject initialization, pick up values from /something/to_xml, into some resizeme div
-        <br /><br />
         <% @source.direct_predicates.each do |p| %>
             <%= p %> --- <%= @source[p].values_with_lang(I18n.locale.to_s) %><br />
         <% end %>
