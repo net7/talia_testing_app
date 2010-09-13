@@ -16,6 +16,10 @@
     <%= fg_menu_includes %>
     <%= timeline_includes %>
 
+    <% if @source %>
+    <link rel="foaf:primarytopic" href="<%= @source.uri.to_s %>"/>
+    <% end %>
+
   </head>
   <body<%= source_about %>>
 

@@ -46,6 +46,8 @@
 <%#= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
 <%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
 
+<%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
+
 </div>
 
 
@@ -56,8 +58,6 @@ $(document).ready(function()
     } 
 );
 </script>
-
-<%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
 
 <div class="sources_list">
 
