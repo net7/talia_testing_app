@@ -15,7 +15,7 @@
 
       google.load("maps", "2.x");
 
-      (
+     $(document).ready(function(){
         var lat = '<%= lat %>';
         var lng = '<%= lng %>';
 
@@ -27,7 +27,7 @@
         var point = new GLatLng(lat , lng);
         marker = new GMarker(point);
         map.addOverlay(marker);
-      )();
+      });
  
     </script>
     <div id="map_canvas" style="width: 500px; height: 300px"></div>
