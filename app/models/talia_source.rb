@@ -20,13 +20,13 @@ class TaliaSource < TaliaCore::Source
 
   def files
     @files ||= begin
-      files = []
+      result = []
       talia_files.each do |talia_file|
         talia_file.data_records.each do |data_record|
-          files << data_record
+          result << data_record
         end
       end
-      files
+      result
     end
   end
 
@@ -40,31 +40,31 @@ class TaliaSource < TaliaCore::Source
   # then only that file is added to the result; if not, the sencond type is searched for... and so on.
   # Example: source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData.
   def files_of_type(*types)
-    files = []
-    return files if types.size == 0
+    result = []
+    return result if types.size == 0
     types.each do |type|
       unless files_by_type[type.to_s].nil?
-        files_by_type[type.to_s].each {|file| files << file}
+        files_by_type[type.to_s].each {|file| result << file}
         break
       end
     end
-    files
+    result
   end
 
   # Returns an array of data records of type of_type that belong to talia_files that 
   # _do not_ also contain data records of type but_not_of_type.
   # Useful to get images that have no IIP version, for example.
   def files_of_type_diff(of_type, but_not_of_type)
-    files = []
+    result = []
     talia_files.each do |talia_file|
-      can_add = false
+      found_good = false; found_bad = false
       for data_record in talia_file.data_records
-        can_add = true  if data_record.is_a? of_type
-        can_add = false if data_record.is_a? but_not_of_type
+        found_good = true  if data_record.is_a? of_type
+        found_bad = true if data_record.is_a? but_not_of_type
       end
-      files << data_record if can_add
+      result << data_record if found_good and !found_bad
     end
-    files
+    result
   end
 
   def files_by_type

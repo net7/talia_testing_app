@@ -231,28 +231,21 @@ module SourcesHelper
 
   def data_icons(source)
     result = ''
-    data_records = source.files
-    data_records.each do |rec|
-      link_data = data_record_options(rec)
+    source.talia_files.each do |talia_file|
+      if talia_file.has_type TaliaCore::DataTypes::ImageData
+        data_record = talia_file.file_by_type_preference TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData
+      else
+        data_record = talia_file.file
+      end
+      link_data = data_record_options(data_record)
       result << link_to(
-        image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
+        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
         { :controller => 'source_data',
           :action => 'show',
-          :id => rec.id },
+          :id => data_record.id },
         link_data.last
-        # we have both imagedata and iipdata of the images, we only show the IipData one
-        # as it will show the thumbnails (instead of very large images, which make no sense
-        # in the overlay)
-      ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && data_record_has_an_iip_related(source, rec))
-      #          ( source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', rec.location) ||
-      #            # when tiffs are uploaded, the ImageData object has a different extension (png), check if there's a .tif IipData
-      #            # TODO: it's dangerous as two different files with .tif and .png extension are loaded, this ignore the png one...
-      #            source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(rec.location, File.extname(rec.location)) + ".tif") ||
-      #            source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(rec.location, File.extname(rec.location)) + ".tiff")
-      #        ))
-      #                ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
+      )
     end
-
     result
   end
 
