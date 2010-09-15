@@ -231,7 +231,7 @@ module SourcesHelper
 
   def data_icons(source)
     result = ''
-    data_records = source.data_records
+    data_records = source.files
     data_records.each do |rec|
       link_data = data_record_options(rec)
       result << link_to(
@@ -260,11 +260,13 @@ module SourcesHelper
   def source_images_amazon_scroller(sources)
     result = []
     sources.each do |s|
-      if (images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+        # If the source has images, it is a TaliaFile source and the data we want to show is about the 
+        # correspoding "isFileOf" relation object.
         images.each do |image|
           has_iip = data_record_has_an_iip_related(s, image)
           image = has_iip || image
-          result << {:uri => s.uri.to_s, :title => title_for(s), :image => image}
+          result << {:uri => s.owner.uri.to_s, :title => title_for(s.owner), :image => image}
         end
       end
     end

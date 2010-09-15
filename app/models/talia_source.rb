@@ -13,6 +13,96 @@ class TaliaSource < TaliaCore::Source
 
 #  self.inheritance_column = 'foo_source'
 
+  # BY RIK
+  def talia_files
+    @talia_files ||= self[N::TALIA.hasFile]
+  end
+
+  def files
+    @files ||= begin
+      files = []
+      talia_files.each do |talia_file|
+        talia_file.data_records.each do |data_record|
+          files << data_record
+        end
+      end
+      files
+    end
+  end
+
+  # TODO: refactor
+  # Returns an array of data_records related to this source through a N::TALIA.hasFile relation,
+  # but only files of the requested type. Some files may have more than one type, as for example
+  # images, which can have a IIP version and a normal version of the same file.
+  # In such situations is often desired to have only one file in the resulting array, and that file 
+  # should be IIP if present or normal otherwise. This can be done by passing a list of types.
+  # The list will be considered like a preference order: if a file of the first type is found
+  # then only that file is added to the result; if not, the sencond type is searched for... and so on.
+  # Example: source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData.
+  def files_of_type(*types)
+    files = []
+    return files if types.size == 0
+    types.each do |type|
+      unless files_by_type[type.to_s].nil?
+        files_by_type[type.to_s].each {|file| files << file}
+        break
+      end
+    end
+    files
+  end
+
+  # Returns an array of data records of type of_type that belong to talia_files that 
+  # _do not_ also contain data records of type but_not_of_type.
+  # Useful to get images that have no IIP version, for example.
+  def files_of_type_diff(of_type, but_not_of_type)
+    files = []
+    talia_files.each do |talia_file|
+      can_add = false
+      for data_record in talia_file.data_records
+        can_add = true  if data_record.is_a? of_type
+        can_add = false if data_record.is_a? but_not_of_type
+      end
+      files << data_record if can_add
+    end
+    files
+  end
+
+  def files_by_type
+    @files if @files
+    @files = {}
+    talia_files.each do |talia_file|
+      talia_file.data_records.each do |data_record|
+        @files[data_record[:type]] = [] if @files[data_record[:type]].nil?
+        @files[data_record[:type]] << data_record
+      end
+    end
+    @files
+  end
+
+  # BY RIK
+  # TODO: check what we should destroy and when
+  # TODO: refactor!!!!
+  def attach_files(files)
+    files = [files] unless(files.is_a?(Array))
+    files.each do |file|
+      file.to_options!
+      filename = file[:url]
+      assit(filename)
+      options = file[:options] || {}
+      # BEGIN BY RIK
+      talia_file = TaliaFile.new
+      talia_file.assign_random_id
+      talia_file[N::RDFS.label] << File.basename(filename)
+      records = TaliaCore::DataTypes::FileRecord.create_from_url(filename, options)
+      records.each do |rec|
+        talia_file.data_records << rec
+      end
+      talia_file[N::TALIA.isFileOf] = self
+      self[N::TALIA.hasFile] << talia_file
+      # talia_file.save!
+      # END BY RIK
+    end
+  end
 
   def self.file_staging_dir
     @file_staging_dir ||=  begin
@@ -32,7 +122,6 @@ class TaliaSource < TaliaCore::Source
   end
 
   def attach_file(up_file)
-
     content_type = up_file.content_type.to_s
     case content_type
     when 'image/jpeg', 'image/tiff'
@@ -73,6 +162,4 @@ class TaliaSource < TaliaCore::Source
     attached = attached_to_collections
     collections.reject { |col| attached.include?(col) }
   end
-
-
 end

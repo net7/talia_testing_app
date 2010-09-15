@@ -1,52 +1,41 @@
-<% non_iip_data_records = [] %>
-
-<% if data_records_contain_objects_of_type?(@source.data_records, TaliaCore::DataTypes::IipData)  %>
+<% iip_files = @source.files_of_type TaliaCore::DataTypes::IipData %>
+<% if iip_files.size > 0 %>
   <h3 class="toggle closed">Images</h3>
   <div style="display: none;">
-    <% for record in @source.data_records %>
-
-      <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
-        <%= iip_flash_viewer(record, 600, 600)%>
-      <%# elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && !record.mime.include?('image/png')) %>
-
-      <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && data_record_has_an_iip_related(@source, record)) %>
-      <%#*images, unless when they are png, are already inserted as IipData objects%>
-      <% else %>
-        <%  non_iip_data_records << record  %>
-      <%  end %>
-
+    <% for file in iip_files %>
+      <%= iip_flash_viewer file, 600, 600 %>
     <% end %>
   </div>
-<% else %>
-  <% non_iip_data_records = @source.data_records %>
 <% end %>
 
-<% if(non_iip_data_records.size > 0) %>
+<% files = @source.files_by_type %>
+<% files.delete 'TaliaCore::DataTypes::IipData' %>
+
+<% files['TaliaCore::DataTypes::ImageData'] = @source.files_of_type_diff TaliaCore::DataTypes::ImageData, TaliaCore::DataTypes::IipData%>
+<% data_records = [] %>
+<% files.each_value {|type| type.each {|data_record| data_records << data_record}} %>
+
+<% if data_records.size > 0 %>
   <h3 class="toggle">Data Records</h3>
   <div>
-    <%= render(:partial => 'data_list', :locals => {:records => non_iip_data_records}) %>
+    <%= render :partial => 'data_list', :locals => {:records => data_records} %>
   </div>
 <% end %>
 
-
-<% if data_records_contain_objects_of_type?(@source.data_records, TaliaCore::DataTypes::XmlData)  %>
+<% if files['TaliaCore::DataTypes::XmlData'] %>
   <h3 class="toggle">Text</h3>
   <div>
-    <% for record in @source.data_records %>
-      <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-        <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
-        <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-          <h2>This element has <%= ncount %> annotations</h2>
-        <% end %>
-        <%= thctag(element_uri, record.content_string) %>
+    <% for data_record in files['TaliaCore::DataTypes::XmlData'] %>
+      <% element_uri = (@source.uri + "#data#{data_record.id}").to_s %>
+      <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
+        <h2>This element has <%= ncount %> annotations</h2>
       <% end %>
+      <%= thctag(element_uri, data_record.content_string) %>
     <% end %>
   </div>
-
 <% elsif !@source[N::DCNS.description].empty? %>
   <h3 class="toggle">Description</h3>
   <div>
     <%= @source[N::DCNS.description].values_with_lang(I18n.locale.to_s).first %>
   </div>
 <% end %>
-

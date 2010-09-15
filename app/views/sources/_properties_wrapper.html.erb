@@ -1,18 +1,12 @@
 <script type="text/javascript">
-$(document).ready(function()
-    {
-        $("#properties_table").tablesorter();
-		$("#data_table").tablesorter();
-		//hide the all of the element with class msg_body
-		$(".properties_list").hide();
-		//toggle the componenet with class msg_body
-		$(".show_properties").click(function()
-		{
-		  $(".properties_list").slideToggle(600);
-		});
-    }
-);
+$(document).ready(function() {
+  $("#properties_table").tablesorter();
+  $("#data_table").tablesorter();
+  $(".properties_list").hide();
+  $(".show_properties").click(function() {$(".properties_list").slideToggle(600);});
+});
 </script>
+
 <div class="back"><%= index_link %></div>
 <br />
 <%= type_images_medium(@source.types) %>

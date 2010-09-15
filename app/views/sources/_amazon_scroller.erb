@@ -2,11 +2,8 @@
 <% unless source_images_data.empty? %>
   <%= stylesheet_link_tag 'amazon_scroller' %>
   <%= javascript_include_tag 'amazon_scroller' %>
-
-
   <h3 class="toggle">Sources Images</h3>
   <div id="amazon_scroller" class="amazon_scroller">
-
     <div class="amazon_scroller_mask">
       <ul>
         <% source_images_data.each do |data| %>
