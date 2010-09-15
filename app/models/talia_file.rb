@@ -1,6 +1,6 @@
 class TaliaFile < TaliaCore::Source
   def assign_random_id
-    self.uri = (N::LOCAL.source + '/' + RandomId.random_id).to_s
+    self.uri = (N::LOCAL.file + '/' + RandomId.random_id).to_s
   end
 
   def owner

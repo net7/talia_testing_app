@@ -129,7 +129,9 @@ module SourcesHelper
       #        external_link_to(element, predicate)
       #      end
       uri = element.to_uri
-      if(uri.local?)
+      if(predicate == N::TALIA.hasFile.to_s || predicate == N::TALIA.isFileOf.to_s)
+        uri.to_s
+      elsif(uri.local?)
         link_to(title_for(TaliaCore::ActiveSource.find(uri.to_s)), :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
       elsif(predicate == N::RDF.type.to_s)
         link_to(uri.to_name_s, :controller => 'sources', :params => {:filter => uri.to_name_s('+')})
