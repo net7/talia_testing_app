@@ -10,8 +10,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/admin/talia_sources/:action/:id', :controller => 'admin/talia_sources'
   map.connect '/admin/talia_collections/:action/:id', :controller => 'admin/talia_collections'
 
-
-  
   map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'
   map.resources :swicky_notebooks, :path_prefix => 'users/:user_name'
 
@@ -41,6 +39,13 @@ ActionController::Routing::Routes.draw do |map|
  
   map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
   map.resources :requirements => { :id => /.+/}
+
+  # Routes for talia_files flexip stuff
+  map.image_annotations 'image/annotations/:pseudo_id', :controller => 'image/annotations', :action => 'show'
+  map.image_annotations_ajax 'image/annotations/ajax/:method/:pseudo_id', :controller => 'image/annotations', :action => 'service'
+  map.admin_image_annotations 'admin/image/annotations/:pseudo_id', :controller => 'admin/image/annotations', :action => 'show'
+  map.admin_image_annotations_ajax 'admin/image/annotations/ajax/:method/:pseudo_id', :controller => 'admin/image/annotations', :action => 'service'
+
 
   # Semantic sitemap
   # TODO: ontologies controller is NOT a sitemap, it is used by swickynotes to get local ontologies.
