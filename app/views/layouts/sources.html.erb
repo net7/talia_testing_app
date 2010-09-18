@@ -18,6 +18,7 @@
 
     <% if @source %>
     <link rel="foaf:primarytopic" href="<%= @source.uri.to_s %>"/>
+    <link rel="alternate" type="application/rdf+xml" href="<%= @source.uri.to_s %>.rdf" title="Structured Descriptor Document (RDF/XML format)" />
     <% end %>
 
   </head>

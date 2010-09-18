@@ -242,11 +242,17 @@ module SourcesHelper
       link_data = data_record_options(data_record)
       result << link_to(
         image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
-        { :controller => 'source_data',
-          :action => 'show',
-          :id => data_record.id },
+        url_for_data_record(data_record),
         link_data.last
       )
+
+
+#        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
+#        { :controller => 'source_data',
+#          :action => 'show',
+#          :id => data_record.id },
+#        link_data.last
+#      )
     end
     result
   end
