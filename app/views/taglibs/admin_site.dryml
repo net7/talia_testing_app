@@ -145,8 +145,8 @@
   </navigation>
 </def>
 
-<%#*<extend tag="page">%>
-  <%#*<old-page merge without-live-search>%>
-	<%#*<app-name: replace><h1><a href="#{base_url}/admin/"><app-name/></a></h1></app-name>%>
-  <%#*</old-page>%>
-<%#*</extend>%>
+<extend tag="page">
+  <old-page merge without-live-search>
+	<app-name: replace><h1><a href="#{base_url}/admin/"><app-name/></a></h1></app-name>
+  </old-page>
+</extend>

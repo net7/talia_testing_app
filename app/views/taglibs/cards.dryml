@@ -51,26 +51,23 @@
   <% source = this %>
   <% can_update = this.updatable_by?(current_user) %>
   <div id="#{source_uri}_files">
-    <if test="&!this.data_records.blank?">
-
+    <if test="&!this.talia_files.empty?">
       <ht key="taliasource.files">Files</ht>:<br/>
-      <repeat with="&this.data_records.find(:all)">
-        <if test="&this.class != TaliaCore::DataTypes::IipData">
-
+      <repeat with="&this.talia_files">
+        <%#*<if test="&this.class != TaliaCore::DataTypes::IipData">%>
           <a href="&url_for(:controller => '/source_data', :action => :show, :disposition => :attachment, :id => this.id)">
-
-            <%= this.location %>
+            <%= this.file.location %>
           </a>
           <if test="&can_update">
             <remote-method-button method="delete_file" label="x"
-                                  params="&{:file_class => this.class, :source => source_uri, :file_location => this.location }"
+                                  params="&{:file_class => this.file.class, :source => source_uri, :talia_file_uri => this.uri}"
                                   url="#{url_for(:controller => 'admin/talia_sources', :action => 'remove_file')}"
-                                 
+
                                   message="Deleting..."
                                   confirm="Confirm file deletion? (can't be reverted)"
                                   />
           </if><br/>
-        </if>
+        <%#*</if>%>
       </repeat>
     </if>
   </div>

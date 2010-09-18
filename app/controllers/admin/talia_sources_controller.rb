@@ -41,7 +41,7 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
   # attach files to the created/updated source
   def add_files(source, files)
     files.each do |f|
-      source.attach_file(f) if File.file?(f)
+      source.upload_file(f) if File.file?(f)
     end unless files.nil?
   end
 
@@ -66,15 +66,10 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
   # Remove a file from the current source
   def remove_file
 
-    file_location = params[:file_location]
     @source_files_id = params[:source] + '_files'
     @source = TaliaCore::Source.find(N::URI.from_encoded(params[:source]))
-    dr = @source.data_records.find_by_type_and_location(params[:file_class], file_location)
-    dr.destroy
-    dr_iip = @source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', file_location)
-    dr_iip = @source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(file_location, File.extname(file_location)) + ".tif") if dr_iip.nil?
-    dr_iip = @source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(file_location, File.extname(file_location)) + ".tiff") if dr_iip.nil?
-    dr_iip.destroy unless dr_iip.nil?
+
+    TaliaFile.find(params[:talia_file_uri]).destroy
   end
 
   # send a file

@@ -1,4 +1,7 @@
 class TaliaFile < TaliaCore::Source
+
+  before_destroy :delete_file_parts
+  
   def assign_random_id
     self.uri = (N::LOCAL.file + '/' + RandomId.random_id).to_s
   end
@@ -28,7 +31,10 @@ class TaliaFile < TaliaCore::Source
     nil
   end
 
-  
+  # delete FileParts related to this
+  def delete_file_parts
+    #TODO implementation
+  end
 
   # TODO: check what we should destroy and when
   def attach_files(files)

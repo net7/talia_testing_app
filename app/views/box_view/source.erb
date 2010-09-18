@@ -2,7 +2,7 @@
 
 <% 
     # TODO: do a real check to see if there's images or not
-    if @source.data_records %>
+    if (records = @source.files_of_type TaliaCore::DataTypes::IipData).count > 0 %>
 
     <div class='widgetHeader'>
         <h3 class='widgetHeaderTitle'>Images</h3>
@@ -11,15 +11,11 @@
     	</div>
     </div>
     <div class='widgetContent expanded'>
-      <% for record in @source.data_records %>
-        <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
+      <% for record in records %>
 
         <%#= iip_flash_viewer(record, 600, 600)%>
           <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
           <img src="<%= image_url %>" alt="" class="resizeme" /><br /><br />
-        <% elsif record.is_a?(TaliaCore::DataTypes::ImageData) %>
-
-        <% end %>
       <% end %>
     </div>
 <% end %>  
@@ -27,7 +23,7 @@
 
 <% 
     # TODO: do a real check to see if there's annotations or not
-    if @source.data_records %>
+        if (records = @source.files_of_type TaliaCore::DataTypes::XmlData).count > 0 %>
     <div class='widgetHeader'>
         <h3 class='widgetHeaderTitle'>Annotations</h3>
         <div class='widgetHeaderTools'>
@@ -35,14 +31,12 @@
     	</div>
     </div>
     <div class='widgetContent expanded'>
-      <% for record in @source.data_records %>
-        <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
+      <% for record in records %>
           <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
           <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
             <h2>This element has <%= ncount %> annotations</h2>
           <% end %>
           <%= thctag(element_uri, record.content_string) %>
-        <% end %>
       <% end %>
     </div>
 <% end %>

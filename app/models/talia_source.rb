@@ -29,7 +29,8 @@ class TaliaSource < TaliaCore::Source
       result
     end
   end
-
+#  alias_method :data_records, :files
+  
   # TODO: refactor
   # Returns an array of data_records related to this source through a N::TALIA.hasFile relation,
   # but only files of the requested type. Some files may have more than one type, as for example
@@ -121,7 +122,7 @@ class TaliaSource < TaliaCore::Source
     self.uri = (N::LOCAL.source + '/' + RandomId.random_id).to_s
   end
 
-  def attach_file(up_file)
+  def upload_file(up_file)
     content_type = up_file.content_type.to_s
     case content_type
     when 'image/jpeg', 'image/tiff'
