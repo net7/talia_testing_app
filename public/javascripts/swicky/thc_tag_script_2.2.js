@@ -1044,7 +1044,7 @@ THCTagCore.Annotate = {
         //imageIcon.setAttribute("id", elementName + "-icon");
         imageIcon.setAttribute("id", hash + "-icon");
         imageIcon.setAttribute("class", thcButtonName);
-        imageIcon.setAttribute("src", "/stylesheets/swicky/baloostn.png");
+        imageIcon.setAttribute("src", "/stylesheets/swicky/baloon.png");
         imageIcon.setAttribute("alt", "[note]");
         imageIcon.setAttribute("style", "cursor:pointer; border:none;padding:2px;margin:0px;position:static;display:inline;");
         selectionLink.appendChild(imageIcon);
