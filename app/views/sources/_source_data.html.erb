@@ -26,7 +26,7 @@
   <h3 class="toggle">Text</h3>
   <div>
     <% for data_record in files['TaliaCore::DataTypes::XmlData'] %>
-      <% element_uri = (@source.uri + "#data#{data_record.id}").to_s %>
+      <% element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
       <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
         <h2>This element has <%= ncount %> annotations</h2>
       <% end %>
