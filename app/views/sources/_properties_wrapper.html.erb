@@ -1,14 +1,20 @@
 <h5><a href="#" class="show_properties">Show/Hide Source Properties ...</a></h5>
 
+<h3 class="toggle closed">Source properties</h3>
+<div style="display: none;" class="section">
+    <div class='section_content'>
+    <script type="text/javascript">
+        $(document).ready(function() {
+              $("#properties_table").tablesorter();
+              $("#data_table").tablesorter();
+              // $(".properties_list").hide();
+              // $(".show_properties").click(function() {$(".properties_list").slideToggle(600);});
+        });
+    </script>
 
 <%= render(:partial => 'property_list') %>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-          $("#properties_table").tablesorter();
-          $("#data_table").tablesorter();
-          $(".properties_list").hide();
-          $(".show_properties").click(function() {$(".properties_list").slideToggle(600);});
-    });
-</script>
-<br />
+    </div>
+    <div class='section_notes'>
+    <div class=''>
+    </div>
+</div>
