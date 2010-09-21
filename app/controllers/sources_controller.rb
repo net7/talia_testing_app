@@ -177,8 +177,6 @@ class SourcesController < ApplicationController
   # /**/
   def set_swicky_mode
     @swicky_mode = request.user_agent.index("annotation-client-") == 0
-    # temp
-    @swicky_mode = true
   end
 
   #/**/
