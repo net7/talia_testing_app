@@ -1,24 +1,7 @@
-if(!window.console || !window.console.firebug)
-  console = {log: function(m) {}, warn: function(a) {}, error: function(a) {}};
-
-$(document).ready(function () {
-  if(pseudo_id = $("#image-annotations-pseudo_id").attr("value")) {
-    $.get(config_url+pseudo_id, function(response) {
-      if(response.error) alert("Error: "+response.error);
-      else {
-        config.modules.background = response.data.modules.background;
-        config.toolbars_url = response.data.toolbars_url;
-        config.layers_url = response.data.layers_url;
-        config.image = response.data.image;
-        loadFlexip();
-      }
-    }, 'json');
-  }
-});
-
 var pseudo_id = null;
 var flexip = null;
 var myFjsApi = null;
+
 var config = {
   image: null,
   toolbars_url: null,
@@ -32,9 +15,28 @@ var config = {
 };
 
 function loadFlexip() {
+  if(pseudo_id) {
+    $.get(config_url+pseudo_id, function(response) {
+      if(response.error) alert("Error: "+response.error);
+      else {
+        config.modules.background = response.data.modules.background;
+        config.toolbars_url = response.data.toolbars_url;
+        config.layers_url = response.data.layers_url;
+        config.image = response.data.image;
+        launchFlexip();
+      }
+    }, 'json');
+  }
+}
+
+function launchFlexip() {
+  /// Flexip could be already loaded;
+  ///  if it is, for now, reload everything.
+  flexip_id = 'flexip';
+  if($("#flexip-loaded").length) flexip_id = "flexip-loaded";
   myFjsApi = new FJSAPI('myFjsApi',
-                            'flexIP_0',
-                            'flexip',
+                            'flexip-loaded',
+                            flexip_id,
                             '100%',
                             '100%',
                             '9.0.0',
@@ -43,17 +45,16 @@ function loadFlexip() {
                             '/flexip/'+config.modules.sideMenu+'?anticache='+(new Date()).getTime(),
                             '/flexip/'+config.modules.skin+'?anticache='+(new Date()).getTime());
 
-
-  myFjsApi.allModulesLoaded = function() {
+  myFjsApi.allModulesLoaded = (typeof(allModulesLoaded) != "undefined") ? allModulesLoaded : function() {
     this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
     this.flexipRef.imageLoadSource(config.image);
   }
 
-  myFjsApi.imageLoaded = function() {
+  myFjsApi.imageLoaded = (typeof(imageLoaded) != "undefined") ? imageLoaded: function() {
     this.flexipRef.commLoadData(config.layers_url);
   }
 
-  myFjsApi.commDataParseEnd = function() {
+  myFjsApi.commDataParseEnd = (typeof(dataParseEnd) != "undefined") ? dataParseEnd : function() {
     firefoxBugFix();
     this.flexipRef.messageBoxHide();
   }

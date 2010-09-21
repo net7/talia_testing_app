@@ -56,7 +56,7 @@ class Image::AnnotationsController < ApplicationController
         image_url = @file.class.iip_server_uri + "?FIF=" + @file.get_iip_root_file_path
       else
         background = 'modules/image/simple/imageHolder.swf'
-        image_url = @file.location
+        image_url = source_data_url(@file)
       end
       @response[:data][:modules] = {:background => background}
       @response[:data][:image] = image_url
@@ -64,14 +64,10 @@ class Image::AnnotationsController < ApplicationController
       @response[:data][:toolbars_url] = image_annotations_ajax_url "getToolbarsXml", params[:pseudo_id]
     end
 
+    # TODO: should load all annotations for image.
     def get_layers_xml
       @response[:format] = "text"
-      @response[:data] = '<?xml version="1.0" encoding="UTF-8" ?>
-<data>
-	<layer visible="true" id="0000000001" icon="" layerType="shapesContainer" opened="true" title="A layer" color="#ffffff">
-    <shape id="poly_1" type="poly" data="0.2,0.2,0.2,0.6,0.6,0.6,0.6,0.2"/>  
-  </layer>
-</data>'
+      @response[:data] = '<?xml version="1.0" encoding="UTF-8" ?><data></data>'
     end
 
     def get_toolbars_xml

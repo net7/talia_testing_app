@@ -75,13 +75,14 @@ class BoxViewController < ApplicationController
     @source_name = @source.uri.to_uri.local_name.to_s.gsub('_', ' ')
       
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
+    html = render_to_string :boxview_description
     if  N::DEMO.Person.in? types
-      html = render_to_string :person
+      html += render_to_string :person
     elsif N::DEMO.City.in? types
-      html = render_to_string :boxview_google_map
+      html += render_to_string :boxview_google_map
       html += render_to_string :boxview_graph
     else
-      html = render_to_string :source
+      html += render_to_string :source
     end
     data = {'box' => @source_name}
 

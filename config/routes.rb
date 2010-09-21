@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :ontologies
 
   # Routes for the source data
-  map.connect 'source_data/:id', :controller => 'source_data',
+  map.source_data 'source_data/:id', :controller => 'source_data',
     :action => 'show'
 
   map.connect 'source_data/:type/:location', :controller => 'source_data',
