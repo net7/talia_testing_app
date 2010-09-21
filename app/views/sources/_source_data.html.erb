@@ -1,17 +1,27 @@
-<% iip_files = @source.files_of_type TaliaCore::DataTypes::IipData %>
-<% if iip_files.size > 0 %>
-  <h3 class="toggle closed">Images</h3>
-  <div style="display: none;">
-    <% for file in iip_files %>
-      <%= iip_flash_viewer file, 600, 600 %>
-    <% end %>
-  </div>
+<style>
+#flexip, #flexip-loaded {width: 500px;height: 500px;position:absolute;right:5px;top:133px;border:1px solid black;}
+</style>
+
+<% images = @source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData %>
+<% if images.count > 0 %>
+ <div id="flexip" style=""></div>
+ <h3 class="toggle closed">Images</h3>
+<div>
+<%   images.each do |image| %>
+  <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
+  <% 
+     # TODO: crude, find a better way to get talia_file pseudo_id
+     # (I already have all the talia files in memory, I should remember which one of them this belongs to. 
+  %>
+  <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
+    <%= t "Toggle flexip" %></a><br/>
+<%   end %>
+</div>
 <% end %>
 
 <% files = @source.files_by_type %>
 <% files.delete 'TaliaCore::DataTypes::IipData' %>
-
-<% files['TaliaCore::DataTypes::ImageData'] = @source.files_of_type_diff TaliaCore::DataTypes::ImageData, TaliaCore::DataTypes::IipData%>
+<% files.delete 'TaliaCore::DataTypes::ImageData' %>
 <% data_records = [] %>
 <% files.each_value {|type| type.each {|data_record| data_records << data_record}} %>
 

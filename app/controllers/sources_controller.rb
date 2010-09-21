@@ -1,6 +1,7 @@
 class SourcesController < ApplicationController
   include TaliaCore
   
+  before_filter :set_swicky_mode
   before_filter :setup_format, :only => [ 'show' ]
 
   PER_PAGE = 10
@@ -172,6 +173,13 @@ class SourcesController < ApplicationController
   end
   
   private
+
+  # /**/
+  def set_swicky_mode
+    @swicky_mode = request.user_agent.index("annotation-client-") == 0
+    # temp
+    @swicky_mode = true
+  end
 
   #/**/
   def source

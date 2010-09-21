@@ -2,6 +2,10 @@ class TaliaFile < TaliaCore::Source
 
   before_destroy :delete_file_parts
   
+  def pseudo_id
+    self.uri.to_s["#{N::LOCAL.file}/".length, uri.to_s.length]
+  end
+
   def assign_random_id
     self.uri = (N::LOCAL.file + '/' + RandomId.random_id).to_s
   end

@@ -1,5 +1,5 @@
-var temp = null;
 var config_url = "/admin/image/annotations/ajax/loadConfiguration/";
+var temp = null;
 
 function toolBarButtonClick(fCode) {
   // New layer
