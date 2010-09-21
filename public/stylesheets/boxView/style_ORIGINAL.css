@@ -1,0 +1,217 @@
+/*
+Css addetto allo stile dell'interfaccia:
+colori e font
+*/
+
+/*
+Tags definitions
+*/
+html, body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+	background: #FFF url(images/body_bg.gif) top left repeat-y;
+}
+
+a {
+	color: #8e3121;
+}
+
+/*
+Page Sections
+*/
+#pageContent {
+	background: #ccc;
+}
+
+
+/*
+Header
+*/
+#pageHeader {
+	/* background: #8fbedd url(images/title_bar_bg.gif) bottom left repeat-x; */
+	background-color: #8fbedd;
+}
+	#pageHeader h1{
+		background: url(images/title_bar_titolo_1.gif) top left no-repeat;
+	}
+	#pageHeader p {
+		color: #3e3228;
+	}
+
+/*
+Menu
+*/
+div#menu_container {
+	border-top: 1px solid #FFF;
+}
+
+	div#menu_container h3 {
+		background: #1f1f1f url(images/menu/menu_container_h3_bg.gif) top left repeat-x;
+		color: #FFFFFF;
+		font-family: Helvetica, Arial, sans-serif;
+	}
+
+	/* Primo livello */
+	div#menu_container ul li {
+		background: #e4e4e4;
+		border-bottom: 1px solid #cdcdcd;
+		border-right: 1px solid #cdcdcd;
+	}
+		div#menu_container ul li a{
+			color: #333333;
+		}
+		
+	/* Secondo livello */
+	div#menu_container ul li ul li {
+		border-top: 1px solid #cdcdcd;
+	}
+		div#menu_container ul li ul li a{
+			color: #666666;
+		}
+		
+	div#menu_container ul li a.menu.collapsed{
+		background: transparent url(images/menu/sublevel_collapsed.gif) center left no-repeat;
+	}
+	div#menu_container ul li a.menu.expanded {
+		background: transparent url(images/menu/sublevel_expanded.gif) center left no-repeat;
+	}
+	
+	div#menu_container ul li div.context input{
+		color: #333333;
+	}
+	div#menu_container ul li div.context label{
+		color: #333333;
+	}
+	div#menu_container ul li a#menu_update {
+		background: transparent url(images/menu/refresh_icon.gif) center left no-repeat;
+	}
+	div#menu_container ul li a#menu_update:hover {
+		background: transparent url(images/menu/refresh_icon_animated.gif) center left no-repeat;
+	}
+	
+	
+/*
+BoxView and boxes
+*/
+
+/* Collapsed BOX - Header */
+.boxViewContainer div.box.expanded div.boxHeader h3.boxHeaderTitle{
+	font-family: Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+
+/* Testo del box header quando è collassato */
+/* Collapsed boxes vertical content */
+.boxViewContainer div.box.collapsed div.boxCollapsedContent .flashcontainer {
+  	font-family: Helvetica, Arial, sans-serif;
+  	text-transform: uppercase;
+  	color: #fff;
+  	font-weight: bold;
+  	bottom: 2px;
+	left:9px;
+  }
+
+	
+/* Box types */ 
+/* 'source' */
+.boxViewContainer div.box.source div.boxHeader, .boxViewContainer div.box.source.collapsed, .boxViewContainer div.box.collapsed.source div.boxCollapsedContent {
+  	background-color: #9d9185;
+}
+
+/* 'filter' */
+.boxViewContainer div.box.filter div.boxHeader, .boxViewContainer div.box.filter.collapsed, .boxViewContainer div.box.collapsed.filter div.boxCollapsedContent {
+  	background-color: #fc0;
+}
+
+/* Index */
+.boxViewContainer div.box.index div.boxHeader, .boxViewContainer div.box.index.collapsed, .boxViewContainer div.box.collapsed.index div.boxCollapsedContent {
+	background-color: #9abfd9;
+}
+
+/* Trascription */
+.boxViewContainer div.box.transcription div.boxHeader, .boxViewContainer div.box.transcription.collapsed, .boxViewContainer div.box.collapsed.transcription div.boxCollapsedContent {
+	background-color: #e9bf5d;
+}
+
+/* Anastatica */
+.boxViewContainer div.box.facsimile div.boxHeader, .boxViewContainer div.box.facsimile.collapsed, .boxViewContainer div.box.collapsed.facsimile div.boxCollapsedContent {
+	background-color: #d78134;
+}
+
+/* Immagine */
+.boxViewContainer div.box.imageInfo div.boxHeader, .boxViewContainer div.box.imageInfo.collapsed, .boxViewContainer div.box.collapsed.imageInfo div.boxCollapsedContent {
+	background-color: #c94e23;
+}
+
+/* Quotation box, schede riscritture */
+.boxViewContainer div.box.quotation div.boxHeader, .boxViewContainer div.box.quotation.collapsed, .boxViewContainer div.box.collapsed.quotation div.boxCollapsedContent {
+	background-color: #e9bf5d;
+}
+
+
+
+
+
+/*
+Homepage o Introduzione
+*/
+div.intro {
+}
+
+div.intro h4 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #635343;
+}
+
+div.intro h5 {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #555;
+}
+
+div.intro h6.top_subtitile {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #635343;
+}
+
+div.intro h6 {
+}
+
+div.intro p img {
+}
+
+div.intro p {
+	color: #333;
+}
+
+div.intro p.small {
+}
+
+div.intro p b, div.intro p strong, div.intro p em, div.intro p i{
+}
+
+div.intro p {
+	color: #333;
+}
+
+div.intro p a {
+}
+
+div.intro p a:hover {
+}
+
+div.intro ul.home_list {
+}
+
+div.intro ul.home_list li {
+	color: #333;
+}
+
+div.intro ul.home_list li span{
+	color: #777;
+}
+
+
