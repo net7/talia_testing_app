@@ -22,20 +22,17 @@
 </div>
 <% end %>
 
-<% files = @source.files_by_type %>
-<% files.delete 'TaliaCore::DataTypes::IipData' %>
-<% files.delete 'TaliaCore::DataTypes::ImageData' %>
-<% data_records = [] %>
-<% files.each_value {|type| type.each {|data_record| data_records << data_record}} %>
 
-<% if data_records.size > 0 %>
-    <%= render :partial => 'data_records', :locals => {:records => data_records} %>
+<% prepare_data_records %>
+
+<% if @data_records.size > 0 %>
+    <%= render :partial => 'data_records', :locals => {:records => @data_records} %>
 <% end %>
 
-<% if files['TaliaCore::DataTypes::XmlData'] %>
+<% if @files['TaliaCore::DataTypes::XmlData'] %>
   <h3 class="toggle">Text</h3>
   <div>
-    <% for data_record in files['TaliaCore::DataTypes::XmlData'] %>
+    <% for data_record in @files['TaliaCore::DataTypes::XmlData'] %>
       <% element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
       <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
         <h2>This element has <%= ncount %> annotations</h2>
