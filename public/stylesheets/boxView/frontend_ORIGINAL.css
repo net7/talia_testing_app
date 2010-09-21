@@ -1,16 +1,7 @@
-/*
-
-Ultima modifica
-Giulio Andreini 23 Giugno 2010
-
-*/
-
 * { padding: 0px; margin: 0px; border: 0; font-family: sans-serif; font-size: 10pt;}
 
 /*
-******************************************
 Tags definitions
-******************************************
 */
 html, body {
 	border:0 none;
@@ -26,14 +17,14 @@ a, a:active {
 }
 
 a {
+	text-decoration: none;
 }
 a:hover {
+	text-decoration: underline;
 }
 
 /*
-******************************************
 Page Sections
-******************************************
 */
 #pageExt {
 	bottom:0;
@@ -55,48 +46,53 @@ Page Sections
 }
 
 /*
-******************************************
 Header
-******************************************
 */
 #pageHeader {
 	height: 101px;
 	margin: 0 0 0;
 	width: 100%;
 }
+
 	#pageHeader h1 {
 		display: block;
-		width: 542px;
-		height: 101px;
+		position: absolute;
+		left: 12px;
+		top: 12px;
+		width: 351px;
+		height: 28px;
 		margin: 0;
 		padding: 0;
 		text-indent: -9999px;
-		position: absolute;
-		left: 0;
+		background-position: 0 0;
 	}
 	
 	#pageHeader p {
-		display: none;
+		display: block;
+		position: absolute;
+		left: 12px;
+		top: 42px;
+		font-family: Helvetica, Arial, Verdana, sans-serif;
+		font-size: 40px;
+		font-weight: normal;
 	}
 	
-	/*
-	Header Preferences 
-	Box in alto a destra nella testata
-	che contiene le icone dei vari strumenti
-	di settaggio delle preferenze
-	*/
+	/* Preferences */
 	#pageHeader #header_preferences_wrapper {
 		position: absolute;
 		height: 33px; margin: 0; padding: 0 7px 0 0; 
 		top: 35px;
 		right: 20px;
+		background: url(images/preferences/preferences_right.gif) top right no-repeat;
 	}
 		#pageHeader #header_preferences_wrapper #header_preferences {
+			background: url(images/preferences/preferences_left.gif) top left no-repeat;
 			height: 33px; margin: 0; padding: 0 0 0 7px; 
 		}
 		
 			#pageHeader #header_preferences_wrapper #header_preferences ul {
-				height: 33px; margin: 0; padding: 0; 
+			background: url(images/preferences/preferences_bg.gif) top left repeat-x;
+			height: 33px; margin: 0; padding: 0; 
 				overflow: hidden;
 			}
 			
@@ -104,6 +100,7 @@ Header
 					height: 33px; margin: 0; padding: 9px 10px; 
 					float: left;
 					overflow: hidden;
+					background: url(images/preferences/preferences_separator.gif) top right no-repeat;
 				}
 				#pageHeader #header_preferences_wrapper #header_preferences ul li.last {
 					background: none;
@@ -120,26 +117,29 @@ Header
 				}
 				
 				#pageHeader #header_preferences_wrapper #header_preferences ul li a#helpButton {
+					background: url(images/preferences/preferences_icon_help.gif) center center no-repeat;
 				}
 				
 				#pageHeader #header_preferences_wrapper #header_preferences ul li a#undoButton {
+					background: url(images/preferences/preferences_icon_undo.gif) center center no-repeat;
 				}
 				
 				#pageHeader #header_preferences_wrapper #header_preferences ul li a#introButton {
+					background: url(images/preferences/preferences_icon_home.gif) center center no-repeat;
 				}
 				
 				#pageHeader #header_preferences_wrapper #header_preferences ul li a.inactive#undoButton {
+					background: url(images/preferences/preferences_icon_undo_inactive.gif) center center no-repeat;
 				}
 				
 				#pageHeader #header_preferences_wrapper #header_preferences ul li a#prefButton {
+					background: url(images/preferences/preferences_icon_settings.gif) center center no-repeat;
 				}
 				
 				
 
 /*
-******************************************
 Menu
-******************************************
 */
 div#menu_container {
 	width: 216px;
@@ -159,47 +159,41 @@ div#menu_container {
 		height: 30px;
 		line-height: 30px;
 		font-size: 14px;
+		font-weight: normal;
+		text-transform: uppercase;
 	}
 
 	/* Primo livello */
 	div#menu_container ul li {
+		padding: 0;
 		width: 215px;
 	}
 		div#menu_container ul li a{
-			margin: 0;
-			padding: 7px 7px 7px 27px;
+			padding: 7px 7px 7px 10px;
 			display: block;
 			font-size: 12px;
+			text-decoration: none;
 		}
-		div#menu_container ul li a:hover {
+		div#menu_container ul li a:hover{
+			text-decoration: underline;
 		}
 		
 	/* Secondo livello */
-	div#menu_container ul li ul {
-	}
-	
 	div#menu_container ul li ul li {
 		border-bottom: 0;
-		margin: 0;
 	}
 		div#menu_container ul li ul li a{
-			margin: 0;
-			padding: 7px 7px 7px 32px;
+			padding: 7px 7px 7px 30px;
 			font-size: 11px;
 		}
-			
+		
 	div#menu_container ul li a.menu.collapsed{
-		/*
-		margin-left: 7px;
+		margin-left: 10px;
 		padding-left: 20px;
-		*/
 	}
 	div#menu_container ul li a.menu.expanded {
-		/*
-		margin: 0;
-		margin-left: 7px;
+		margin-left: 10px;
 		padding-left: 20px;
-		*/
 	}
 	
 	/* Input e label contesti */
@@ -209,32 +203,36 @@ div#menu_container {
 	div#menu_container ul li div.context input{
 		padding: 7px 7px 7px 10px;
 		font-size: 12px;
+		text-decoration: none;
 	}
 	div#menu_container ul li div.context label{
 		padding: 7px 7px 7px 10px;
 		font-size: 12px;
+		text-decoration: none;
 	}
 	div#menu_container ul li a#menu_update {
-		font-size: 11px;
+		margin-left: 10px;
+		padding-left: 20px;
 	}
 	div#menu_container ul li a#menu_update:hover {
 	}
 
 /*
-******************************************
 Load dialog
-******************************************
 */
 #loadingDialog {
 	position: absolute;
 	padding: 0 30px 0 60px;
 	height: 33px;
-	right: 335px;
+	right: 200px;
+	right: 165px;
 	top: 35px;
+	color: #ffffff;
 	z-index: 10;
 	line-height: 33px;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
+	background-color: rgba(0,0,0, 0.6);
 }
 
 #loadingDialog img {
@@ -244,15 +242,16 @@ Load dialog
 }
 
 
+
 /*
-******************************************
 BoxView and boxes
-******************************************
 */
 .boxViewContainer {
+	background: #fff;
 }
 .boxViewContainer .box {
 	border: 0;
+	background: #fff;
 	position: absolute;
 	padding: 0;
 	margin: 0;
@@ -264,6 +263,7 @@ BoxView and boxes
 }
 
 .boxViewContainer div.box.yellow {
+	background: #fc7;
 }
 
 /* Expanded BOX */
@@ -271,7 +271,6 @@ BoxView and boxes
 	position: relative;
 	height: 30px;
 	border-bottom: 1px solid #fff;
-	overflow: hidden;
 }
 
 .boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.boxTool {
@@ -312,6 +311,7 @@ BoxView and boxes
 
 /* Intro */
 .boxViewContainer div.box.intro div.boxHeader, .boxViewContainer div.box.intro.collapsed, .boxViewContainer div.box.collapsed.intro div.boxCollapsedContent {
+	background-color: #635343;
 }
 .boxViewContainer div.box.expanded.intro div.boxContent {
 	padding: 0 20px;
@@ -319,14 +319,17 @@ BoxView and boxes
 
 /* Edition */
 .boxViewContainer div.box.edition div.boxHeader, .boxViewContainer div.box.edition.collapsed, .boxViewContainer div.box.collapsed.edition div.boxCollapsedContent {
+	background-color: #635343;
 }
 .boxViewContainer div.box.expanded.edition div.boxContent {
 	padding: 0 20px;
+	background-color: #ededed;
 }
 
 .boxViewContainer div.box.expanded.edition div.boxContent ul.edition {
 	margin-top: 15px;
 	list-style: none;
+	border-bottom: 1px solid #bbb;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 }
@@ -340,31 +343,13 @@ BoxView and boxes
 }
 
 
-/* Index */
-.boxViewContainer div.box.index div.boxHeader, .boxViewContainer div.box.index.collapsed, .boxViewContainer div.box.collapsed.index div.boxCollapsedContent {
-}
-
-/* Trascription */
-.boxViewContainer div.box.transcription div.boxHeader, .boxViewContainer div.box.transcription.collapsed, .boxViewContainer div.box.collapsed.transcription div.boxCollapsedContent {
-}
-
-/* Anastatica */
-.boxViewContainer div.box.facsimile div.boxHeader, .boxViewContainer div.box.facsimile.collapsed, .boxViewContainer div.box.collapsed.facsimile div.boxCollapsedContent {
-}
-
-/* Immagine */
-.boxViewContainer div.box.imageInfo div.boxHeader, .boxViewContainer div.box.imageInfo.collapsed, .boxViewContainer div.box.collapsed.imageInfo div.boxCollapsedContent {
-}
-
-/* Quotation box, schede riscritture */
-.boxViewContainer div.box.quotation div.boxHeader, .boxViewContainer div.box.quotation.collapsed, .boxViewContainer div.box.collapsed.quotation div.boxCollapsedContent {
-}
-
-
+	/* Collapsed BOX - Header */
 	.boxViewContainer div.box.expanded div.boxHeader h3.boxHeaderTitle{
 		display: block;
 		line-height: 30px;
-		padding: 0 25px 0 32px;
+		font-weight: normal;
+		color: #fff;
+		padding: 0 0 0 32px;
 	}
 	.boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools {
 		position: absolute;
@@ -391,53 +376,11 @@ BoxView and boxes
 		top: 7px;
 		text-indent: -9999px;
 	}
-
-    /* Icona Bookmark in box expanded */
-    .boxViewContainer div.box.expanded div.boxHeader div.boxHeaderTools p.bookmarkTool {
-		position: absolute;
-		display: block;
-		width: 20px;
-		height: 30px;
-		right: 25px;
-		top: 0px;
-		text-indent: -9999px;
-	}
 	
-	/* Icona Bookmark in box collapsed */
-	.boxViewContainer div.box.collapsed div.boxHeader div.boxHeaderTools p.bookmarkTool {
-		position: absolute;
-		display: block;
-		width: 20px;
-		height: 30px;
-		left: 4px;
-		top: 45px;
-		text-indent: -9999px;
-	}
-	
-	/* Definizione delle icone per entrambe i casi */
-	.boxViewContainer div.box div.boxHeader div.boxHeaderTools p.bookmarkTool.bookmark_button_mine {
-        background: url(images/widget/widget_icon_notebook_active.png) center center no-repeat;
-    }
-	.boxViewContainer div.box div.boxHeader div.boxHeaderTools p.bookmarkTool.bookmark_button_none {
-        background: url(images/widget/widget_icon_notebook_inactive.png) center center no-repeat;
-    }
-	.boxViewContainer div.box div.boxHeader div.boxHeaderTools p.bookmarkTool.bookmark_button_others {
-        background: url(images/widget/widget_icon_notebook_active.png) center center no-repeat;
-    }
-	
-	/*
-	25/08/2010 bookmark dialog SIMONE: per qualche motivo lo style da jquery-ui viene sovrascritto 
-    */
-    div.newbm_form li.bm_new_nb_form, div.editbm_form li.bm_new_nb_form { display: none; }
-    #bookmarkDialog button span { display: table-cell; margin-right: 5px; }
-    
-    #bookmarkDialog .validation_error, 
-    #notebookDialog .validation_error,
-    #signupDialog .validation_error { border: 2px solid #fc0; background: red; padding: 5px; }
 
-
-/* Loading BOX - Opacita' per box in fase di caricamento */ 
+/* Loading BOX - Opacitï¿½ per box in fase di caricamento */ 
 .boxViewContainer div.box.transcription.expanded.loadingContent div.boxContent, .boxViewContainer div.box.facsimile.expanded.loadingContent div.boxContent, .boxViewContainer div.box.index.expanded.loadingContent div.boxContent { 
+	opacity: 0.5; 
 }
 	
 	
@@ -455,11 +398,12 @@ BoxView and boxes
 }
 
 .boxViewContainer div.box.collapsed div.boxCollapsedContent {
-	position: relative;
+	/* text-indent: -9999px; */
 }
 
-/* Testo del box header quando  collassato */
-.boxViewContainer div.box.collapsed div.boxCollapsedContent .flashcontainer{
+
+/* Testo del box header quando Ã¨ collassato */
+.boxViewContainer div.box.collapsed div.boxCollapsedContent .flashcontainer {
 	display: block;
 	white-space: nowrap;
 	
@@ -472,9 +416,8 @@ BoxView and boxes
 	
 	position: absolute;
 	overflow: hidden;
-	bottom: 2px;
-	left:7px;
 }
+
 
 .boxViewContainer div.box.collapsed div.boxCollapsedContent .dragOverlay {
     width: 30px; 
@@ -507,16 +450,17 @@ BoxView and boxes
 
 
 /*
-******************************************
 Widget
-******************************************
 */
 .boxViewContainer div.box div.boxContent div.widget {
+	background-color: #ededed;
 }
 	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader {
 		position: relative;
+		background-color: #c2c2c2;
 		height: 26px;
 		border-bottom: 1px solid #FFF;
+		/* overflow: hidden; */
 	}
 	
 	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools{
@@ -531,6 +475,7 @@ Widget
 			display: block;
 			width: 27px;
 			height: 26px;
+			border-left: 1px solid #9d9d9d;
 		}
 		
 		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse{
@@ -543,21 +488,34 @@ Widget
 			width: 27px;
 			height: 26px;
 			text-indent: -9999px;
+			background: aqua;
 		}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.expanded {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.collapsed {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.previous a {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.next a {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.zoom a {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.drag a {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.anastatica a {}
-			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.fenomeni a {}
-    		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.trascrizione a {}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.expanded {
+				background: transparent url(images/widget/widget_icon_expanded.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.collapse a.collapsed {
+				background: transparent url(images/widget/widget_icon_collapsed.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.previous a {
+				background: transparent url(images/widget/widget_icon_back.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.next a {
+				background: transparent url(images/widget/widget_icon_forward.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.zoom a {
+				background: transparent url(images/widget/widget_icon_zoom.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.drag a {
+				background: transparent url(images/widget/widget_icon_drag.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.anastatica a {
+				background: transparent url(images/widget/widget_icon_anastatica.gif) top left no-repeat;}
+			.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.fenomeni a {
+				background: transparent url(images/widget/widget_icon_fenomeni.gif) top left no-repeat;}
+    		.boxViewContainer div.box div.boxContent div.widget div.widgetHeader div.widgetHeaderTools p.trascrizione a {
+    			background: transparent url(images/widget/widget_icon_trascrizione.gif) top left no-repeat;}
 		
 	.boxViewContainer div.box div.boxContent div.widget div.widgetHeader h3 {
 		display: block;
 		line-height: 28px;
 		font-size: 12px;
+		font-weight: bold;
+		color: #555555;
+		font-family: Arial, Helvetica, sans-serif;
 		padding-left: 30px;
 	}
 
@@ -565,20 +523,10 @@ Widget
 	.boxViewContainer div.box div.boxContent div.widget div.widgetContent.collapsed { display: none; }
 	.boxViewContainer div.box div.boxContent div.widget div.widgetContent.expanded { display: block; }
 
-	/* Formattazione generica widget content */
 	.boxViewContainer div.box div.boxContent div.widget div.widgetContent {
 		padding: 10px;
 		font-size: 12px;
-	}
-	
-	/* Formattazione generica tag P dentro al widget content */
-	.boxViewContainer div.box div.boxContent div.widget div.widgetContent p{
-		line-height: 20px;
-		padding: 0 0 15px 0;
-	}
-	
-	/* Formattazione generica tag IMG dentro al widget content */
-	.boxViewContainer div.box div.boxContent div.widget div.widgetContent img{
+		color: #514f4c;
 	}
 	
 	/* Formattazione interna ai WIDGET CONTENT */
@@ -586,129 +534,110 @@ Widget
 		font-size: 12px;
 		line-height: 20px;
 	}
-	.boxViewContainer div.box div.boxContent div.widgetContent div.widgetField {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField {
         margin-bottom: 8px;
     }
-    
-    .boxViewContainer div.box div.boxContent div.myDoniWidget div.widgetContent div.widgetField {
-        border-bottom: 1px solid #d7d2c6;
-    }
-    
     /* SIMONE: aggiunto per far andare a capo tutte e due le span dei fields della scheda immagine */ 
-    .boxViewContainer div.box div.boxContent div.widgetContent div.widgetField span.field_title {
+    .boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_title {
         display:block;
     }
-	.boxViewContainer div.box div.boxContent div.widgetContent div.widgetField div.field_content.expanded {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_content.expanded {
 	    display:block;
     }
-	.boxViewContainer div.box div.boxContent div.widgetContent div.widgetField div.field_content.collapsed {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.widgetField span.field_content.collapsed {
 	    display:none;
     }
 
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div, .boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent span {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p, .boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent span {
 		line-height: 20px;
+		color: #514f4c;
 	}
 	
 	/* Formattazione testi trascrizioni */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.tr_head,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.tr_head span,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head span,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span,
 	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription a,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span a,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.tr_head a,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.tr_head span a,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head span,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription a,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span a,
 	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head a,
 	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.tr_head span a {
+		font-family: Georgia, Times, Times New Roman, serif;
 		font-size: 14px;
+		/* color: #5a4c39; */
+		color: #343434;
 	}
 	
-	/* Nomi dialoganti */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.func_character
-	{
-		font-weight: bold;
-		font-variant: small-caps;
-	}
-	
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.image-keyword {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword{
+		font-family: Georgia, Times, Times New Roman, serif;
 		font-size: 14px;	
+		color: #8e3121;
 	}
 
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.seg-title {
-	}
-
-	/* Titolo Opera */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent span.tr_title
-	{
-		font-style: italic;
-	}
-	
 	/* SIMONE 06/01: link quotations_rewriting (riscritture), dentro le trascrizioni. Attivi (cliccabili) se il box e' highlight */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.highlight a.quotation_link {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight a.quotation_link {
+		text-decoration: none;
 	}
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.highlight a.quotation_link:hover {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight a.quotation_link:hover {
+		text-decoration: none;
 		cursor: default;
 	}
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.highlight.selected a.quotation_link {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight.selected a.quotation_link {
+		text-decoration: none;
 	}
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.highlight.selected a.quotation_link:hover {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.highlight.selected a.quotation_link:hover {
+		text-decoration: none;
+		background: #f00;
+		background: #feff5c;
 		cursor: pointer;
 	}
 
 	
 	/* SIMONE 20/12: aggiunto dopo l'introduzione di IMT nel frontend del doni */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.image-keyword.highlight,
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription span.image-keyword:hover {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword.highlight,
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.transcription span.image-keyword:hover {
+		font-family: Georgia, Times, Times New Roman, serif;
+		font-size: 14px;	
+		color: #cc0000;
+		text-decoration: underline;
+		background: #fc0;
 	}
 	
-	/* Margini per le immagini dentro al testo delle trascrizioni */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.transcription img {
-		margin: 10px 0;
-	}
-	
-	.boxViewContainer div.box div.boxContent div.widgetContent div span.field_title {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title {
 		font-size: 12px;
+		font-family:Arial, Helvetica, sans-serif;
 		line-height: 20px;
+		color: #808080;
 		padding-left: 15px;
 	}
 	
 	/* Icona expand collapse dei titoli INTERNI ai widget */
-	.boxViewContainer div.box div.boxContent div.widgetContent div span.field_title.expanded {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title.expanded {
+		background-image: url(images/widget/widget_inner_icon_expanded.gif);
 		background-position: 0px 3px;
 		background-repeat: no-repeat;
 	}
 	
-	.boxViewContainer div.box div.boxContent div.widgetContent div span.field_title.collapsed {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p span.field_title.collapsed {
+		background-image: url(images/widget/widget_inner_icon_collapsed.gif);
 		background-position: 0px 3px;
-		background-repeat: no-repeat;
-	}
-	
-	/* Icona expand collapse dei titoli INTERNI ai widget myDoni */
-	.boxViewContainer div.box div.boxContent div.myDoniWidget div.widgetContent div span.field_title.expanded, .boxViewContainer div.box div.boxContent div.myDoni div.widgetContent div span.field_title.expanded {
-		background-position: 0px 5px;
-		background-repeat: no-repeat;
-	}
-	
-	.boxViewContainer div.box div.boxContent div.myDoniWidget div.widgetContent div span.field_title.collapsed, .boxViewContainer div.box div.boxContent div.myDoni div.widgetContent div span.field_title.collapsed {
-		background-position: 0px 5px;
 		background-repeat: no-repeat;
 	}
 	
 	/* Formattazione lista */
 	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent ul {
-		list-style: none;
+		list-style: circle;
+		list-style-image: url(images/list/list_image.gif);
+		list-style-position: inside;
 	}
 	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent ul li {
-		background: transparent url(images/list/list_image.gif) center left no-repeat;
-		padding-left: 12px;
 	}
 	
 	/* Formattazione bibliografia */
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.image-bibliography {
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.image-bibliography {
 	}
-	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent div.image-bibliography span.bibl_title{
+	.boxViewContainer div.box div.boxContent div.widget.textWidget div.widgetContent p.image-bibliography span.bibl_title{
+		font-style: italic;
 	}
 	
 /* Widget */
@@ -728,18 +657,15 @@ div.box.collapsed h3.boxHeaderTitle {
 
 
 
-/*
-******************************************
-Risultati di ricerca - Index box
-******************************************
-*/
-div.box.index div.boxContent {
+/* Risultati di ricerca - Index box */
+div.box..indexx div.boxContent {
 }
 	div.box.index div.boxContent ul {
 		list-style-type: none;
 		margin: 0 0 0 0;
 	}
 	div.box.index div.boxContent ul li{
+		/* border-bottom: 1px solid #fff; */
 	}
 	
 	div.box.index div.boxContent ul li div.box_index_node {
@@ -747,10 +673,15 @@ div.box.index div.boxContent {
 	}
 	
 	div.box.index div.boxContent ul li div.box_index_node h3{
+		background-color: #c2c2c2;
 		height: 28px;
 		display: block;
 		line-height: 28px;
 		font-size: 12px;
+		font-weight: bold;
+		color: #555555;
+		/* font-family: Arial, Verdana, Helvetica, sans-serif; */
+		font-family:Arial, Helvetica, sans-serif;
 		border-bottom: 1px solid #fff;
 		padding-left: 35px;
 		z-index: 1000;
@@ -784,6 +715,7 @@ div.box.index div.boxContent {
 		width: 28px;
 		height: 28px;
 		text-indent: -9999px;
+		background: transparent url(images/widget/widget_icon_tree_view.gif) center center no-repeat;
 	}
 
 	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools.tree p.vista a{
@@ -791,6 +723,7 @@ div.box.index div.boxContent {
 		width: 28px;
 		height: 28px;
 		text-indent: -9999px;
+		background: transparent url(images/widget/widget_icon_list_view.gif) center center no-repeat;
 	}
 	
 	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p {
@@ -819,13 +752,18 @@ div.box.index div.boxContent {
 		z-index: 0;
 	}
 	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+		background: transparent url(images/boxes/search_result_collapsed_1.gif) center left no-repeat;
 	}
 	div.box.index div.boxContent ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+		background: transparent url(images/boxes/search_result_expanded_1.gif) center left no-repeat;
 	}
 	
 		/* Secondo livello */
 		div.box.index div.boxContent ul li ul li div.box_index_node h3{
+			background-color: #d3d3d3;
 			font-size: 12px;
+			font-weight: normal;
+			color: #555555;
 			padding-left: 45px;
 		}
 		div.box.index div.boxContent ul li ul li div.box_index_node h3 a { 
@@ -836,13 +774,21 @@ div.box.index div.boxContent {
 			left: 25px;
 		}
 		div.box.index div.boxContent ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+			background: transparent url(images/boxes/search_result_collapsed_2.gif) center left no-repeat;
 		}
 		div.box.index div.boxContent ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+			background: transparent url(images/boxes/search_result_expanded_2.gif) center left no-repeat;
 		}	
+				
+				
+			
 			
 			/* Terzo livello */
 			div.box.index div.boxContent ul li ul li ul li div.box_index_node h3{
+				background-color: #e3e3e3;
 				font-size: 11px;
+				font-weight: normal;
+				color: #555555;
 				padding-left: 55px;
 			}
 			div.box.index div.boxContent ul li ul li ul li div.box_index_node h3 a {
@@ -853,8 +799,10 @@ div.box.index div.boxContent {
 				left: 35px;
 			}
 			div.box.index div.boxContent ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.collapsed {
+				background: transparent url(images/boxes/search_result_collapsed_3.gif) center left no-repeat;
 			}
 			div.box.index div.boxContent ul li ul li ul li div.box_index_node div.boxIndexNodeTools p.collapse a.expanded {
+				background: transparent url(images/boxes/search_result_expanded_3.gif) center left no-repeat;
 			}
 			
 		
@@ -876,14 +824,21 @@ div.box.index div.boxContent {
 	/* Foglie ! */
 	div.box div.boxContent div.box_index_leaf {
 		padding: 10px 15px;
+		border-bottom: 1px solid #d3d3d3;
 	}
 		div.box div.boxContent div.box_index_leaf h4 {
 			font-size: 14px;
+			font-weight: bold;
+			font-family:Arial, Helvetica, sans-serif;
 			margin-bottom: 3px;
+			color: #333333;
 		}
 		div.box div.boxContent div.box_index_leaf h4 a {
+			text-decoration: none;
+			color: #8e3121;
 		}
 		div.box div.boxContent div.box_index_leaf h4 a:hover {
+			text-decoration: underline;
 		}
 		div.box div.boxContent div.box_index_leaf p {
 			font-size: 11px;
@@ -917,83 +872,47 @@ div.box.index div.boxContent {
 
 
 /* Questo sta dentro a div.box div.boxContent div.widgetHeader */
-/*
-Finestra con la lista dei fenomeni che possono essere attivati e disattivati
-*/
-div.fenomeni.hidden {
-	display:none;
+div.fenomeni.hidden { display:none; }
+div.fenomeni { z-index: 10; background: #c2c2c2; padding: 6px; border: 1px solid #9d9d9d}
+div.fenomeni ul {
+	list-style: none;
 }
-	div.fenomeni {
-		z-index: 10;
-		/* padding: 6px; */
-	}
-	div.fenomeni ul {
-		margin: 0; padding: 0;
-		list-style: none;
-	}
-	div.fenomeni ul li {
-		margin: 0;
-		padding: 6px;
-		font-size: 12px;
-		text-transform: uppercase;
-	}
-	div.fenomeni ul li a {
-		font-size: 12px;
-	}
-		
-		div.fenomeni ul li ul {
-			margin: 0;
-			padding: 3px;
-			border: none;
-			text-transform: none;
-			font-weight: normal;
-		}
-		
-		div.fenomeni ul li ul li {
-			margin: 0; padding: 0;
-			border: none;
-			font-size: 11px;
-			text-transform: none;
-		}
-		
-		div.fenomeni ul li ul li a {
-			font-size: 11px;
-			text-transform: none;
-			margin: 0;
-			padding: 3px;
-			display: block;
-		}
-		
-	div.fenomeni a.selected {
-		font-weight: bold;
-	}
-	
+div.fenomeni ul li {
+	font-size: 10px;
+	margin-bottom: 10px;
+}
+div.fenomeni ul li a { font-size: 10px; }
+
+div.fenomeni a.selected { background: #ffff99;}
+
 /*  Questo e' nella div.box div.boxContent div.widgetContent. Viene aggiunta la classe
     selected alle span.highlight
  */
-span.highlight.selected {}
+span.highlight.selected { background: #ffff99; }
 
 
 /*
-******************************************
 Homepage o Introduzione
-******************************************
 */
 div.intro {
 }
 
 div.intro h4 {
+	font-weight: normal;
 	font-size: 20px;
 	margin-bottom: 10px;
 	margin-top: 15px;
 }
 
 div.intro h5 {
+	font-weight: normal;
+	font-style: italic;
 	font-size: 18px;
 	margin-bottom: 10px;
 }
 
 div.intro h6.top_subtitile {
+	font-weight: normal;
 	font-size: 14px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -1005,6 +924,11 @@ div.intro h6 {
 
 div.intro p img {
 	float: left;
+	/*
+	padding: 4px;
+	background-color: #eee;
+	border: 1px solid #bbb;
+	*/
 	margin: 0 15px 15px 0;
 }
 
@@ -1021,6 +945,11 @@ div.intro p b, div.intro p strong, div.intro p em, div.intro p i{
 	font-size: 14px;
 }
 
+div.intro p {
+	font-size: 14px;
+	line-height: 22px;
+}
+
 div.intro p a {
 }
 
@@ -1029,6 +958,7 @@ div.intro p a:hover {
 
 div.intro ul.home_list {
 	list-style: none;
+	list-style-image: url(images/list_image_1.gif);
 	list-style-position: inside;
 	margin: 10px;
 	line-height: 30px;
@@ -1036,405 +966,15 @@ div.intro ul.home_list {
 
 div.intro ul.home_list li {
 	font-size: 14px;
+	line-height: 20px;
 	line-height: 24px;
 }
 
 div.intro ul.home_list li span{
 	font-size: 14px;
+	font-style: italic;
 }
 
 div.intro ul.small, div.intro ul.small li, div.intro ul.small li span {
 	font-size: 11px;
 }
-
-
-/* Simone 29/07/10: drag sotto IE */ 
-div.boxDragHandle {
-    cursor: move;
-    border: 0;
-    z-index: 1000;
-}
-
-
-/*
-******************************************
-MyDony & Notebooks
-******************************************
-*/
-
-/*
-!!! Estrapolare i colori e metterli in style.css !!!
-*/
-
-/*
-Box: MyDoni
-Widget: Login
-Form di login in box MyDoni
-*/
-div#myDoniLoginBox label
-{
-	float: left;
-	font-size: 12px;
-	width: 80px;
-	padding: 3px 0 0 0;
-	margin: 0 0 10px 0;
-}
-
-div#myDoniLoginBox input, div#myDoniLoginBox textarea
-{
-	width: 180px;
-	padding: 3px;
-	margin: 0 0 10px 0;
-	font-size: 11px;
-}
-
-div#myDoniLoginBox button
-{
-	margin: 0 0 15px 80px;
-	font-size: 11px;
-	text-transform: uppercase;
-	padding: 4px 3px 2px 3px;
-	cursor: pointer;
-}
-
-div#myDoniLoginBox br
-{
-	clear: left;
-}
-
-div#myDoniLoginBox p
-{
-	margin: 0 0 5px 80px;
-}
-
-div#myDoniLoginBox p a
-{
-	font-size: 10px;
-	text-decoration: underline;
-}
-
-/*
-Box: MyDoni
-Widget: I Miei Notebbook, Notebook Preferiti
-Elementi del BOX MyDoni
-*/
-/* Logout Button */
-div.myDoniWidget button.logout
-{
-	margin: 10px 0 5px 0;
-	font-size: 12px;
-	background: transparent;
-	font-weight: bold;
-	text-transform: uppercase;
-	cursor: pointer;
-}
-
-div.myDoniWidget input.my_doni_notebook_title
-{
-	width: 250px;
-	padding: 3px;
-	margin: 10px 0 10px 0;
-	font-size: 11px;
-}
-
-div.myDoniWidget p.createNotebook
-{
-	margin: 23px 0 14px 0;
-}
-
-div.myDoniWidget p.addNotebook
-{
-	margin: 10px 0 0px 0;
-	font-size: 12px;
-}
-
-div.myDoniWidget p.createNotebook a, div.myDoniWidget p.createNotebook a:hover
-{
-	font-size: 12px;
-	background: transparent;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
-/* Elenco dei notebook in box myDoni > I miei preferiti*/
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList span.notebook_title, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList span.notebook_title /* Titolo sensibile per collapse/expand */
-{
-	font-weight: bold;
-	font-size: 13px;
-	margin-bottom: 5px;
-}
-
-
-/* Nota */
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_note, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_note
-{
-	font-size: 12px;
-	line-height: 20px;
-	margin-bottom: 5px;
-}
-
-/* Autore */
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_author, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_author
-{
-	font-size: 11px;
-	font-style: italic;
-	margin-bottom: 5px;
-}
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_author span, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_author span
-{
-	font-size: 11px;
-	font-style: italic;
-}
-
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_info, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_info
-{
-	font-size: 11px;
-	margin-bottom: 5px;
-}
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_info span, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_info span
-{
-	font-size: 11px;
-}
-
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_links, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_links
-{
-	margin-bottom: 5px;
-}
-
-div.box.myDoni div.boxContent div.myDoniWidget div.myNotebooksList div.notebook_links a, div.box.myDoni div.boxContent div.myDoniWidget div.myFavouritesNotebooksList div.notebook_links a
-{
-	font-size: 11px;
-}
-
-
-/*
-Box: Specifico notebook
-Widget: Note presenti nel notebook
-Box contenente il notebook selezionato (es."Mio Notebook")
-*/
-/* Singolo div per ogni ntebook */
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.single_notebook
-{
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-}
-
-/* Titolo con icona collapse expand */
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent span.notebook_title
-{
-	font-weight: bold;
-	font-size: 13px;
-	margin-bottom: 5px;
-	line-height: 20px;
-	padding-left: 15px;
-	background-repeat: no-repeat;
-	background-position:0 0;
-}
-/* Data */
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.note_date
-{
-	margin-top: 5px;
-	margin-bottom: 5px;
-	font-style: italic;
-	font-size: 10px;
-	font-weight: normal;
-}
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.note_date span
-{
-	font-size: 10px;
-}
-/* Testo Nota */
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.note_text
-{
-	font-size: 12px;
-	line-height: 20px;
-	margin-bottom: 5px;
-}
-/* Links nota */
-div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.note_links, div.box.myDoniNotebook div.boxContent div.widget div.widgetContent div.note_links a
-{
-	font-size: 11px;
-}
-
-
-
-/*
-Box: Di contenuto qualsiasi (Trascrizione, Illustrazione, Anastatica ...)
-Widget: I Miei Notebook, Notebook Preferiti
-*/
-div.box div.boxContent div.widget.myDoni div.widgetContent span.notebook_title
-{
-	font-weight: bold;
-	font-size: 13px;
-}
-div.box div.boxContent div.widget.myDoni div.widgetContent div.note_date
-{
-	margin-top: 5px;
-	margin-bottom: 5px;
-	font-style: italic;
-	font-size: 10px;
-	font-weight: normal;
-}
-div.box div.boxContent div.widget.myDoni div.widgetContent div.note_date span
-{
-	font-size: 10px;
-}
-
-div.box div.boxContent div.widget.myDoni div.widgetContent div.note_text
-{
-	font-size: 12px;
-	line-height: 20px;
-	margin-bottom: 5px;
-}
-
-div.box div.boxContent div.widget.myDoni div.widgetContent div.note_links, div.box div.boxContent div.widget.myDoni div.widgetContent div.note_links a
-{
-	font-size: 11px;
-}
-
-div.box div.boxContent div.widget.myDoni div.widgetContent div.single_note
-{
-	margin-bottom: 8px;
-	padding-bottom: 8px;
-}
-
-div.box div.boxContent div.widget.myDoni div.widgetContent p.createNote a
-{
-	display: block;
-	margin: 20px 0 15px 0;
-	font-size: 12px;
-	background: transparent;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-
-
-
-
-/*
-******************************************
-POP UP
-UI JQUERY
-******************************************
-*/
-div.ui-dialog h3
-{
-	font-weight: bold;
-	font-size: 13px;
-	margin-bottom: 8px;
-}
-
-div.ui-dialog ul.form
-{
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-div.ui-dialog ul.form li
-{
-	padding: 0;
-	margin: 0 0 8px 0;
-}
-
-div.ui-dialog ul.form li.type
-{
-}
-div.ui-dialog ul.form li.type span
-{
-}
-
-div.ui-dialog ul.form li.date
-{
-	font-style: italic;
-	font-size: 10px;
-	font-weight: normal;
-}
-
-div.ui-dialog ul.form li.date span
-{
-}
-
-div.ui-dialog ul.form li label
-{
-	margin: 0 8px 0 0;
-	float: left;
-}
-
-div.ui-dialog ul.form li input
-{
-	padding: 3px;
-	font-size: 11px;
-}
-
-div.ui-dialog ul.form li select
-{
-	padding: 3px;
-	font-size: 12px;
-	outline: none;
-}
-
-div.ui-dialog ul.form li textarea
-{
-	padding: 3px;
-	border: 1px solid #d7d2c6;
-	font-size: 11px;
-	color: #555;
-	height: 120px;
-}
-
-div.ui-dialog ul.buttons
-{
-	margin: 0;
-	padding: 10px 0 0 0;
-	list-style: none;
-}
-
-div.ui-dialog ul.buttons li
-{
-	float: left;
-	margin: 0 8px 0 0;
-	padding: 0;
-}
-
-div.ui-dialog ul.buttons li button, div.ui-dialog ul.form li button
-{
-	margin: 0;
-	font-size: 11px;
-	text-transform: uppercase;
-	padding: 0;
-	cursor: pointer;
-	display: block;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-}
-
-div.ui-dialog ul.buttons li a
-{
-	margin: 0;
-	font-size: 11px;
-	text-transform: uppercase;
-	padding: 0 2px;
-	cursor: pointer;
-	display: block;
-	height: 21px;
-	line-height: 21px;
-	text-align: center;
-}
-div.ui-dialog ul.buttons li a:hover
-{
-	text-decoration: none;
-}
-
-
-
-
-
-
-
-
-
-/*
-Fine
-*/

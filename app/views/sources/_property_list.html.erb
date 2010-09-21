@@ -1,3 +1,5 @@
+<% attribute_blacklist = ['id', 'type', 'uri'] %>
+<% predicate_blacklist = [N::TALIA.isFileOf, N::TALIA.hasFile] %>
 <div class ="properties_list">
   <table id="properties_table" class="tablesorter">
     <thead> 
@@ -8,13 +10,20 @@
     </thead>
     <tbody>
       <% for attribute, value in @source.attributes %>
-        <%= render(:partial => 'property_item', :object => attribute, :locals => {:values => [value] }) unless (value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource')%>
-     <% end %>
+<%= attribute %>
+        <% unless value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource' || attribute_blacklist.include?(attribute) %>
+          <%= render(:partial => 'property_item', :object => attribute, :locals => {:values => [value] }) unless (value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource')%>
+        <% end %>
+      <% end %>
       <% for predicate in @source.direct_predicates %>
-        <%= render(:partial => 'property_item', :object => predicate.to_name_s, :locals => { :values => @source[predicate].values_with_lang(I18n.locale.to_s), :uri => predicate.uri}) unless (value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource')%>
+        <% unless predicate_blacklist.include?(predicate) %>
+          <%= render(:partial => 'property_item', :object => predicate.to_name_s, :locals => {:values => @source[predicate].values_with_lang(I18n.locale.to_s), :uri => predicate.uri})  %>
+        <% end %>
       <% end %>
       <% for predicate in @source.inverse_predicates %>
-      <%= render(:partial => 'property_item', :object => "#{predicate.to_name_s} (inverse)", :locals => { :values => @source.inverse[predicate] }) unless predicate == N::TALIA.isFileOf%>
+        <% unless predicate_blacklist.include?(predicate) %>
+          <%= render(:partial => 'property_item', :object => "#{predicate.to_name_s} (inverse)", :locals => { :values => @source.inverse[predicate] }) %>
+        <% end %>
       <% end %>
     </tbody>
   </table>

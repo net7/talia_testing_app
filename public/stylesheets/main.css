@@ -497,9 +497,22 @@ div#tl {
 
 /* spaces the images in the sources default template */
 
+
+/* Timeline in Homepage */
 #tl {
+	width: 200px;
+	height: 200px;
 	border: 5px solid #CDCDCD;
 }
+
+/* Mappa google in Homepage */
+#map_canvas {
+	width: 200px;
+	height: 200px;
+	border: 5px solid #CDCDCD;
+}
+
+
 
 .rdfa_hidden {
     display: none;

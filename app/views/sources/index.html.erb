@@ -1,13 +1,15 @@
-  <h3 class="toggle">Sources timeline</h3>
+<!-- Tool Timeline -->
+
+<h3 class="toggle">Sources timeline</h3>
 <div id="home_timeline">
 <%= timeline('tl', 
 	:bands => [{
-		:width => "70%",
-		:intervalUnit => 'DECADE',
-		:intervalPixels => 100,
-		:layout => 'original',
-		},
-		{
+			:width => "70%",
+			:intervalUnit => 'DECADE',
+			:intervalPixels => 100,
+			:layout => 'original',
+			},
+			{
 			:width => "30%",
 			:intervalUnit => 'CENTURY',
 			:intervalPixels => 80,
@@ -19,6 +21,7 @@
                 ], :data => { :source_finder => @conditions, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
 </div>
 
+<br />
 
 <!--
 <h3 class="toggle closed">Sources map</h3>
@@ -32,14 +35,28 @@
         end
     end
 %>
+
+
+<!-- Tool Google Map -->
+
 <%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
 
+<br />
+
+
+
+<!-- Tool Image Carousel -->
 
 <% # we already have sources from the google_multi partial above
    # uncomment this if moved away
    # sources = TaliaCore::Source.find(:all, @conditions) %> 
   <%= render :partial => 'amazon_scroller', :locals => {:sources => sources} %>
 
+<br />
+
+
+
+<!-- Tool Filter -->
 
 <h3 class="toggle">Filter</h3>
 <div id="home_filter">
@@ -49,6 +66,11 @@
 
 </div>
 
+<br />
+
+
+
+<!-- Sources -->
 
 <script type="text/javascript">
 $(document).ready(function() 

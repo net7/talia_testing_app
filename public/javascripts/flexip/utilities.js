@@ -60,8 +60,6 @@ var Annotator = function() {
         flexip.messageBoxHide();
         this.setFree();
     }
-
-
 /*
 annotator.lock([message])
 annotator.unlock([message])
