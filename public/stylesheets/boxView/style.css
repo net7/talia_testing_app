@@ -15,7 +15,8 @@ html, body {
 }
 
 body {
-	background: #FFF url(images/body_bg.gif) top left repeat-y;
+	/* background: #FFF url(images/body_bg.gif) top left repeat-y; */
+	background-color: #FFF;
 }
 
 a {
@@ -44,7 +45,7 @@ Header
 	border-bottom: 11px solid #29231c;
 	height: 90px;
 }
-	#pageHeader h1{
+	#pageHeader h1 {
 		background: url(images/title_bar_titolo_1.gif) top left no-repeat;
 		left: 12px;
 		top: 18px;
@@ -145,6 +146,7 @@ Menu
 */
 div#menu_container {
 	border-top: 1px solid #FFF;
+	background-color: #afa69e;
 }
 
 	div#menu_container h3 {
