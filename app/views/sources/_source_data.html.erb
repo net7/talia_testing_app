@@ -8,13 +8,16 @@
  <h3 class="toggle closed">Images</h3>
 <div>
 <%   images.each do |image| %>
-  <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
-  <% 
+  <div class="image">
+    <h2>This element has N annotations</h2>
+    <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
+    <% 
      # TODO: crude, find a better way to get talia_file pseudo_id
      # (I already have all the talia files in memory, I should remember which one of them this belongs to. 
-  %>
-  <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
-    <%= t "Toggle flexip" %></a><br/>
+    %>
+    <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
+      <%= t "Toggle flexip" %></a><br/>
+  </div>
 <%   end %>
 </div>
 <% end %>
