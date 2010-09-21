@@ -4,9 +4,9 @@
 
 <% images = @source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData %>
 <% if images.count > 0 %>
- <div id="flexip" style=""></div>
+ <div id="flexip"></div>
  <h3 class="toggle closed">Images</h3>
-<div>
+<div style='display: none;'>
 <%   images.each do |image| %>
   <div class="image">
     <h2>This element has N annotations</h2>
@@ -29,10 +29,7 @@
 <% files.each_value {|type| type.each {|data_record| data_records << data_record}} %>
 
 <% if data_records.size > 0 %>
-  <h3 class="toggle">Data Records</h3>
-  <div>
-    <%= render :partial => 'data_list', :locals => {:records => data_records} %>
-  </div>
+    <%= render :partial => 'data_records', :locals => {:records => data_records} %>
 <% end %>
 
 <% if files['TaliaCore::DataTypes::XmlData'] %>
