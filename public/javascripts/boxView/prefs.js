@@ -8,7 +8,7 @@
 	$.doniPrefs.defaults = {
 
         // Animations yes/no, length in ms
-        animations: false,
+        animations: true,
         animationsLength: 300,
 
         // .resizeme images max width, 0=dont limit

@@ -80,10 +80,10 @@ class BoxViewController < ApplicationController
       html += render_to_string :person
     elsif N::DEMO.City.in? types
       html += render_to_string :boxview_google_map
-      html += render_to_string :boxview_graph
     else
       html += render_to_string :source
     end
+    html += render_to_string :boxview_graph
     data = {'box' => @source_name}
 
     render_json(0, html, data)
