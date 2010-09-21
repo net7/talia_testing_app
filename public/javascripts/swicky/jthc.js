@@ -164,13 +164,10 @@ $(function() {
                 type: 'POST',
                 success: function(data) { 
                     if (data){
-                    // TODO: sanity checks on length? 
-                    self.log("## Got "+data.length+" new fragments for: "+uri);
+                        // TODO: sanity checks on length? 
+                        self.log("## Got "+data.length+" new fragments for: "+uri);
 
-                    var n = data.length;
-                    
-//                    if (n) {
-
+                        var n = data.length;
                         for (var i=0; i<n; i++) {
                             var xp = data[i];
                             self.fragments[xp] = {'parenturl': uri};
@@ -178,7 +175,6 @@ $(function() {
                         }
                         
                         self.askForXPointers();
-//                    }
                     } else {
                         self.log("## No fragments associated to "+uri);
                     }

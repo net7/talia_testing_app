@@ -3,16 +3,14 @@
 %>
 
 <div class='widget'>
-    <div class='widgetHeader'>
+    <div class='widgetHeader graph'>
         <h3 class='widgetHeaderTitle'>Graph</h3>
         <div class='widgetHeaderTools'>
             <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
     	</div>
     </div>
-    <div class='widgetContent expanded'>
-        <% @source.direct_predicates.each do |p| %>
-            <%= p %> --- <%= @source[p].values_with_lang(I18n.locale.to_s) %><br />
-        <% end %>
+    <div class='widgetContent expanded graph'>
+
         <br /><br />
             <div id="<%= "container_#{id}" %>" class='resizeme' style='width: 400px; height: 400px;'>
                 <div id="<%= id %>">Il grafo va qui.</div>

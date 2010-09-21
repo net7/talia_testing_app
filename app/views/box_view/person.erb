@@ -1,14 +1,14 @@
 <div class='widget'>
 
-    <div class='widgetHeader'>
-        <h3 class='widgetHeaderTitle'>Generic informations</h3>
+    <div class='widgetHeader metadata'>
+        <h3 class='widgetHeaderTitle'>Metadata</h3>
         <div class='widgetHeaderTools'>
             <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
     	</div>
     </div>
-    <div class='widgetContent expanded'>
+    <div class='widgetContent expanded metadata'>
   <% if !@source[N::DEMO.birth_date].empty? %>
-    Was born
+    <p>Was born
 
     <%  unless @source[N::DEMO.birthplace].empty? %> in
       <% birthplace = TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first) %>
@@ -16,32 +16,19 @@
         <%= title_for(birthplace) %>
       </a>
     <% end %>
-    on <%= @source[N::DEMO.birth_date].first %>. <br/>
+    on <%= @source[N::DEMO.birth_date].first %>. </p>
   <% end %>
 
   <% if !@source[N::DEMO.death_date].empty? %>
-    Has died
+    <p>Has died
     <%  unless @source[N::DEMO.deathplace].empty? %> in
       <% deathplace = TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first) %>
       <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(deathplace.to_s) %>&type=source">
         <%= title_for(deathplace) %>
       </a>
     <% end %>
-    on <%= @source[N::DEMO.death_date].first %>. <br/>
+    on <%= @source[N::DEMO.death_date].first %>. </p>
   <% end %>
     </div>
-
-
-<% if !@source[N::DCNS.description].empty? %>
-<div class='widgetHeader'>
-    <h3 class='widgetHeaderTitle'>Description</h3>
-    <div class='widgetHeaderTools'>
-        <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
-	</div>
-</div>
-<div class='widgetContent expanded'>
-    <%= @source[N::DCNS.description].first %> <br/>
-</div>
-<% end %>
 
 </div>
