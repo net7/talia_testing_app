@@ -3,18 +3,18 @@
     <div class='section_header'></div>
     <div class='section_content_container'>
         <div class='section_content'>
+
             <p>Years: <%= @source[N::DEMO.birth_date].first %> / <%= @source[N::DEMO.death_date].first %> </p>
 
             <% unless @source[N::DEMO.author_of].first.nil? %>
-                <p>Works:</p>
-                <ul>
+            <p>Works:
                 <% @source[N::DEMO.author_of].each do |work|  %>
-                    <li><%= link_to(title_for(TaliaCore::ActiveSource.find(work.uri.to_s)), 
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(work.uri.to_s)), 
                     { :controller => 'sources', :action => 'dispatch', :dispatch_uri => work.uri.local_name }) %>
-                    </li>
                 <% end %>
-                </ul>
+            </p>
             <% end %>
+
         </div>
         <div class='section_notes'></div>
     </div>

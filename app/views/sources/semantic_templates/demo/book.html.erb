@@ -1,21 +1,5 @@
 <%= render(:partial => 'source_header') %>
 <%= render(:partial => 'properties_wrapper') %>
 <%= render(:partial => 'source_data') %>
-
-
-<h3 class="toggle">Data</h3>
-<div>
-  <% unless @source.inverse[N::DEMO.cited_in].first.nil? %>
-    Works: <% @source.inverse[N::DEMO.cited_in].each do |cited|  %>
-      <%= link_to(title_for(TaliaCore::ActiveSource.find(cited.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => cited.uri.local_name }) %><br/>
-    <% end %>
-  <% end %>
-
-   <% unless @source.demo.author.first.nil? %>
-       Authors: <%  @source.demo.author.each do |author| %>
-    <%=  link_to(title_for(TaliaCore::ActiveSource.find(author.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => author.uri.local_name}) %><br/>
-  <% end %>
-<% end %>
-</div>
-
+<%= render(:partial => 'book_data' )%>
 <%= render(:partial => 'google_map') %>
