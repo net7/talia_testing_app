@@ -123,6 +123,18 @@ $(function() {
 
             });
 
+            $('span#load_annotations').live('click', function() {
+                if ($(this).hasClass('hide')) {
+                    $('div.section.has_notes').removeClass('annotated');
+                    $(this).removeClass('hide');
+                    $(this).html("Load them!");
+                } else {
+                    $(this).addClass('hide');
+                    $('div.section.has_notes').addClass('annotated');
+                    $(this).html("Hide all notes..");
+                }
+            });
+
             
         }, // init()
 
@@ -391,7 +403,12 @@ $(function() {
             var self = this;
 
             self.annotationsNumber++;
-            $("span#annotationsNumber").html(self.annotationsNumber);
+            if (self.annotationsNumber == 1) {
+                $("body").append("<div id='annotations_dialog'>There's <span id='annotations_number'>1</span> annotations on this page!"+
+                                    "<span id='load_annotations'>Show them!</span></div>");
+            } else {
+                $("span#annotations_number").html(self.annotationsNumber);
+            }
 
             return;
         },
@@ -425,7 +442,7 @@ $(function() {
             // cont.append(markup);
 
             var new_cont = $('div [about="'+parentTHCTag+'"]').parents('div.section');
-            new_cont.addClass('annotated');
+            new_cont.addClass('has_notes');
             new_cont.find('div.section_notes').append(markup);
 
             self.bindLiveHandlers(associatedXpointer);
