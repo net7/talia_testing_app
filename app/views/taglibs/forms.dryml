@@ -64,7 +64,7 @@
     <error-messages param/>
 <%#*<field-list fields="name" param/>%>
     <h3><b><%= this.name %></b></h3> (<%= this.uri%>)
-
+<source-files/>
     <field-edit-table>
       <content:>
 
