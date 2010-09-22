@@ -11,7 +11,7 @@
            
             <li>
                 <a href="<%= talia_file.uri.to_s %>" class="flexip-toggle">
-                  <%= thctag talia_file.uri.to_s, image_tag(source_data_url(image), :alt => image.location, :title => image.location) %>
+                  <%= thctag talia_file.uri.to_s, image_tag(source_data_url(image), :alt => image.location, :title => image.location), :title => image.location %>
                     <%= t "Toggle flexip" %>
                 </a>
             </li>
