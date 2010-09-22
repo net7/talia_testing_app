@@ -51,7 +51,7 @@ h2 {
 
 h3 {
 	font-size: 20px;
-	margin-bottom: 5px;
+	margin-bottom: 13px;
 	color: #493e35;
 }
 
@@ -209,29 +209,10 @@ span.tag_selected {
 				
 				#pageHeader #header_preferences ul li a:hover {
 				}
-				
-				#pageHeader #header_preferences ul li a#helpButton {
-				}
-				
-				#pageHeader #header_preferences ul li a#undoButton {
-				}
-				
-				#pageHeader #header_preferences ul li a#introButton {
-				}
-				
-				#pageHeader #header_preferences ul li a.inactive#undoButton {
-				}
-				
-				#pageHeader #header_preferences ul li a#prefButton {
-				}
-
-
 
 
 /* ***************** ************** ************** */
-
-/* ***************** CONTENTS ************** */
-
+/* ***************** STRUTTURALI ************** */
 /* ***************** ************** ************** */
 
 #contents {
@@ -239,6 +220,25 @@ span.tag_selected {
 	margin-bottom: 0px;
 	background-color: #eeebe5;
 }
+
+div.full_width {
+	width: 100%;
+	border-bottom: 2px solid #ddd0c4;
+	margin: 0 0 15px 0;
+}
+
+div.left_column {
+	width: 50%;
+	padding: 0px;
+	float: left;
+}
+
+div.right_column {
+	width: 50%;
+	padding: 0px;
+	float: right;
+}
+
 
 /* ***************** ************** ************** */
 /* ***************** FOOTER ************** */
@@ -332,38 +332,57 @@ span.tag_selected {
 
 
 /* ***************** ************** ************** */
-
 /* ***************** Specifiche Home ************** */
-
 /* ***************** ************** ************** */
 #home_map, #home_filter {
 	margin-bottom: 30px;
 }
 
+.full_width p {
+	line-height: 18px;
+	color: #716c67;
+}
+
+
+.full_width #home_filter {
+	margin: 15px 0;
+}
+
+.full_width #home_filter #select-container {
+	margin: 15px 0;
+}
+
+.full_width #home_filter a {
+	text-transform: uppercase;
+}
+
+
 
 /* ***************** ************** ************** */
-
 /* ***************** Barbz demo stuff ************** */
-
 /* ***************** ************** ************** */
 
-.sources_list h1 {
+.left_column .sources_list {
+	padding-right: 15px;
+}
+
+.left_column .sources_list h1 {
 	margin-top: 15px;
 	}
 
-.sources_list ul {
+.left_column .sources_list ul {
 	width: 100%;
 	list-style: none;
 }
 
-.sources_list ul li {
+.left_column .sources_list ul li {
 	border-bottom: 1px solid #d8d8d8;
 	width: 100%;
 	padding-bottom: 0;
 	float: left;
 }
 
-.sources_list ul li p {
+.left_column .sources_list ul li p {
 	float: left;
 	width: 100%;
 	background: #f9f9f9;
@@ -371,7 +390,7 @@ span.tag_selected {
 	padding: 0
 }
 
-.sources_list ul li p .source_type {
+.left_column .sources_list ul li p .source_type {
 	display: block;
 	float: left;
 	width: 10%;
@@ -387,7 +406,7 @@ span.tag_selected {
 	width: 8%
 }
 
-.sources_list ul li p .source_title {
+.left_column .sources_list ul li p .source_title {
 	display: block;
 	float: left;
 	width: 45%;
@@ -400,7 +419,7 @@ span.tag_selected {
 	width: 43%
 }
 
-.sources_list ul li p .source-data {
+.left_column .sources_list ul li p .source-data {
 	display: block;
 	float: left;
 	width: 35%;
@@ -410,7 +429,7 @@ span.tag_selected {
 	width: 33%
 }
 
-.sources_list ul li p .more {
+.left_column .sources_list ul li p .more {
 	width: 10%;
 	float: left;
 	padding: 6px 0;
@@ -419,7 +438,7 @@ span.tag_selected {
 	display: block;
 }
 
-.sources_list ul li p .more a {
+.left_column .sources_list ul li p .more a {
 	color: #999;
 }
 
@@ -488,9 +507,7 @@ div#tl {
 }
 
 /* ***************** ************** ************** */
-
 /* ***************** Pagination - barbz demo ************** */
-
 /* ***************** ************** ************** */
 
 .pagination {
@@ -499,7 +516,7 @@ div#tl {
 }
 
 .pagination a {
-	padding: 2px 5px 2px 5px;
+	padding: 3px 5px 2px 5px;
 	margin: 2px;
 	/* border: 1px solid #515151; */
 	background: #9bd7ff;
@@ -507,29 +524,37 @@ div#tl {
 	font-weight: bold;
 	text-decoration: none;
 	color: #605040;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .pagination a:hover, .pagination a:active {
 	/* border: 1px solid #515151; */
 	color: #000;
+	color: #9bd7ff;
+	background: #605040;
 }
 
 .pagination span.current {
-	padding: 2px 5px 2px 5px;
+	padding: 4px 5px 1px 5px;
 	margin: 2px;
 	border: 2px solid #605040;
 	font-size: 14px;
 	font-weight: bold;
 	background-color: #605040;
 	color: #FFF;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .pagination span.disabled {
 	display: none;
-	padding: 2px 5px 2px 5px;
+	padding: 3px 5px 2px 5px;
 	margin: 2px;
 	border: 1px solid #eee;
 	color: #ddd;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 /* ***************** ************** ************** */
