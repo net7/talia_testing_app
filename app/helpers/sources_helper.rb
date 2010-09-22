@@ -304,7 +304,7 @@ module SourcesHelper
     elsif(record.mime.include? == 'pdf')
       ['icon_pdf', {}]
     else
-      ['gear', {}]
+      ['icon_generic', {}]
     end
   end
 
