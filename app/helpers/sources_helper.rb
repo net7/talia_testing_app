@@ -241,7 +241,7 @@ module SourcesHelper
       end
       link_data = data_record_options(data_record)
       result << link_to(
-        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
+        image_tag("demo/doc_types/#{link_data.first}.gif", :alt => data_record.location, :title => data_record.location),
         url_for_data_record(data_record),
         link_data.last
       )
@@ -294,11 +294,15 @@ module SourcesHelper
 
   def data_record_options(record)
     if(record.mime.include?('image/'))
-      ['image', {:class => 'cbox_image'}]
+      ['icon_img', {:class => 'cbox_image'}]
     elsif(record.mime.include?('text/'))
-      ['text', {:class =>'cbox_inline' }]
+      ['icon_html', {:class =>'cbox_inline' }]
     elsif(record.mime == 'application/xml')
-      ['text', {:class => 'cbox_inline'}]
+      ['icon_html', {:class => 'cbox_inline'}]
+    elsif(record.mime == 'doc')
+      ['icon_doc', {}]
+    elsif(record.mime.include? == 'pdf')
+      ['icon_pdf', {}]
     else
       ['gear', {}]
     end
