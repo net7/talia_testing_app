@@ -1,0 +1,13 @@
+--- 
+production: 
+  type: sesame
+  url: http://localhost:8080/openrdf-sesame/repositories/talia_demo_production
+  backend: http
+test: 
+  type: sesame
+  backend: native
+  location: ./sesame_test.db
+development: 
+  type: sesame
+  url: http://localhost:8080/openrdf-sesame/repositories/talia_demo
+  backend: http
