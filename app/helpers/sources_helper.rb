@@ -301,7 +301,7 @@ module SourcesHelper
       ['icon_html', {:class => 'cbox_inline'}]
     elsif(record.mime == 'doc')
       ['icon_doc', {}]
-    elsif(record.mime.include? == 'pdf')
+    elsif(record.mime.include?('pdf'))
       ['icon_pdf', {}]
     else
       ['icon_generic', {}]
