@@ -17,9 +17,10 @@
 										'100%',
 										'9.0.0',
 										'modules/comm/sicar/communication.swf',
-										//'modules/image/multisimple/imageHolder.swf',
+										//'modules/comm/base/communication.swf',
+										'modules/image/multisimple/imageHolder.swf',
 										//'modules/image/simple/imageHolder.swf',
-										'modules/image/iip/imageHolder.swf',
+										//'modules/image/iip/imageHolder.swf',
 										//'modules/SideMenu.swf',
 										'modules/SideMenuSicar.swf',
 										'skins/sicar/skin.swf?anticache='+(new Date()).getTime()
@@ -27,6 +28,7 @@
 			//myFjsApi.openLogWindow();
 			myFjsApi.allModulesLoaded = allModulesLoaded;
 			myFjsApi.commInterfaceSettingsParseEnd = commInterfaceSettingsParseEnd;
+			myFjsApi.commInterfaceSettingsParseError = commInterfaceSettingsParseError;
 			myFjsApi.imageLoaded = imageLoaded;
 			myFjsApi.commDataParseEnd = commDataParseEnd
 			myFjsApi.initialize();
@@ -38,9 +40,10 @@
 				console.log("caricamento moduli completato");
 				ff = this.flexipRef;
 				this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.xml');	
+				//this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.json');	
 				//this.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
 				//this.flexipRef.imageLoadSource('data/img/testicon1.png');
-				//setImageSource(0);	
+				setImageSource(0);	
 			}
 			
 			function commInterfaceSettingsParseEnd()
@@ -49,8 +52,11 @@
 				//myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/globe.256x256.tif');
 				//myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/heic0601a.tif');
 				//myFjsApi.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
-				//myFjsApi.flexipRef.imageLoadSource('http://demosicar.liberologico.com/map/iip2xli.php?file=Ceramic.imgi');
-				myFjsApi.flexipRef.imageLoadSource('http://localhost:8888/flexip/data/imgFakeIIP.php?src=data/img/wellcome.jpg');
+			}
+			
+			function commInterfaceSettingsParseError()
+			{
+				myFjsApi.flexipRef.messageBoxHide();				
 			}
 			
 			function imageLoaded()
@@ -68,8 +74,8 @@
 			
 			function test0()
 			{
-				var obj = { toolBarID	: "shapes",
-							headerLabel	: "Shapes",
+				var obj = { toolBarID	: "shapes1",
+							headerLabel	: "Shapes1",
 							buttons:
 							[
 								{ 	styleName: 		"iconSelectTool",
@@ -337,6 +343,93 @@
 		  	function mb_callBack(data)
 		  	{
 		  		console.log("return button label:"+data.return_button_label);		  		
+		  	}
+		  	
+		  	function edit2()
+		  	{
+		  		ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconLockOn", 
+				    toolTip: "Rilascia lock",
+				    functionCode: "101", 
+				    toggleMode: "false",
+				    pos:"1"
+				  });
+				
+				  /// Add save button (102)
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconSave", 
+				    toolTip: "Salva",
+				    functionCode: "102",
+				    toggleMode: "false",
+				    pos:"2"
+				  });
+				
+				  /// Add undo all button (104)
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconClear", 
+				    toolTip: "Annulla",
+				    functionCode: "104", 
+				    toggleMode: "false",
+				    pos:"3"
+				  });
+				
+				  /// Add edit toolbar buttons
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconMovePoly",
+				    toolTip: "Muovi poligono",
+				    functionCode: "20",
+				    toggleMode: "true",
+				    pos:"4"
+				  });
+				
+				  return;
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconDeletePolygon",
+				    toolTip: "Cancella poligono",
+				    functionCode: "18",
+				    toggleMode: "false",
+				    pos:"5"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconCopyPolygon",
+				    toolTip: "Copia poligono",
+				    functionCode: "21",
+				    toggleMode: "false",
+				    pos:"6"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconAddVertex",
+				    toolTip: "Aggiungi punto",
+				    functionCode: "15",
+				    toggleMode: "true",
+				    pos:"7"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconDelVertex",
+				    toolTip: "Cancella punto",
+				    functionCode: "16",
+				    toggleMode: "true",
+				    pos:"8"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconMoveVertex",
+				    toolTip: "Muovi punti",
+				    functionCode: "17",
+				    toggleMode: "true",
+				    pos:"9"
+				  });
+						  		
+		  	}
+		  	
+		  	var ddd;
+		  	function outlayer(data)
+		  	{
+		  	ddd=data;
+		  	  console.log("data:"+ddd);
 		  	}
 			
 		</script>

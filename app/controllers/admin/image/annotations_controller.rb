@@ -41,6 +41,10 @@ class Admin::Image::AnnotationsController < Image::AnnotationsController
 		<button styleName="iconMoveVertex" 	 	toolTip="Move point" 							functionCode="17" 	toggleMode="true"/>
 	</toolbar>
 	<global>
+    <setting key="COORDS_BAR_VISIBLE" value="false" />
+    <setting key="COORDS_BAR_POS" value="top" />
+    <setting key="HINT_BAR_VISIBLE" value="false" />
+    <setting key="HINT_BAR_POS" value="top" />
 		<setting key="LAYERITEM_TOGGLE_COLLAPSE_ON_DOUBLECLICK" value="true" />
 		<setting key="LAYERITEM_COLOPRICKERVISIBLE" value="true" />
 		<setting key="LAYERITEM_ALPHASLIDERVISIBLE" value="true" />

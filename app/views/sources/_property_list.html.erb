@@ -10,7 +10,6 @@
     </thead>
     <tbody>
       <% for attribute, value in @source.attributes %>
-<%= attribute %>
         <% unless value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource' || attribute_blacklist.include?(attribute) %>
           <%= render(:partial => 'property_item', :object => attribute, :locals => {:values => [value] }) unless (value == 'TaliaCore::Source' || value == 'TaliaCore::ActiveSource')%>
         <% end %>

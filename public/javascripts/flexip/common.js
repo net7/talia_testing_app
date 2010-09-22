@@ -35,15 +35,16 @@ function launchFlexip() {
   flexip_id = 'flexip';
   if($("#flexip-loaded").length) flexip_id = "flexip-loaded";
   myFjsApi = new FJSAPI('myFjsApi',
-                            'flexip-loaded',
-                            flexip_id,
-                            '100%',
-                            '100%',
-                            '9.0.0',
-                            '/flexip/'+config.modules.comm+'?anticache='+(new Date()).getTime(),
-                            '/flexip/'+config.modules.background+'?anticache='+(new Date()).getTime(),
-                            '/flexip/'+config.modules.sideMenu+'?anticache='+(new Date()).getTime(),
-                            '/flexip/'+config.modules.skin+'?anticache='+(new Date()).getTime());
+                        'flexip-loaded',
+                        flexip_id,
+                        '100%',
+                        '100%',
+                        '9.0.0',
+                        '/flexip/'+config.modules.comm+'?anticache='+(new Date()).getTime(),
+                        '/flexip/'+config.modules.background+'?anticache='+(new Date()).getTime(),
+                        '/flexip/'+config.modules.sideMenu+'?anticache='+(new Date()).getTime(),
+                        '/flexip/'+config.modules.skin+'?anticache='+(new Date()).getTime(),
+                        '/flexip/');
 
   myFjsApi.allModulesLoaded = (typeof(allModulesLoaded) != "undefined") ? allModulesLoaded : function() {
     this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
@@ -59,8 +60,12 @@ function launchFlexip() {
     this.flexipRef.messageBoxHide();
   }
 
-  myFjsApi.toolBarButtonClick = toolBarButtonClick;
-  myFjsApi.layerOperationPerformed = layerButtonClick;
+  myFjsApi.layerClick = (typeof(layerClick) != "undefined") ? layerClick : function(layerId) {}
+  myFjsApi.layerActivated = (typeof(layerActivated) != "undefined") ? layerActivated : function(layerId) {}
+  myFjsApi.layerDeactivated = (typeof(layerDeactivated) != "undefined") ? layerDeactivated : function(layerId) {}
+
+  myFjsApi.toolBarButtonClick = (typeof(toolBarButtonClick) != "undefined") ? toolBarButtonClick : function(fCode) {}
+  myFjsApi.layerOperationPerformed = (typeof(layerOperationPerformed) != "undefined") ? layerOperationPerformed : function(layerID,fCode, data) {}
 
 /*
   myFjsApi.moduleLoaded = function(moduleCode) {console.warn("Module loaded: "+moduleCode)}
@@ -78,9 +83,4 @@ function launchFlexip() {
 
   myFjsApi.initialize();
   flexip = myFjsApi.flexipRef;
-}
-
-function firefoxBugFix() {
-  var img = new Image();
-  img.src = '/images/rails.png';
 }
