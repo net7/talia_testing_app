@@ -1,36 +1,4 @@
 <%= render(:partial => 'source_header') %>
 <%= render(:partial => 'properties_wrapper') %>
-
-<h3 class="toggle">Data</h3>
-<div>
-  Years: <%= @source.demo.beginning_date.first %> / <%= @source.demo.finished_in.first %>
-
-  <% unless  @source.inverse[N::DEMO.epoch].empty? %>
-    (Epoch: <%= link_to(title_for(TaliaCore::ActiveSource.find(@source.inverse[N::DEMO.epoch].first.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.inverse[N::DEMO.epoch].first.uri.local_name }) %>)
-  <% end %>
-  <br/>
-  
-<% unless @source.demo.ruler.empty? %>
-  Ruled by: <%  @source.demo.ruler.each do |ruler| %>
-    <%= link_to(title_for(TaliaCore::ActiveSource.find(ruler.uri.to_s)),  { :controller => 'sources', :action => 'dispatch', :dispatch_uri => ruler.uri.local_name }) %>,
-  <% end %>
-    <br/>
-  <% end %>
-
-  <% unless  @source.demo.capital.empty? %>
-    Capital: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source.demo.capital.first.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.demo.capital.first.uri.local_name }) %> <br/>
-  <% end %>
-
-  <% unless @source.inverse[N::DEMO.following_empire].empty? %>
-
-    Preceded by: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source.inverse[N::DEMO.following_empire].first.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.inverse[N::DEMO.following_empire].first.uri.local_name }) %> <br/>
-  <% end %>
-  <% unless @source[N::DEMO.following_empire].empty? %>
-
-    Followed by: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source[N::DEMO.following_empire].first.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source[N::DEMO.following_empire].first.uri.local_name }) %> <br/>
-  <% end %>
-
-
-</div>
-
+<%= render(:partial => 'empire_data' ) %>
 <%= render(:partial => 'source_data') %>
