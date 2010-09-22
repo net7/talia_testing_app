@@ -9,6 +9,3 @@ $(document).ready(function() {
     return false;
   });
 });
-
-function toolBarButtonClick(fCode) {}
-function layerButtonClick(layerID,fCode, data) {}
