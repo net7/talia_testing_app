@@ -1,27 +1,7 @@
-<style>
-#flexip, #flexip-loaded {width: 500px;height: 500px;position:absolute;right:5px;top:133px;border:1px solid black;}
-</style>
-
 <% images = @source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData %>
 <% if images.count > 0 %>
- <div id="flexip"></div>
- <h3 class="toggle closed">Images</h3>
-<div style='display: none;'>
-<%   images.each do |image| %>
-  <div class="image">
-    <h2>This element has N annotations</h2>
-    <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
-    <% 
-     # TODO: crude, find a better way to get talia_file pseudo_id
-     # (I already have all the talia files in memory, I should remember which one of them this belongs to. 
-    %>
-    <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
-      <%= t "Toggle flexip" %></a><br/>
-  </div>
-<%   end %>
-</div>
+    <%= render :partial => 'image', :locals => {:images => images}%>
 <% end %>
-
 
 <% prepare_data_records %>
 
@@ -29,20 +9,6 @@
     <%= render :partial => 'data_records', :locals => {:records => @data_records} %>
 <% end %>
 
-<% if @files['TaliaCore::DataTypes::XmlData'] %>
-  <h3 class="toggle">Text</h3>
-  <div>
-    <% for data_record in @files['TaliaCore::DataTypes::XmlData'] %>
-      <% element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
-      <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-        <h2>This element has <%= ncount %> annotations</h2>
-      <% end %>
-      <%= thctag(element_uri, data_record.content_string) %>
-    <% end %>
-  </div>
-<% elsif !@source[N::DCNS.description].empty? %>
-  <h3 class="toggle">Description</h3>
-  <div>
-    <%= @source[N::DCNS.description].values_with_lang(I18n.locale.to_s).first %>
-  </div>
+<% if @files['TaliaCore::DataTypes::XmlData'] || !@source[N::DCNS.description].empty? %>
+    <%= render :partial => 'text' %>
 <% end %>

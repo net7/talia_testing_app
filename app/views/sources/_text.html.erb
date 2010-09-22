@@ -1,0 +1,32 @@
+<% if @files['TaliaCore::DataTypes::XmlData'] %>
+
+    <h3 class="toggle">Text</h3>
+    <div class="section">
+      <div class='section_header'></div>
+      <div class='section_content_container'>
+          <div class='section_content'>
+              <% for data_record in @files['TaliaCore::DataTypes::XmlData'] %>
+                  <% element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
+                  <%= thctag(element_uri, data_record.content_string) %>
+              <% end %>
+          </div>
+          <div class='section_notes'></div>
+      </div>
+      <div class='section_footer'></div>
+    </div>
+
+<% elsif !@source[N::DCNS.description].empty? %>
+
+    <h3 class="toggle">Description</h3>
+    <div class="section" style='display:none'>
+        <div class='section_header'></div>
+        <div class='section_content_container'>
+            <div class='section_content'>
+                <%= @source[N::DCNS.description].values_with_lang(I18n.locale.to_s).first %>
+            </div>
+            <div class='section_notes'></div>
+        </div>
+        <div class='section_footer'></div>
+    </div>
+
+<% end %>

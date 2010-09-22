@@ -38,3 +38,42 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 	background-color: #49423c;
 }
+
+
+/* New sections layout */
+div.section {
+  position: relative;
+  border: 1px dashed #ccc;
+  width: 100%;
+}
+
+div.section div.section_header.gallery {
+  background: #666;
+}
+div.section div.section_header.gallery li {
+  display: inline;
+}
+
+div.section div.section_content_container div.section_notes {
+  display: none;
+}
+div.section.annotated div.section_content_container div {
+  position: relative;
+  float: left;
+}
+div.section.annotated div.section_content {
+  border: 0px;
+  width: 100%;
+}
+div.section.annotated div.section_content_container {
+  padding-right: 200px;
+}
+div.section.annotated div.section_content_container div.section_notes {
+  margin-right: -200px;
+  width: 200px;
+  background: #fc9;
+  display: block;
+}
+div.section.annotated div.section_footer {
+  clear: both;
+}

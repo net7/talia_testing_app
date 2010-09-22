@@ -1,0 +1,23 @@
+<h3 class="toggle closed">Images</h3>
+<div class="section annotated" style='display:none'>
+    <div class='section_header gallery'>
+        <ul>
+        <%   images.each do |image| %>
+            <%  # TODO: crude, find a better way to get talia_file pseudo_id
+                # (I already have all the talia files in memory, I should remember which one of them this belongs to. 
+            %>
+            <li>
+                <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
+                    <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
+                    <%= t "Toggle flexip" %>
+                </a>
+            </li>
+        <% end %>
+        <ul>
+    </div>
+    <div class='section_content_container'>
+        <div class='section_content'><div id="flexip"></div></div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
+</div>
