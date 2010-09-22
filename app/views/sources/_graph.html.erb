@@ -1,18 +1,25 @@
 <h3 class="toggle">Graph</h3>
-<div id="graph">
+<div class="section graph">
+    <div class='section_header'></div>
+    <div class='section_content_container'>
+        <div class='section_content'>
 
-    <div id="graph_container">
-        <div id="graph_div">Il grafo va qui.</div>
-    </div>
+            <div id="graph_container">
+                <div id="graph_div">Il grafo va qui.</div>
+            </div>
         
-    <script type="text/javascript"> 
-		// <![CDATA[
-		var so = new SWFObject("/GraphGear.swf", "graph_div", "800", "500", "8");
-		so.addVariable("graphXMLFile", "/boxView/graph_xml/<%= Base64.encode64s(@source.uri.to_s) %>"); // rename to your xml file
-		so.addParam("allowScriptAccess", "always");
-		so.addParam("scale", "noborder");
-		so.addParam("salign", "tl");
-        so.write("graph_container");           
-		// ]]>
-	</script>
+            <script type="text/javascript"> 
+        		// <![CDATA[
+        		var so = new SWFObject("/GraphGear.swf", "graph_div", "800", "500", "8");
+        		so.addVariable("graphXMLFile", "/boxView/graph_xml/<%= Base64.encode64s(@source.uri.to_s) %>"); // rename to your xml file
+        		so.addParam("allowScriptAccess", "always");
+        		so.addParam("scale", "noborder");
+        		so.addParam("salign", "tl");
+                so.write("graph_container");           
+        		// ]]>
+        	</script>
+        </div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
 </div>

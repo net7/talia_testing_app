@@ -1,0 +1,45 @@
+<h3 class="toggle">Data</h3>
+<div class="section data">
+    <div class='section_header'></div>
+    <div class='section_content_container'>
+        <div class='section_content'>
+
+            <p>Years: <%= @source.demo.beginning_date.first %> / <%= @source.demo.finished_in.first %>
+                <% unless @source.inverse[N::DEMO.epoch].empty? %>
+                (Epoch: <%= link_to(title_for(TaliaCore::ActiveSource.find(@source.inverse[N::DEMO.epoch].first.uri.to_s)), 
+                    { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.inverse[N::DEMO.epoch].first.uri.local_name }) %>)
+                <% end %>
+            </p>
+
+            <% unless @source.demo.ruler.empty? %>
+            <p>Ruled by: 
+                <%  @source.demo.ruler.each do |ruler| %>
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(ruler.uri.to_s)), 
+                    { :controller => 'sources', :action => 'dispatch', :dispatch_uri => ruler.uri.local_name }) %>,
+                <% end %>
+            </p>
+            <% end %>
+
+            <% unless  @source.demo.capital.empty? %>
+            <p>Capital: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source.demo.capital.first.uri.to_s)), 
+                { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.demo.capital.first.uri.local_name }) %>
+            </p>
+            <% end %>
+
+            <% unless @source.inverse[N::DEMO.following_empire].empty? %>
+            <p>Preceded by: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source.inverse[N::DEMO.following_empire].first.uri.to_s)), 
+                { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source.inverse[N::DEMO.following_empire].first.uri.local_name }) %>
+            </p>
+            <% end %>
+
+            <% unless @source[N::DEMO.following_empire].empty? %>
+            <p>Followed by: <%=  link_to(title_for(TaliaCore::ActiveSource.find(@source[N::DEMO.following_empire].first.uri.to_s)), 
+                { :controller => 'sources', :action => 'dispatch', :dispatch_uri => @source[N::DEMO.following_empire].first.uri.local_name }) %>
+            </p>
+            <% end %>
+
+        </div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
+</div>
