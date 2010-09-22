@@ -4,3 +4,6 @@ data
 /sesame*
 vendor
 talia_demo_data
+config/talia_core.yml
+config/database.yml
+config/rdfstore.yml
