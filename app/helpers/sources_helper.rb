@@ -261,26 +261,19 @@ module SourcesHelper
   def source_images_amazon_scroller(sources)
     result = []
     sources.each do |s|
-      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+      s = s.becomes(TaliaSource)
+#      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+      if(images = s.files_of_type(TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData)).count > 0
         # If the source has images, it is a TaliaFile source and the data we want to show is about the 
         # correspoding "isFileOf" relation object.
         images.each do |image|
-          has_iip = data_record_has_an_iip_related(s, image)
-          image = has_iip || image
-          result << {:uri => s.owner.uri.to_s, :title => title_for(s.owner), :image => image}
+#          has_iip = data_record_has_an_iip_related(s, image)
+#          image = has_iip || image
+          result << {:uri => s.uri.to_s, :title => title_for(s), :image => image}
         end
       end
     end
     result
-  end
-
-  def data_record_has_an_iip_related(source, rec)
-    source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', rec.location) ||
-      # when tiffs are uploaded, the ImageData object has a different extension (png), check if there's a .tif IipData
-    # TODO: it's dangerous as two different files with .tif and .png extension are loaded, this ignore the png one...
-    source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(rec.location, File.extname(rec.location)) + ".tif") ||
-      source.data_records.find_by_type_and_location('TaliaCore::DataTypes::IipData', File.basename(rec.location, File.extname(rec.location)) + ".tiff")
-
   end
 
   def data_records_contain_objects_of_type?(data_records, type)

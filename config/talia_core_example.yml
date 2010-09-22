@@ -41,3 +41,4 @@ shown_tabs:
 thumb_options:
   height: "400"
   width: "400"
+admin_email: admin@example.com
