@@ -43,8 +43,8 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 /* New sections layout */
 div.section {
   position: relative;
-  border: 1px dashed #ccc;
   width: 100%;
+  padding-bottom: 15px;
 }
 
 div.section div.section_header.gallery {

@@ -1,9 +1,5 @@
-/* CSS Document */
-
 /* ***************** ************** ************** */
-
 /* ***************** TAG GENERICI ************** */
-
 /* ***************** ************** ************** */
 
 * {
@@ -21,6 +17,7 @@ body {
 	font-size: 0.8125em;
 	background-color: #eeebe5;
 	background: #ddd0c4;
+	line-height: 18px;
 }
 
 /* DEFINIZIONE TAG */
@@ -37,28 +34,32 @@ a:hover {
 	background-color: transparent;
 }
 
+a img {
+	border: 0px none;
+}
+
 h1 {
-	font-size: 1.3em;
-	margin-bottom: 5px;
+	font-size: 26px;
+	margin-bottom: 15px;
 	color: #493e35;
 }
 
 h2 {
-	font-size: 1.2em;
-	margin-bottom: 5px;
-	color: #493e35;
+	font-size: 24px;
+	margin-bottom: 15px;
+	color: #716256;
 }
 
 h3 {
-	font-size: 20px;
-	margin-bottom: 13px;
+	font-size: 18px;
+	margin-bottom: 11px;
 	color: #493e35;
 }
 
 h3.toggle {
 	cursor: pointer;
 	display: block;
-	padding-left: 25px;
+	padding-left: 22px;
 	background: url(img/icon_opened.gif) top left no-repeat;
 }
 h3.toggle.closed {
@@ -102,9 +103,7 @@ span.tag_selected {
 }
 
 /* ***************** ************** ************** */
-
 /* ***************** CLASSI RICORRENTI ************** */
-
 /* ***************** ************** ************** */
 
 .hidden {
@@ -116,9 +115,7 @@ span.tag_selected {
 }
 
 /* ***************** ************** ************** */
-
 /* ***************** HEADER ************** */
-
 /* ***************** ************** ************** */
 
 #pageHeader {
@@ -359,7 +356,7 @@ div.right_column {
 
 
 /* ***************** ************** ************** */
-/* ***************** Barbz demo stuff ************** */
+/* ********** Elementi Homepage Left Column ****** */
 /* ***************** ************** ************** */
 
 .left_column .sources_list {
@@ -442,9 +439,19 @@ div.right_column {
 	color: #999;
 }
 
-a img {
-	border: 0px none;
+
+/* ***************** ************** ************** */
+/* ********** Elementi Pagina Source ************* */
+/* ***************** ************** ************** */
+#contents .source_icon {
+	margin-bottom: 5px;
 }
+
+#contents .source_icon a, #contents .source_icon a img {
+	margin: 0; padding: 0;
+}
+
+
 
 /* Styles for the Person template*/
 
@@ -558,15 +565,13 @@ div#tl {
 }
 
 /* ***************** ************** ************** */
-
 /* ***************** Random Stuff ************** */
-
 /* ***************** ************** ************** */
 
 .THCContent
 {
 	padding-top: 5px;
-	border-top: 2px solid #ccc;
+	/* border-top: 2px solid #ccc; */
 }
 
 .THCContent ul
