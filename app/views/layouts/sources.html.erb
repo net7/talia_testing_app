@@ -15,6 +15,9 @@
     <%= iip_include_tags %>
     <%= fg_menu_includes %>
     <%= timeline_includes %>
+    <%= image_annotations_include_tags @swicky_mode%>
+    
+
 
     <% if @source %>
     <link rel="foaf:primarytopic" href="<%= @source.uri.to_s %>"/>
@@ -23,7 +26,6 @@
 
   </head>
   <body<%= source_about %>>
-
 	<!-- Header -->	
 	 <div id="pageHeader">
         <h1><%= link_to h(yield(:title) || "Talia | Semantic Digital Library"), '/sources', :title => 'Home page'%></h1>
