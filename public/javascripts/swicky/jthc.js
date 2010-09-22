@@ -68,17 +68,17 @@ $(function() {
 
              for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
-            
+
+            self = this;
+
+            /* TODO: no more annotations box 
             // Append to DOM the containers for the annotation browser
             $('body').append("<div id='"+this.options.containerID+"'><h2><span id='annotationsNumber'></span> annotations</h2></div>");
             $('#'+this.options.containerID).addClass('loading').draggable({handle: 'h2:first'}).hide();
             this.repositionNoteContainer();
+            */
 
-            // And the lousy tooltip
-            // $('body').append("<div class='THCAnnotationsBox' id='"+this.options.tooltipID+"' style='border: 1px solid black; position: absolute; display:none;'></div>");
-            
-            self = this;
-
+            /* TODO: no more annotations box 
             // Collapse on double click on the H2, the header of the annotations
             $('#'+this.options.containerID+" h2").live('dblclick', function() {
                 var t = $('#'+self.options.containerID);
@@ -88,6 +88,7 @@ $(function() {
                     t.addClass('collapsed');
                 return false;
             });
+            */
 
             $('.THCStatementSubject.Source,.THCStatementObject.Source,').live('click', function() {
                 var url = $(this).attr('about');
@@ -390,7 +391,7 @@ $(function() {
             var self = this;
 
             self.annotationsNumber++;
-            $("#"+this.options.containerID+" span#annotationsNumber").html(self.annotationsNumber);
+            $("span#annotationsNumber").html(self.annotationsNumber);
 
             return;
         },
@@ -415,17 +416,16 @@ $(function() {
 
             // Markup for each statement
             markup += this.getStatementsMarkup(xpointer, note);
-
+            
             // Button to highlight the html - TODO DEBUG: on mouseover?
             // markup += '<span class="THCHighlightButton" about="'+xpointer+'">Highlight annotation in the text!</span>';
             // markup += "</div>";
 
-            var new_cont = $('div [about="'+parentTHCTag+'"]').parents('div.section');
-            new_cont.addClass('annotated');
-
             // var cont = $("#"+self.options.containerID);
             // cont.append(markup);
 
+            var new_cont = $('div [about="'+parentTHCTag+'"]').parents('div.section');
+            new_cont.addClass('annotated');
             new_cont.find('div.section_notes').append(markup);
 
             self.bindLiveHandlers(associatedXpointer);
@@ -716,7 +716,7 @@ $(function() {
                 noteDivId = hash+"-note";
 
             self.hideAllNotes();
-            $('div#THCAnnotations div#' + noteDivId).removeClass('collapsed').addClass('expanded');
+            $('div#' + noteDivId).removeClass('collapsed').addClass('expanded');
             self.log("## Show note "+xpointer);
             return;
         },
@@ -726,7 +726,7 @@ $(function() {
                 hash = self.getHashFromXpointer(xpointer),
                 noteDivId = hash+"-note";
             self.log("## Hide note "+xpointer);
-            $('div#THCAnnotations div#' + noteDivId).addClass('collapsed').removeClass('expanded');
+            $('div#' + noteDivId).addClass('collapsed').removeClass('expanded');
             return;
         },
 

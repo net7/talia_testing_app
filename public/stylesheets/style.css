@@ -66,13 +66,16 @@ div.section.annotated div.section_content {
   width: 100%;
 }
 div.section.annotated div.section_content_container {
-  padding-right: 200px;
+  padding-right: 300px;
 }
 div.section.annotated div.section_content_container div.section_notes {
-  margin-right: -200px;
-  width: 200px;
-  background: #fc9;
+  margin-right: -300px;
+  width: 300px;
+  background: #666;
   display: block;
+}
+div.section.annotated div.section_content_container div.section_notes div.THCNoteItem {
+  width: 280px;
 }
 div.section.annotated div.section_footer {
   clear: both;
