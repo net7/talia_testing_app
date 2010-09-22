@@ -399,13 +399,13 @@ $(function() {
             
             var self = this, 
                 note = self.getItemFromXI(xpointer, id),
-                hash = self.getHashFromXpointer(associatedXpointer);
+                hash = self.getHashFromXpointer(associatedXpointer),
+                parentTHCTag = self.getParentTHCTagFromXpointer(associatedXpointer); 
                 
             self.increaseAnnotationsNumber();
             
-            self.log("## addNote for "+id);
+            self.log("## addNote for "+id+", parent THCTag is about " + parentTHCTag);
             
-            var cont = $("#"+this.options.containerID);
             var markup = 
                 '<div id="'+hash+'-note" class="THCNoteItem collapsed" about="'+associatedXpointer+'">'+
                 "<h3>"+note.label+"</h3>"+
@@ -420,7 +420,14 @@ $(function() {
             // markup += '<span class="THCHighlightButton" about="'+xpointer+'">Highlight annotation in the text!</span>';
             // markup += "</div>";
 
-            cont.append(markup);
+            var new_cont = $('div [about="'+parentTHCTag+'"]').parents('div.section');
+            new_cont.addClass('annotated');
+
+            // var cont = $("#"+self.options.containerID);
+            // cont.append(markup);
+
+            new_cont.find('div.section_notes').append(markup);
+
             self.bindLiveHandlers(associatedXpointer);
 
         }, // addNoteToAnnotationBox()
@@ -529,6 +536,17 @@ $(function() {
         // Useful (?) shortcuts
         getLabelFromId : function (x, i) { return this.getFieldFromId(x, i, 'label'); },
         getUriFromId : function (x, i) { return this.getFieldFromId(x, i, 'uri'); },
+
+        getParentTHCTagFromXpointer : function (xpointer) {
+            var self = this;    
+            for (var xp in self.fragments) {
+                var fragment = self.fragments[xp];
+                if (typeof fragment.items != "undefined")
+                    for (var i=0; i<fragment.items.length; i++)
+                        if (fragment.items[i].uri == xpointer) 
+                            return fragment.parenturl;
+            }
+        },
 
         getHashFromXpointer : function (xpointer) {
             var self = this;    
