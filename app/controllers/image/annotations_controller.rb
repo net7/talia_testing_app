@@ -80,6 +80,8 @@ class Image::AnnotationsController < ApplicationController
     <button styleName="iconMoveImage" toolTip="Enable pan/zoom mode"          functionCode="29"   toggleMode="true"/>
   </toolbar>
 	<global>
+    <setting key="COORDS_BAR_VISIBLE" value="false" />
+    <setting key="HINT_BAR_VISIBLE" value="false" />
 		<setting key="LAYERITEM_TOGGLE_COLLAPSE_ON_DOUBLECLICK" value="true" />
 		<setting key="LAYERITEM_COLOPRICKERVISIBLE" value="true" />
 		<setting key="LAYERITEM_ALPHASLIDERVISIBLE" value="true" />

@@ -6,6 +6,7 @@ var SwickyCommunication = function() {
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
+<context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
 </fragment>\
 </annotator_message>';
@@ -16,10 +17,12 @@ var SwickyCommunication = function() {
 <annotator_message action="annotation_request">\
 <fragment>\
 <type>image</type>\
+<context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
 <layer>'+$.base64.encode(layerString)+'</layer>\
 </fragment>\
 </annotator_message>';
+
     }
 
     this.selected = function(url, layerString) {
@@ -27,6 +30,7 @@ var SwickyCommunication = function() {
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
+<context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
 <layer>'+$.base64.encode(layerString)+'</layer>\
 </fragment>\
