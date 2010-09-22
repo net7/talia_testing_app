@@ -7,9 +7,11 @@
             <%  # TODO: crude, find a better way to get talia_file pseudo_id
                 # (I already have all the talia files in memory, I should remember which one of them this belongs to. 
             %>
+            <% talia_file = TaliaFile.find(image.source_id) %>
+           
             <li>
-                <a href="<%= TaliaFile.find(image.source_id).uri.to_s %>" class="flexip-toggle">
-                    <%= image_tag source_data_url(image), :alt => image.location, :title => image.location %>
+                <a href="<%= talia_file.uri.to_s %>" class="flexip-toggle">
+                  <%= thctag talia_file.uri.to_s, image_tag(source_data_url(image), :alt => image.location, :title => image.location) %>
                     <%= t "Toggle flexip" %>
                 </a>
             </li>

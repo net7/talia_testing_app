@@ -80,7 +80,6 @@ class SourcesController < ApplicationController
   #
   # LOD reference: http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
   def dispatch
-    # /**/
     ActionController::Base.use_accept_header = true
     case request.format
       when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
@@ -174,12 +173,10 @@ class SourcesController < ApplicationController
   
   private
 
-  # /**/
   def set_swicky_mode
     @swicky_mode = request.user_agent.index("annotation-client-") == 0
   end
 
-  #/**/
   def source
     return @source if @source
     if TaliaCore::Source.exists?(params[:dispatch_uri])
@@ -188,8 +185,7 @@ class SourcesController < ApplicationController
       @source = false
     end
   end
-  
-  # /**/
+
   def callback
     @types = source.types
     @types.each do |type|
