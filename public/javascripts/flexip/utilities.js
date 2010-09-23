@@ -58,7 +58,8 @@ var Annotator = function() {
         this.setBusy();
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
-        if(image != url) alert('TODO');
+        // TODO: this.
+        //        if(image != url) alert('TODO');
         if(fragments) for(fragment in fragments)
             flexip.sideMenuAddChildLayer(JSON.parse($.base64.decode(fragment)));
         /// If selection is given, activate the relative layer.
