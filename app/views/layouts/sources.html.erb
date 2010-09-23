@@ -16,7 +16,7 @@
     <%= fg_menu_includes %>
     <%= timeline_includes %>
     <%= image_annotations_include_tags @swicky_mode%>
-    
+    <%= render :partial => 'shared/userecho' %>
 
 
     <% if @source %>
@@ -33,8 +33,6 @@
 		<div id="header_preferences">
 			<ul>
 				<li>
-				
-				
 				
 				<%= link_to("EN", "?locale=en") %></li>
 				<li class="last"><%= link_to("IT", "?locale=it") %></li>
