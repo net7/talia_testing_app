@@ -3,9 +3,10 @@
 
 <!-- Tool Filter -->
 <h3>Filter</h3>
-<p>Con questo strumento puoi filtrare i dati mostrati nelle aree sottostanti: la tabella, la mappa, la timeline e le immagini.
+<p>You can use this tool to filter results in the table, map, images and timeline.
 <br />
-Il pulsante "Clear filter" di permette di annullare l'effetto del filtro e mostrare tutti i dati presenti.</p>
+With "Clear filter" you can reset the filter and show all data.
+</p>
 <div id="home_filter">
 <%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia) && (sc.to_uri.namespace != :swicky) && (sc.to_uri.namespace != :discovery)}) { |t| filter_link_for(t) }%>
 <%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
