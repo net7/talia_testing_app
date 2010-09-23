@@ -1,59 +1,6 @@
-<script type="text/javascript">
-$(document).ready(function() 
-    { 
-        $("#properties_table").tablesorter();
-		$("#data_table").tablesorter();
-		//hide the all of the element with class msg_body
-		$(".properties_list").hide();
-		//toggle the componenet with class msg_body
-		$(".show_properties").click(function()
-		{
-		  $(".properties_list").slideToggle(600);
-		}); 
-    } 
-);
-</script>
+<%= render(:partial => 'source_header') %>
+<%= render(:partial => 'properties_wrapper') %>
+<%= render(:partial => 'source_data') %>
+<%= render(:partial => 'google_map') %>
 
-<%= content_for :title, title_for(@source) %>
 
-<div class="back"><%= index_link %></div>
-<br />
-<%= type_images_medium(@source.types) %>
-<h2><%= title_for(@source) %></h2>
-<h5><a href="#" class="show_properties">Show/Hide Source Properties ...</a> Show: <%= link_to("RDF", @source.to_uri.local_name + ".rdf") %> | <%= link_to("XML", @source.to_uri.local_name + ".xml") %></h5>
-<%= render(:partial => 'property_list') %>
-<br />
-<% for record in @source.data_records %>
-
-<% if record.is_a?(TaliaCore::DataTypes::IipData) %>
-
-<%= iip_flash_viewer(record, 600, 600)%>
-
-<% end %>
-
-<% end %>
-
-<% if(@source.data_records.size > 0) %>
-  <h2>Data Records</h2>
-  <%= render(:partial => 'data_list') %>
-<% end %>
-
-<% for record in @source.data_records %>
-	<% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-		<% element_uri = (@source.uri + "#data#{record.id}").to_s %>
-		<% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-		<h2>This element has <%= ncount %> annotations</h2>
-		<% end %>
-		<%= thctag(element_uri, record.content_string) %>
-	<% end %>
-<% end %>
-
-<div class="source_images">
-<% for record in @source.data_records %>
-<% if(record.is_a?(TaliaCore::DataTypes::ImageData)) %>
-<% record_options = data_record_options(record) %>
-<% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
-<%= link_to("<img src=\"#{image_url}\" alt=\"source image\"/>", { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last )%>
-<% end%>
-<% end%>
-</div>
