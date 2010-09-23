@@ -62,9 +62,13 @@ $(function() {
              this.uris = THCTag.getContentURIs();
              
              // Use the about attribute of the body tag as well
-             //this.uris.push($('body').attr('about'));
+             // this.uris.push($('body').attr('about'));
              var page_url = window.location + '';
              this.uris.push(page_url);
+
+             var rel = $('link[rel="foaf:primarytopic"]').attr('href');
+             if (typeof(rel) != 'undefined')
+                this.uris.push(rel);
 
              for (var i=0; i<this.uris.length; i++) 
                 this.askForFragments(this.uris[i]);
@@ -105,6 +109,8 @@ $(function() {
                     xpointerId = item['hasCoordinates'],
                     newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
                     parentItem = self.getItemFromXI(xpointer, item['isPartOf']);
+
+                    console.log("CLICKCLICK ", uri, item, newXpointer, parentItem);
 
                     if (self.isOnThisPage(xpointer, item))
                         THCTag.showByXPointer(newXpointer);  
@@ -156,6 +162,7 @@ $(function() {
         }, // showTooltip()
         */
         
+        /* TODO: there's no such thing as note container!! 
         repositionNoteContainer : function () {
             var bw = $('body').width(),
                 cw = $('#'+this.options.containerID).width(),
@@ -163,6 +170,7 @@ $(function() {
                 
                 $('#'+this.options.containerID).css({left: pos+'px'});
         },
+        */
         
         // Gets the fragments (xpointers) associated to the given URI, storing
         // them into the this.fragments[] array
@@ -292,7 +300,6 @@ $(function() {
     
             // TODO DEBUG: bisogna cercare in types com'e' l'id del type Note, ed usare
             // quello per cercare le note.. non una stringa fissa "Note" ..
-
             for (var k=0; k<items.length; k++) {
                 if (self.isItemOfType(items[k], "Note")) {
 
@@ -307,25 +314,28 @@ $(function() {
 
                         fragment.associatedXpointer = associatedXpointer;
 
-                        if (xpointer != associatedXpointer) 
+                        if (xpointer != associatedXpointer) {
                             self.log("## DIFFERENT ASSOCIATED XPOINTER : " + associatedXpointer + " > "+ xpointer);
+                            associatedXpointer = xpointer;
+                        }
                             
                         if ($.inArray(items[k].uri, self.addedNotesUris) == -1) {
                             self.addNoteToAnnotationBox(xpointer, items[k].id, associatedXpointer);
-                            self.repositionNoteContainer();
+                            // TODO: no more reposition of note containers ... 
+                            // self.repositionNoteContainer();
                             self.addedNotesUris.push(items[k].uri);
-
-
-                            if ($.inArray(associatedXpointer, self.addedXpointers) > -1)
-                                self.log("## Xpointer already added????!? "+ associatedXpointer);
-                            else
-                                self.log("## Adding by xpointer: "+ associatedXpointer);
-                            self.addedXpointers.push(associatedXpointer);
-                            
-                            THCTag.addByXPointer(associatedXpointer);
 
                         } else {
                             self.log("### Already added this note, skipping it: "+ items[k].label);
+                        }
+
+                        if ($.inArray(associatedXpointer, self.addedXpointers) > -1)
+                            self.log("## Xpointer already added????!? "+ associatedXpointer);
+                        else {
+                            self.log("## Adding by xpointer: "+ associatedXpointer);
+                            self.addedXpointers.push(associatedXpointer);
+                            THCTag.addByXPointer(associatedXpointer);
+                            self.bindLiveHandlers(associatedXpointer);
                         }
 
                 } else {
@@ -445,8 +455,6 @@ $(function() {
             new_cont.addClass('has_notes');
             new_cont.find('div.section_notes').append(markup);
 
-            self.bindLiveHandlers(associatedXpointer);
-
         }, // addNoteToAnnotationBox()
 
 
@@ -479,8 +487,10 @@ $(function() {
                 
             $("a#" + selectId + ", div.THCNoteItem.collapsed").live("click", function() {
                 var xp = $(this).attr('about');
+                self.log("Clicked on "+selectId+" !! "+xp)
                 self.showNote(xp);
                 THCTag.showByXPointer(xp);
+                console.log("Faatto??!");
                 return false;
             });
 
@@ -732,9 +742,9 @@ $(function() {
                 hash = self.getHashFromXpointer(xpointer),
                 noteDivId = hash+"-note";
 
+            self.log("## Show note "+xpointer);
             self.hideAllNotes();
             $('div#' + noteDivId).removeClass('collapsed').addClass('expanded');
-            self.log("## Show note "+xpointer);
             return;
         },
         
@@ -760,7 +770,7 @@ $(function() {
 
         log: function(w) {
 
-            if (this.options.debug == "false")
+            if (this.options.debug == false)
                 return;
             
             if (typeof console == "undefined") {
@@ -768,7 +778,7 @@ $(function() {
                     $("body").append("<div id='debug_foo' style='position: absolute; right:2px; bottom: 2px; border: 1px solid red; font-size: 1.1em;'></div>");
                 $("#debug_foo").append("<div>"+w+"</div>");
             } else {
-                console.log(w);
+                console.log("## JTHC ## "+w);
             }
         } // log
     }; // $.jthc.prototype
