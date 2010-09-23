@@ -60,8 +60,8 @@ var Annotator = function() {
         /// open/change image and go from there.
         // TODO: this.
         //        if(image != url) alert('TODO');
-        if(fragments) for(fragment in fragments)
-            flexip.sideMenuAddChildLayer(JSON.parse($.base64.decode(fragment)));
+        if(fragments) for(i in fragments) 
+            flexip.sideMenuAddChildLayer(JSON.parse($.base64.decode(fragments[i])));
         /// If selection is given, activate the relative layer.
         /// TODO: flexip does not support javascript layer selection yet.
         if(selection) {
