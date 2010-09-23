@@ -1,3 +1,4 @@
+<% sources = TaliaCore::Source.find(:all, @conditions) %>
 <div class="full_width" style="width: 100%;">
 
 <!-- Tool Filter -->
@@ -77,11 +78,8 @@ Il pulsante "Clear filter" di permette di annullare l'effetto del filtro e mostr
 
 <!-- Colonna di destra -->
 <div class="right_column" style="width: 50%; float: right;">
-	
-	<!-- Tool Timeline -->
-	<h3 class="toggle">Sources timeline</h3>
-	<div id="home_timeline">
-	<%= timeline('tl', 
+
+  	<% timeline_thing =  timeline('tl',
 		:bands => [{
 				:width => "70%",
 				:intervalUnit => 'DECADE',
@@ -97,17 +95,14 @@ Il pulsante "Clear filter" di permette di annullare l'effetto del filtro e mostr
 				:overview => true,
 				:highlight => true
 				}
-	                ], :data => { :source_finder => @conditions, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
+	                ], :data => { :sources => sources, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
+	<!-- Tool Timeline -->
+        <% if timeline_thing %>
+	<h3 class="toggle">Sources timeline</h3>
+	<div id="home_timeline">
+          <%= timeline_thing %>
 	</div>
-	<%
-	    sources = TaliaCore::Source.find(:all, @conditions)
-	    coordinates = []
-	    sources.each do |src|
-	        unless(src[N::DEMO.coordinates].blank?)
-	            coordinates << {:uri => src.uri, :title => title_for(src), :coordinates => src[N::DEMO.coordinates].first.split(',')}
-	        end
-	    end
-	%>
+        <% end %>
 	<!-- Tool Timeline -->
 	
 	
@@ -119,7 +114,17 @@ Il pulsante "Clear filter" di permette di annullare l'effetto del filtro e mostr
 	
 	
 	<!-- Tool Google Map -->
-	<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
+	<%
+
+	    coordinates = []
+	    sources.each do |src|
+	        unless(src[N::DEMO.coordinates].blank?)
+	            coordinates << {:uri => src.uri, :title => title_for(src), :coordinates => src[N::DEMO.coordinates].first.split(',')}
+	        end
+	    end
+	%>
+
+<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
 	<!-- Tool Google Map -->
 	
 	

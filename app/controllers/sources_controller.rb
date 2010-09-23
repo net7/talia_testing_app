@@ -34,9 +34,9 @@ class SourcesController < ApplicationController
   # GET /sources/1
   # GET /sources/1.xml
   def show
-    raise(ActiveRecord::RecordNotFound) unless(ActiveSource.exists?(params[:id]))
-#    @source = ActiveSource.find(params[:id])
-    @source = TaliaCore::Source.find(params[:id])
+    #TODO: is this used anymore ?
+    check_source_or_redirect
+
     respond_to do |format|
       format.xml { render :text => @source.to_xml }
       format.rdf { render :text => @source.to_rdf }
@@ -80,11 +80,13 @@ class SourcesController < ApplicationController
   #
   # LOD reference: http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
   def dispatch
+    check_source_or_redirect
     ActionController::Base.use_accept_header = true
+    @requested_fragmet = params[:fragment]
     case request.format
-      when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
-      when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
-      else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri]
+    when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
+    when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
+    else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri]
     end
   end
 
@@ -100,12 +102,13 @@ class SourcesController < ApplicationController
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
     response.content_type = Mime::HTML
-    if source
-      callback
-      render :action => template_for(source)
-    else
-      render :text => ''
-    end 
+    #    if source
+    check_source_or_redirect
+    callback
+    render :action => template_for(@source)
+    #    else
+    #      render :text => ''
+    #    end
   end
 
   # This action will display the view for a source forcing output format to RDF, unless the 
@@ -120,12 +123,13 @@ class SourcesController < ApplicationController
     # If we come here, it means that we want RDF, no matter what :format says
     request.format = 'rdf'
     response.content_type = Mime::RDF
-    if source
-      callback
-      render :text => @source.to_rdf
-    else
-      render :text => ''
-    end 
+    #    if source
+    check_source_or_redirect
+    callback
+    render :text => @source.to_rdf
+    #    else
+    #      render :text => ''
+    #    end
   end
 
   # This action will display the view for a source forcing output format to XML, unless the 
@@ -140,12 +144,13 @@ class SourcesController < ApplicationController
     # If we come here, it means that we want XML, no matter what :format says
     request.format = 'xml'
     response.content_type = Mime::XML
-    if source
-      callback
-      render :text => @source.to_xml
-    else
-      render :text => ''
-    end 
+    #    if source
+    check_source_or_redirect
+    callback
+    render :text => @source.to_xml
+    #    else
+    #      render :text => ''
+    #    end
   end
 
   # Autocompletion actions
@@ -155,13 +160,13 @@ class SourcesController < ApplicationController
       s_uri_parts = s_uri.split(':')
       options = { :limit => 10 }
       @records = if(s_uri.include?('://'))
-#        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
+        #        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
         TaliaCore::Source.find_by_partial_uri(s_uri, options)
       elsif(s_uri_parts.size == 2)
-#        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
+        #        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
         TaliaCore::Source.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
       else
-#        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
+        #        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
         TaliaCore::Source.find_by_uri_token(s_uri, options)
       end
 
@@ -177,17 +182,27 @@ class SourcesController < ApplicationController
     @swicky_mode = request.user_agent.index("annotation-client-") == 0
   end
 
-  def source
-    return @source if @source
-    if TaliaCore::Source.exists?(params[:dispatch_uri])
-      @source = TaliaCore::Source.find params[:dispatch_uri], :prefetch_relations => true
+  def check_source_or_redirect
+    return true if @source
+    if !ActiveSource.exists?(params[:dispatch_uri])
+      source_uri = N::LOCAL + params[:dispatch_uri]
+      qry = ActiveRDF::Query.new(N::URI).select(:file, :page).distinct
+      qry.where(source_uri, N::RDF.type, N::SWICKY.ImageFragment)
+      qry.where(source_uri, N::DISCOVERY.isPartOf, :file)
+      qry.where(source_uri, N::SWICKY.appearsIn, :page)
+      fragment, page = qry.execute.first
+      if fragment
+        redirect_to page + '&fragment=' + fragment and return
+      else
+        raise(ActiveRecord::RecordNotFound)
+      end
     else
-      @source = false
+      @source = TaliaCore::Source.find params[:dispatch_uri], :prefetch_relations => true
     end
   end
 
   def callback
-    @types = source.types
+    @types = @source.types
     @types.each do |type|
       caller = type.to_name_s('_')
       self.send(caller) if(self.respond_to?(caller))
