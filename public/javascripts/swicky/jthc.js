@@ -53,29 +53,27 @@ $(function() {
             */
             this.fragments = {};
             this.imageFragments = {};
+            this.pageFragments = {};
             this.annotationsNumber = 0;
             this.xpointersToLoad = 0;
             this.xpointersLoaded = 0;
             this.addedNotesUris = [];
             this.addedXpointers = [];
 
-            // Get all the uris in this page
+            // Get all the THCTag uris in this page
             this.uris = THCTag.getContentURIs();            
-            // Use the about attribute of the body tag as well
-            // this.uris.push($('body').attr('about'));
-            var page_url = window.location + '';
-            this.uris.push(page_url);
-
-            var rel = $('link[rel="foaf:primarytopic"]').attr('href');
-            if (typeof(rel) != 'undefined') this.uris.push(rel);
 
             /**/
-            for(var i=0; i<this.uris.length; i++) {
+            for (var i=0; i<this.uris.length; i++) {
                 var uri = this.uris[i];
-                if(!this.isImage(uri)) this.askForFragments(uri);
-                else this.askForImageFragments(uri);
+                if (!this.isImage(uri)) 
+                    this.askForFragments(uri);
+                else 
+                    this.askForImageFragments(uri);
 
             }
+            this.askForPageNotes();
+            
             self = this;
 
             /* TODO: no more annotations box 
@@ -219,6 +217,7 @@ $(function() {
                         }
                         
                         self.askForXPointers();
+
                     } else {
                         self.log("## No fragments associated to "+uri);
                     }
@@ -230,6 +229,53 @@ $(function() {
         }, // askForFragments()
 
 
+        askForPageNotes : function () {
+
+            // self.pageFragments.push(document.location.href);
+            var href = document.location.href;
+            self.xpointersToLoad++;
+
+            $.ajax({
+                url: this.options.baseURL + "annotations",
+                data: { uri: href },
+                dataType: 'json',
+                type: 'POST',
+                success: function(data, text, xmlhr) {
+
+                    console.log(" PAGE NOTES ", data, text, xmlhr);
+
+                    var n = data.items.length,
+                    xpointer = data['annotation-for']['uri'],
+                    hash = data['annotation-for']['hash'];
+                    
+                    if (n == 0) {
+                        self.log("## No annotation for the page "+href+" ?? ");
+                        return;
+                    }
+
+                    self.xpointersLoaded++;
+                    
+                    self.log("## Got "+n+" new items for this page "+hash+" / "+href);
+                    self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
+
+                    self.fragments[href] = {};3
+                    self.addItemsToXPointer(href, data);
+                    self.addNotesForXpointer(href);
+                    // $('#'+self.options.containerID).show();
+
+                    if (self.xpointersToLoad == self.xpointersLoaded) {
+                        $('#'+self.options.containerID).removeClass('loading');
+                        self.setTipContent();
+                    }
+
+                },
+                error: function(req, status, err) { 
+                    self.log("Error... "+req+" : "+status+" : "+err); 
+                    self.xpointersLoaded++;
+                }
+            }); // $.ajax
+            
+        }, // askForPageNotes
         
         
         // Gets the xpointers associated to the saved fragments
@@ -332,7 +378,10 @@ $(function() {
                     associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[k]),
                     associatedXpointer = self.getAssociatedXpointer(xpointer, items[k]);
 
-                    if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
+                    if (xpointer == window.location.href) {
+                        self.log("### This is a page note, showing in some other strange way? ");
+    
+                    } else if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
                         self.log("@@ Hey, this note is not internal! :( ... using original xpointer!")
                         associatedXpointer = xpointer;
                     }
@@ -358,8 +407,9 @@ $(function() {
                         self.log("## Xpointer already added????!? "+ associatedXpointer);
                     else {
                         self.log("## Adding by xpointer: "+ associatedXpointer);
+                        if (associatedXpointer != window.location.href) 
+                            THCTag.addByXPointer(associatedXpointer);
                         self.addedXpointers.push(associatedXpointer);
-                        THCTag.addByXPointer(associatedXpointer);
                         self.bindLiveHandlers(associatedXpointer);
                     }
 
@@ -454,9 +504,18 @@ $(function() {
             note = self.getItemFromXI(xpointer, id),
             hash = self.getHashFromXpointer(associatedXpointer),
             parentTHCTag = self.getParentTHCTagFromXpointer(associatedXpointer); 
+
+            if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
+                parentTHCTag = xpointer;
+                if ($('div [about="'+parentTHCTag+'"]').length == 0)
+                    $('div#contents').append('<h3 class="toggle">Annotations on the entire page</h3><div class="section page_annotations">'+
+                                            '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
+                                            '<div about="'+parentTHCTag+'"></div>'+
+                                            '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');
+
+            }
             
             self.increaseAnnotationsNumber();
-            
             self.log("## addNote for "+id+", parent THCTag is about " + parentTHCTag);
             
             var markup = 
@@ -514,7 +573,8 @@ $(function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
                 self.showNote(xp);
-                THCTag.showByXPointer(xp);
+                if (xp != window.location.href)
+                    THCTag.showByXPointer(xp);
                 console.log("Faatto??!");
                 return false;
             });
