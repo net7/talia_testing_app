@@ -575,16 +575,22 @@ $(function() {
             selectId = hash,
             deselectId = hash+"-desel";
             
-            $("a#" + selectId + ", div.THCNoteItem.collapsed").live("click", function() {
+            $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
-                self.showNote(xp);
 
-                if (!$("span#load_annotations").hasClass('hide')) 
-                    self.toggleShowAnnotationButton();
-                
-                if (xp != window.location.href)
-                    THCTag.showByXPointer(xp);
+                if ($(this).hasClass('collapsed')) {
+                    self.showNote(xp);
+                    if (!$("span#load_annotations").hasClass('hide')) 
+                        self.toggleShowAnnotationButton();
+
+                    if (xp != window.location.href)
+                        THCTag.showByXPointer(xp);
+                } else {
+                    THCTagCore.Annotate.deselectFragment(); 
+                    self.hideNote(xp);
+                }
+
                 return false;
             });
 
