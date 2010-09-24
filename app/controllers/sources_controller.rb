@@ -194,7 +194,7 @@ class SourcesController < ApplicationController
         #TODO: this hack works now because pages as URLs like
         # http://www.site.org/page/sourceid?locale=en
         # if that ?locale=en wasn't there, it wouldn't work
-        redirect_to page + '&fragment=' + params[:dispatch_uri] + '&file=' + file and return false
+        redirect_to page.to_s + '&fragment=' + (N::LOCAL + params[:dispatch_uri]).to_s + '&file=' + file.to_s and return false
       else
         raise(ActiveRecord::RecordNotFound)
       end
