@@ -53,29 +53,27 @@ $(function() {
             */
             this.fragments = {};
             this.imageFragments = {};
+            this.pageFragments = {};
             this.annotationsNumber = 0;
             this.xpointersToLoad = 0;
             this.xpointersLoaded = 0;
             this.addedNotesUris = [];
             this.addedXpointers = [];
 
-            // Get all the uris in this page
+            // Get all the THCTag uris in this page
             this.uris = THCTag.getContentURIs();            
-            // Use the about attribute of the body tag as well
-            // this.uris.push($('body').attr('about'));
-            var page_url = window.location + '';
-            this.uris.push(page_url);
-
-            var rel = $('link[rel="foaf:primarytopic"]').attr('href');
-            if (typeof(rel) != 'undefined') this.uris.push(rel);
 
             /**/
-            for(var i=0; i<this.uris.length; i++) {
+            for (var i=0; i<this.uris.length; i++) {
                 var uri = this.uris[i];
-                if(!this.isImage(uri)) this.askForFragments(uri);
-                else this.askForImageFragments(uri);
+                if (!this.isImage(uri)) 
+                    this.askForFragments(uri);
+                else 
+                    this.askForImageFragments(uri);
 
             }
+            this.askForPageNotes();
+            
             self = this;
 
             /* TODO: no more annotations box 
@@ -98,7 +96,7 @@ $(function() {
             */
 
             $('.THCStatementSubject.Source,.THCStatementObject.Source,').live('click', function() {
-                var url = $(this).attr('about');
+                var uri = $(this).attr('about');
                 if (confirm("Navigate to "+url+"? "))
                     window.location = url;
                 return false;
@@ -111,15 +109,14 @@ $(function() {
                 xpointer = self.getXpointerFromURI(uri),
                 xpointerId = item['hasCoordinates'],
                 newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
-                parentItem = self.getItemFromXI(xpointer, item['isPartOf']);
-
-                console.log("CLICKCLICK ", uri, item, newXpointer, parentItem);
+                parentItem = self.getItemFromXI(xpointer, item['isPartOf']),
+                url = item['uri'];
 
                 if (self.isOnThisPage(xpointer, item))
                     THCTag.showByXPointer(newXpointer);  
                 else
-                    if (confirm("Navigate to fragment "+parentItem.uri+"? "))
-                        window.location = parentItem.uri;
+                    if (confirm("Navigate to fragment "+url+"? "))
+                        window.location = url;
 
                 return false;
             });
@@ -133,19 +130,24 @@ $(function() {
             });
 
             $('span#load_annotations').live('click', function() {
-                if ($(this).hasClass('hide')) {
-                    $('div.section.has_notes').removeClass('annotated');
-                    $(this).removeClass('hide');
-                    $(this).html("Load them!");
-                } else {
-                    $(this).addClass('hide');
-                    $('div.section.has_notes').addClass('annotated');
-                    $(this).html("Hide all notes..");
-                }
+                self.toggleShowAnnotationButton();
             });
 
             
         }, // init()
+
+        toggleShowAnnotationButton : function () {
+            var o = $("span#load_annotations");
+            if (o.hasClass('hide')) {
+                $('div.section.has_notes').removeClass('annotated');
+                $('h3.page_annotations').addClass('hidden');
+                o.removeClass('hide').html("Show them!");
+            } else {
+                $('h3.page_annotations').removeClass('hidden');
+                $('div.section.has_notes').addClass('annotated');
+                o.addClass('hide').html("Hide all notes..");
+            }
+        },
 
         /**/
         isImage: function(uri) {
@@ -219,6 +221,7 @@ $(function() {
                         }
                         
                         self.askForXPointers();
+
                     } else {
                         self.log("## No fragments associated to "+uri);
                     }
@@ -230,6 +233,53 @@ $(function() {
         }, // askForFragments()
 
 
+        askForPageNotes : function () {
+
+            // self.pageFragments.push(document.location.href);
+            var href = document.location.href;
+            self.xpointersToLoad++;
+
+            $.ajax({
+                url: this.options.baseURL + "annotations",
+                data: { uri: href },
+                dataType: 'json',
+                type: 'POST',
+                success: function(data, text, xmlhr) {
+
+                    var n = data.items.length,
+                    xpointer = data['annotation-for']['uri'],
+                    hash = data['annotation-for']['hash'];
+                    
+                    if (n == 0) {
+                        self.log("## No annotation for the page "+href+" ?? ");
+                        return;
+                    }
+
+                    self.xpointersLoaded++;
+                    
+                    self.log("## Got "+n+" new items for this page "+hash+" / "+href);
+                    self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
+
+                    self.fragments[href] = {};3
+                    self.addItemsToXPointer(href, data);
+                    self.addNotesForXpointer(href);
+                    self.setTipContent();
+                    // $('#'+self.options.containerID).show();
+
+                    if (self.xpointersToLoad == self.xpointersLoaded) {
+                        // TODO: no more containers !
+                        // $('#'+self.options.containerID).removeClass('loading');
+                        $('#annotations_dialog').removeClass('loading');
+                    }
+
+                },
+                error: function(req, status, err) { 
+                    self.log("Error... "+req+" : "+status+" : "+err); 
+                    self.xpointersLoaded++;
+                }
+            }); // $.ajax
+            
+        }, // askForPageNotes
         
         
         // Gets the xpointers associated to the saved fragments
@@ -277,10 +327,12 @@ $(function() {
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
                         $('#'+self.options.containerID).show();
+                        self.setTipContent();
 
                         if (self.xpointersToLoad == self.xpointersLoaded) {
-                            $('#'+self.options.containerID).removeClass('loading');
-                            self.setTipContent();
+                            // TODO no more containers!
+                            // $('#'+self.options.containerID).removeClass('loading');
+                            $('#annotations_dialog').removeClass('loading');
                         }
 
                     },
@@ -332,7 +384,10 @@ $(function() {
                     associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[k]),
                     associatedXpointer = self.getAssociatedXpointer(xpointer, items[k]);
 
-                    if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
+                    if (xpointer == window.location.href) {
+                        self.log("### This is a page note, showing in some other strange way? ");
+    
+                    } else if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
                         self.log("@@ Hey, this note is not internal! :( ... using original xpointer!")
                         associatedXpointer = xpointer;
                     }
@@ -358,8 +413,9 @@ $(function() {
                         self.log("## Xpointer already added????!? "+ associatedXpointer);
                     else {
                         self.log("## Adding by xpointer: "+ associatedXpointer);
+                        if (associatedXpointer != window.location.href) 
+                            THCTag.addByXPointer(associatedXpointer);
                         self.addedXpointers.push(associatedXpointer);
-                        THCTag.addByXPointer(associatedXpointer);
                         self.bindLiveHandlers(associatedXpointer);
                     }
 
@@ -439,8 +495,8 @@ $(function() {
 
             self.annotationsNumber++;
             if (self.annotationsNumber == 1) {
-                $("body").append("<div id='annotations_dialog'>There's <span id='annotations_number'>1</span> annotations on this page!"+
-                                 "<span id='load_annotations'>Show them!</span></div>");
+                $("body").append("<div id='annotations_dialog' class='loading'>There's <span id='annotations_number'>1</span> annotations on this page!"+
+                                 "<span id='load_annotations'>Show them!</span><span id='annotations_loading'>Loading ... </span></div>");
             } else {
                 $("span#annotations_number").html(self.annotationsNumber);
             }
@@ -454,9 +510,18 @@ $(function() {
             note = self.getItemFromXI(xpointer, id),
             hash = self.getHashFromXpointer(associatedXpointer),
             parentTHCTag = self.getParentTHCTagFromXpointer(associatedXpointer); 
+
+            if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
+                parentTHCTag = xpointer;
+                if ($('div [about="'+parentTHCTag+'"]').length == 0)
+                    $('div#contents h3:first').before('<h3 class="toggle page_annotations hidden">Annotations on the entire page</h3><div class="section page_annotations">'+
+                                            '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
+                                            '<div about="'+parentTHCTag+'"></div>'+
+                                            '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');
+
+            }
             
             self.increaseAnnotationsNumber();
-            
             self.log("## addNote for "+id+", parent THCTag is about " + parentTHCTag);
             
             var markup = 
@@ -493,10 +558,10 @@ $(function() {
 
                 var ret = "";
                 for (wut in item)
-                    ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
+                    if ($.inArray(""+wut, ['id', 'hash']) == -1)
+                        ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
                 
                 myEztip.setContent(obj, ret);
-                
             });
             
         },
@@ -510,12 +575,22 @@ $(function() {
             selectId = hash,
             deselectId = hash+"-desel";
             
-            $("a#" + selectId + ", div.THCNoteItem.collapsed").live("click", function() {
+            $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
-                self.showNote(xp);
-                THCTag.showByXPointer(xp);
-                console.log("Faatto??!");
+
+                if ($(this).hasClass('collapsed')) {
+                    self.showNote(xp);
+                    if (!$("span#load_annotations").hasClass('hide')) 
+                        self.toggleShowAnnotationButton();
+
+                    if (xp != window.location.href)
+                        THCTag.showByXPointer(xp);
+                } else {
+                    THCTagCore.Annotate.deselectFragment(); 
+                    self.hideNote(xp);
+                }
+
                 return false;
             });
 
@@ -784,6 +859,7 @@ $(function() {
 
         hideAllNotes : function () {
             var self = this;
+            THCTagCore.Annotate.deselectFragment();
             for (i in self.fragments) {
                 self.log("## Will hide note "+i);
                 self.hideNote(i);

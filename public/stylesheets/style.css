@@ -95,6 +95,7 @@ div#annotations_dialog {
   color: black;
   font-size: 1.2em;
   border-radius: 9px;
+  moz-border-radius: 9px;
 	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 	box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
@@ -113,4 +114,18 @@ div#annotations_dialog span#load_annotations:hover {
   color: black;
   text-transform: underline;
   cursor: pointer;
+}
+
+h3.page_annotations.hidden {
+  display: none;
+}
+
+div#annotations_dialog.loading span#load_annotations {
+  display: none;
+}
+div#annotations_dialog.loading span#annotations_loading {
+  display: block;
+}
+div#annotations_dialog span#annotations_loading {
+  display: none;
 }

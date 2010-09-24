@@ -12,33 +12,34 @@ var SwickyCommunication = function() {
 </annotator_message>';
     }
 
-    this.annotate = function(url, layerString) {
+    this.annotate = function(url, layerId) {
         window.status = '\
 <annotator_message action="annotation_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+$.base64.encode(layerString)+'</layer>\
+<layer>'+annotator.loadedFragment(layerId)+'</layer>\
 </fragment>\
 </annotator_message>';
-
     }
 
-    this.selected = function(url, layerString) {
+    this.selected = function(url, layerId) {
         window.status = '\
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+$.base64.encode(layerString)+'</layer>\
+<layer>'+annotator.loadedFragment(layerId)+'</layer>\
 </fragment>\
 </annotator_message>';
     }
 }
 
 var Annotator = function() {
+    this.loadedFragments = [];
+
     /// Used to ignore requests when doing stuff.
     this.busy = false;
     
@@ -50,31 +51,40 @@ var Annotator = function() {
         this.busy = false;
     }
     
-    this.loadFragments = function (image, fragments, selection) {
-        layers = [];
-
-        for(var i = 0; i < fragments.length; i++)
-            layers.push(JSON.parse($.base64.decode(fragments[i])));
-
+    this.loadFragments = function (image, fragments, selectedFragment) {
+        var layers = [];
+        this.loadedFragments = [];
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
+
+        if(fragments) for(var i = 0; i < fragments.length; i++) {
+            layer = JSON.parse($.base64.decode(fragments[i]));
+            layer.itemID = layer.id;
+            layer.parentLayerID = "#root#";
+            if(!this.loadedFragment(layer.id)) {
+                layers.push(layer);
+                this.fragmentLoaded(layer.id, fragments[i]);
+            }
+        }
+
+        /// This is a global variable.
+        if(selectedFragment)
+            selection = JSON.parse($.base64.decode(selectedFragment)).id;
+
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
         if(image != url) {
+            if($('div.section.images').prev().hasClass("closed"))
+                $('div.section.images').prev().click();
             url = image;
-            loadFlexip(image, layers, selection);
+            loadFlexip(image, layers);
             return;
         }
 
         if(layers) for(var i = 0; i < layers.length; i++)
             flexip.sideMenuAddChildLayer(layers[i]);
-        /// If selection is given, activate the relative layer.
-        /// TODO: flexip does not support javascript layer selection yet.
-        if(selection) {
-            layer = JSON.parse($.base64.decode(selection));
-            flexip.sideMenuActivateLayer(layer.itemID)
-        }
+
         flexip.messageBoxHide();
         this.setFree();
     }
@@ -84,24 +94,35 @@ var Annotator = function() {
     }
 
     this.lock = function(message) {
-      this.setBusy();
-      flexip.MessageBoxShowMessage(message);
+        if(!flexip) return false;
+        this.setBusy();
+        flexip.MessageBoxShowMessage(message);
     }
 
     this.unlock = function(message) {
+        if(!flexip) return false;
         this.setFree();
         if(message) flexip.messageBoxShowAlert(message);
         else flexip.messageBoxHide();
     }
 
     this.alert = function(message) {
+        if(!flexip) return false;
         flexip.messageBoxShowAlert(message);
+    }
+
+    this.fragmentLoaded = function(id, coordinates) {
+        this.loadedFragments[id] = coordinates;
+    }
+
+    this.loadedFragment = function(id) {
+        return this.loadedFragments[id]
     }
 }
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();
-    return {itemID: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+    return {itemID: itemId, id: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
 }
 
 function confirmMessageBox(title, text, callback) {
