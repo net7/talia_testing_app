@@ -96,7 +96,7 @@ $(function() {
             */
 
             $('.THCStatementSubject.Source,.THCStatementObject.Source,').live('click', function() {
-                var url = $(this).attr('about');
+                var uri = $(this).attr('about');
                 if (confirm("Navigate to "+url+"? "))
                     window.location = url;
                 return false;
@@ -109,15 +109,14 @@ $(function() {
                 xpointer = self.getXpointerFromURI(uri),
                 xpointerId = item['hasCoordinates'],
                 newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
-                parentItem = self.getItemFromXI(xpointer, item['isPartOf']);
-
-                console.log("CLICKCLICK ", uri, item, newXpointer, parentItem);
+                parentItem = self.getItemFromXI(xpointer, item['isPartOf']),
+                url = item['uri'];
 
                 if (self.isOnThisPage(xpointer, item))
                     THCTag.showByXPointer(newXpointer);  
                 else
-                    if (confirm("Navigate to fragment "+parentItem.uri+"? "))
-                        window.location = parentItem.uri;
+                    if (confirm("Navigate to fragment "+url+"? "))
+                        window.location = url;
 
                 return false;
             });
@@ -242,8 +241,6 @@ $(function() {
                 type: 'POST',
                 success: function(data, text, xmlhr) {
 
-                    console.log(" PAGE NOTES ", data, text, xmlhr);
-
                     var n = data.items.length,
                     xpointer = data['annotation-for']['uri'],
                     hash = data['annotation-for']['hash'];
@@ -261,11 +258,11 @@ $(function() {
                     self.fragments[href] = {};3
                     self.addItemsToXPointer(href, data);
                     self.addNotesForXpointer(href);
+                    self.setTipContent();
                     // $('#'+self.options.containerID).show();
 
                     if (self.xpointersToLoad == self.xpointersLoaded) {
                         $('#'+self.options.containerID).removeClass('loading');
-                        self.setTipContent();
                     }
 
                 },
@@ -323,10 +320,10 @@ $(function() {
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
                         $('#'+self.options.containerID).show();
+                        self.setTipContent();
 
                         if (self.xpointersToLoad == self.xpointersLoaded) {
                             $('#'+self.options.containerID).removeClass('loading');
-                            self.setTipContent();
                         }
 
                     },
@@ -555,7 +552,6 @@ $(function() {
                     ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
                 
                 myEztip.setContent(obj, ret);
-                
             });
             
         },
@@ -575,7 +571,6 @@ $(function() {
                 self.showNote(xp);
                 if (xp != window.location.href)
                     THCTag.showByXPointer(xp);
-                console.log("Faatto??!");
                 return false;
             });
 
@@ -844,6 +839,7 @@ $(function() {
 
         hideAllNotes : function () {
             var self = this;
+            THCTagCore.Annotate.deselectFragment();
             for (i in self.fragments) {
                 self.log("## Will hide note "+i);
                 self.hideNote(i);
