@@ -96,8 +96,7 @@ class SourcesController < ApplicationController
   # type dcns:name, it will try to call the method #dncs_name (if defined) before 
   # rendering the source.
   def dispatch_html
-    @requested_fragment = params[:fragment]
-    @requested_file = params[:file]
+    fill_requested_file_fragment_and_coordinates(params[:fragment]) if (params[:fragment])
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
     response.content_type = Mime::HTML
@@ -185,16 +184,15 @@ class SourcesController < ApplicationController
     return true if @source
     if !ActiveSource.exists?(params[:dispatch_uri])
       source_uri = (N::LOCAL + params[:dispatch_uri]).to_uri
-      qry = ActiveRDF::Query.new(N::URI).select(:file, :page).distinct
+      qry = ActiveRDF::Query.new(N::URI).select(:page).distinct
       qry.where(source_uri, N::RDF.type, N::SWICKY.SourceFragment)
-      qry.where(source_uri, N::DISCOVERY.isPartOf, :file)
       qry.where(source_uri, N::SWICKY.appearsIn, :page)
-      file, page = qry.execute.first
-      if file
+      page = qry.execute.first
+      if page
         #TODO: this hack works now because pages as URLs like
         # http://www.site.org/page/sourceid?locale=en
         # if that ?locale=en wasn't there, it wouldn't work
-        redirect_to page.to_s + '&fragment=' + (N::LOCAL + params[:dispatch_uri]).to_s + '&file=' + file.to_s and return false
+        redirect_to page.to_s + '&fragment=' + (N::LOCAL + params[:dispatch_uri]).to_s and return false
       else
         raise(ActiveRecord::RecordNotFound)
       end
@@ -215,6 +213,22 @@ class SourcesController < ApplicationController
     end
   end
 
+
+  def fill_requested_file_fragment_and_coordinates(fragment)
+    fragment = N::URI.new(fragment)
+    qry = ActiveRDF::Query.new(N::URI).select(:file, :page, :coordinates).distinct
+    qry.where(fragment, N::RDF.type, N::SWICKY.SourceFragment)
+    qry.where(fragment, N::SWICKY.appearsIn, :page)
+    qry.where(fragment, N::DISCOVERY.isPartOf, :file)
+    qry.where(fragment, N::SWICKY.hasCoordinates, :coordinates)
+    file, page, coordinates = qry.execute.first
+    if file
+      @requested_file = file
+      @requested_fragment = fragment
+      @requested_coordinates = coordinates
+    end
+
+  end
   # Hack around routing limitation: We use the @ instead of the dot as a delimiter
   def setup_format
     split_id = params[:id].split('@')
