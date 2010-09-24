@@ -132,9 +132,11 @@ $(function() {
             $('span#load_annotations').live('click', function() {
                 if ($(this).hasClass('hide')) {
                     $('div.section.has_notes').removeClass('annotated');
+                    $('h3.page_annotations').addClass('hidden');
                     $(this).removeClass('hide');
                     $(this).html("Load them!");
                 } else {
+                    $('h3.page_annotations').removeClass('hidden');
                     $(this).addClass('hide');
                     $('div.section.has_notes').addClass('annotated');
                     $(this).html("Hide all notes..");
@@ -505,7 +507,7 @@ $(function() {
             if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
                 parentTHCTag = xpointer;
                 if ($('div [about="'+parentTHCTag+'"]').length == 0)
-                    $('div#contents h3:first').before('<h3 class="toggle page_annotations">Annotations on the entire page</h3><div class="section annotated page_annotations">'+
+                    $('div#contents h3:first').before('<h3 class="toggle page_annotations hidden">Annotations on the entire page</h3><div class="section page_annotations">'+
                                             '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
                                             '<div about="'+parentTHCTag+'"></div>'+
                                             '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');

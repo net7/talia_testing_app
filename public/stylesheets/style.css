@@ -114,3 +114,7 @@ div#annotations_dialog span#load_annotations:hover {
   text-transform: underline;
   cursor: pointer;
 }
+
+h3.page_annotations.hidden {
+  display: none;
+}
