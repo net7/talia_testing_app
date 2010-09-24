@@ -54,7 +54,11 @@ function launchFlexip(layers, selection) {
 
   myFjsApi.imageLoaded = (typeof(imageLoaded) != "undefined") ? imageLoaded: function() {
       if(layers && layers.length > 0) {
-          for(var i = 0; i < layers.length; i++) this.flexipRef.sideMenuAddChildLayer(layers[i]);
+          for(var i = 0; i < layers.length; i++) {
+              layer = layers[i];
+              layer.itemID = layer.id;
+              this.flexipRef.sideMenuAddChildLayer(layer);
+          }
           this.flexipRef.messageBoxHide();
       }
       else this.flexipRef.commLoadData(config.layers_url);

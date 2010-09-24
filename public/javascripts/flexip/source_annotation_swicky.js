@@ -41,7 +41,7 @@ function toolBarButtonClick(fCode) {
 
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
-    swicky.annotate(url, JSON.stringify(layer));
+    swicky.annotate(url, layer.id);
 }
 
 function newLayerMessageBox() {
@@ -71,6 +71,6 @@ function layerActivated(layerId) {
     flexip.sideMenuGetLayerInfo(layerId, true, 'selectedLayer');
 }
 
-function selectedLayer(layerData) {
-    swicky.selected(url, JSON.stringify(layerData))
+function selectedLayer(layer) {
+    swicky.selected(url, layer.id)
 }
