@@ -102,8 +102,7 @@ $(function() {
                 return false;
             });
 
-            $('.THCStatementSubject.SourceFragment,.THCStatementObject.SourceFragment,').live('click', function() {
-
+            $('.THCStatementSubject,.THCStatementObject').live('click', function() {
                 var uri = $(this).attr('about'),
                 item = self.getItemFromURI(uri),
                 xpointer = self.getXpointerFromURI(uri),
@@ -112,14 +111,24 @@ $(function() {
                 parentItem = self.getItemFromXI(xpointer, item['isPartOf']),
                 url = item['uri'];
 
-                if (self.isOnThisPage(xpointer, item))
-                    THCTag.showByXPointer(newXpointer);  
-                else
-                    if (confirm("Navigate to fragment "+url+"? "))
-                        window.location = url;
+                if ($(this).hasClass('SourceFragment')) {
+                    if (self.isOnThisPage(xpointer, item))
+                        THCTag.showByXPointer(newXpointer);  
+                    else
+                        if (confirm("Navigate to fragment "+url+"? "))
+                            window.location = url;
+                } else {
+                    if (!self.isOnThisPage(uri, item)) {
+                        if (confirm("Navigate to "+uri+"? "))
+                            window.location = uri;
+                    }
+                }
 
                 return false;
             });
+            
+            $('.THCStatementSubject, .THCStatementObject')
+            
             
             $('.THCHighlightButton').live('click', function() {
                 var xpointer = $(this).attr('about');
@@ -249,13 +258,13 @@ $(function() {
                     var n = data.items.length,
                     xpointer = data['annotation-for']['uri'],
                     hash = data['annotation-for']['hash'];
+
+                    self.xpointersLoaded++;
                     
                     if (n == 0) {
                         self.log("## No annotation for the page "+href+" ?? ");
                         return;
                     }
-
-                    self.xpointersLoaded++;
                     
                     self.log("## Got "+n+" new items for this page "+hash+" / "+href);
                     self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
@@ -579,17 +588,13 @@ $(function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
 
-                if ($(this).hasClass('collapsed')) {
-                    self.showNote(xp);
+                if ($(this).hasClass('collapsed')) 
                     if (!$("span#load_annotations").hasClass('hide')) 
                         self.toggleShowAnnotationButton();
 
-                    if (xp != window.location.href)
-                        THCTag.showByXPointer(xp);
-                } else {
-                    THCTagCore.Annotate.deselectFragment(); 
-                    self.hideNote(xp);
-                }
+                self.showNote(xp);
+                if (xp != window.location.href)
+                    THCTag.showByXPointer(xp);
 
                 return false;
             });
