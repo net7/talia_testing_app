@@ -130,21 +130,24 @@ $(function() {
             });
 
             $('span#load_annotations').live('click', function() {
-                if ($(this).hasClass('hide')) {
-                    $('div.section.has_notes').removeClass('annotated');
-                    $('h3.page_annotations').addClass('hidden');
-                    $(this).removeClass('hide');
-                    $(this).html("Load them!");
-                } else {
-                    $('h3.page_annotations').removeClass('hidden');
-                    $(this).addClass('hide');
-                    $('div.section.has_notes').addClass('annotated');
-                    $(this).html("Hide all notes..");
-                }
+                self.toggleShowAnnotationButton();
             });
 
             
         }, // init()
+
+        toggleShowAnnotationButton : function () {
+            var o = $("span#load_annotations");
+            if (o.hasClass('hide')) {
+                $('div.section.has_notes').removeClass('annotated');
+                $('h3.page_annotations').addClass('hidden');
+                o.removeClass('hide').html("Load them!");
+            } else {
+                $('h3.page_annotations').removeClass('hidden');
+                $('div.section.has_notes').addClass('annotated');
+                o.addClass('hide').html("Hide all notes..");
+            }
+        },
 
         /**/
         isImage: function(uri) {
@@ -571,6 +574,10 @@ $(function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
                 self.showNote(xp);
+
+                if (!$("span#load_annotations").hasClass('hide')) 
+                    self.toggleShowAnnotationButton();
+                
                 if (xp != window.location.href)
                     THCTag.showByXPointer(xp);
                 return false;
