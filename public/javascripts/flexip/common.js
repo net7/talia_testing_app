@@ -14,22 +14,23 @@ var config = {
   }
 };
 
-function loadFlexip() {
-  if(pseudo_id) {
-    $.get(config_url+pseudo_id, function(response) {
-      if(response.error) alert("Error: "+response.error);
-      else {
-        config.modules.background = response.data.modules.background;
-        config.toolbars_url = response.data.toolbars_url;
-        config.layers_url = response.data.layers_url;
-        config.image = response.data.image;
-        launchFlexip();
-      }
-    }, 'json');
-  }
+function loadFlexip(url, layers, selection) {
+    pseudo_id = parse_url_for_pseudo_id(url);
+    if(pseudo_id) {
+        $.get(config_url+pseudo_id, function(response) {
+            if(response.error) alert("Error: "+response.error);
+            else {
+                config.modules.background = response.data.modules.background;
+                config.toolbars_url = response.data.toolbars_url;
+                config.layers_url = response.data.layers_url;
+                config.image = response.data.image;
+                launchFlexip(fragments, selection);
+            }
+        }, 'json');
+    }
 }
 
-function launchFlexip() {
+function launchFlexip(fragments, selection) {
   /// Flexip could be already loaded;
   ///  if it is, for now, reload everything.
   flexip_id = 'flexip';

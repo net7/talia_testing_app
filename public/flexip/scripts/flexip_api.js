@@ -78,10 +78,12 @@ function FJSAPI (varName, flashID, containerID, flWidth, flHeight, flVersion, co
   this.communicationModuleLoadError = function(e) {}
   this.sideMenuModuleLoadError = function(e) {}
   this.toolBarButtonClick = function(fCode) {}
+  this.floatingMenuItemClick = function(parentFunctionCode,itemFunctionCode){console.log('parentFunctionCode='+parentFunctionCode+', itemFunctionCode='+itemFunctionCode);}
   this.layerOperationPerformed = function(layerID,fCode, data) {}
   this.layerClick = function(layerID) {}
   this.layerDeactivated = function(layerID) {}
   this.layerActivated = function(layerID) {}
+  this.layerAdded = function(layerID) {}
   /* - app base events - */
   
   /* + comm module events + */

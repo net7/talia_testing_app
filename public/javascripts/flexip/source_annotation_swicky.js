@@ -10,8 +10,7 @@ $(document).ready(function() {
     $(".flexip-toggle").click(function(e) {
         annotator.setBusy();
         url = $(this).attr("href");
-        pseudo_id = parse_url_for_pseudo_id(url);
-        loadFlexip(pseudo_id);
+        loadFlexip(url);
         return false;
     });
 });
@@ -61,7 +60,10 @@ function newLayerMessageBox() {
 
 function newLayer(layerData) {
     var title = $.trim(layerData.return_inputs[0]);
-    if(title != '') flexip.sideMenuAddChildLayer(newLayerObject(title));
+    if(title != '') {
+        layer = newLayerObject(title);
+        flexip.sideMenuAddChildLayer(layer);
+    }
 }
 
 function layerClick(layerId) {}

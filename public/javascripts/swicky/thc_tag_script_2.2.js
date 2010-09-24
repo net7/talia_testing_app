@@ -123,19 +123,18 @@ THCTag = {
     },
     
     getContentURIs: function() {
-    	var contentUris = new Array();
-    	for(var index=0; index<thcContentClass.length; index++) {
-    		var contentElements = document.getElementsByClassName(thcContentClass[index]);
-			for(var i=0; i < contentElements.length; i++) {
-				var contentUrl = contentElements[i].getAttribute('about');
-				if (contentUrl==null) {
-					contentUrl = contentElements[i].getAttribute('id');
-				}
-				contentUris[i] = contentUrl;
-			}	
-    	}
-		return contentUris;
-		
+    	  var contentUris = new Array();
+    	  for(var index=0; index<thcContentClass.length; index++) {
+    		    var contentElements = document.getElementsByClassName(thcContentClass[index]);
+			      for(var i=0; i < contentElements.length; i++) {
+				        var contentUrl = contentElements[i].getAttribute('about');
+				        if (contentUrl==null) {
+					          contentUrl = contentElements[i].getAttribute('id');
+				        }
+				        contentUris[i] = contentUrl;
+			      }	
+    	  }
+		    return contentUris;
     }
 };
 

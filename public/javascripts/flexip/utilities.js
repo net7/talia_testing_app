@@ -1,6 +1,6 @@
-var SwickyCommunication = function() {
-    $.base64.is_unicode = true;
+$.base64.is_unicode = true;
 
+var SwickyCommunication = function() {
     this.start = function(url) {
         window.status = '\
 <annotator_message action="selection_request">\
@@ -39,8 +39,6 @@ var SwickyCommunication = function() {
 }
 
 var Annotator = function() {
-    $.base64.is_unicode = true;
-
     /// Used to ignore requests when doing stuff.
     this.busy = false;
     
@@ -53,15 +51,24 @@ var Annotator = function() {
     }
     
     this.loadFragments = function (image, fragments, selection) {
+        layers = [];
+
+        for(var i = 0; i < fragments.length; i++)
+            layers.push(JSON.parse($.base64.decode(fragments[i])));
+
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
-        // TODO: this.
-        //        if(image != url) alert('TODO');
-        if(fragments) for(i in fragments) 
-            flexip.sideMenuAddChildLayer(JSON.parse($.base64.decode(fragments[i])));
+        if(image != url) {
+            url = image;
+            loadFlexip(image, layers, selection);
+            return;
+        }
+
+        if(layers) for(var i = 0; i < layers.length; i++)
+            flexip.sideMenuAddChildLayer(layers[i]);
         /// If selection is given, activate the relative layer.
         /// TODO: flexip does not support javascript layer selection yet.
         if(selection) {
@@ -70,6 +77,10 @@ var Annotator = function() {
         }
         flexip.messageBoxHide();
         this.setFree();
+    }
+
+    this.selectFragment = function(image, fragment) {
+        this.loadFragments(image, null, fragment);
     }
 
     this.lock = function(message) {
