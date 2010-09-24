@@ -60,7 +60,7 @@ function launchFlexip(layers) {
             for(var i = 0; i < layers.length; i++) {
                 layer = layers[i];
                 layer.itemID = layer.id;
-                this.flexipRef.sideMenuAddChildLayer(layer);
+                this.flexipRef.commAddChildLayerWithShapes(layer);
             }
             this.flexipRef.messageBoxHide();
         }

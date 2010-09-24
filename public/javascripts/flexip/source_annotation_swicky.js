@@ -23,7 +23,7 @@ function imageLoaded() {
         for(var i = 0; i < layers.length; i++) {
             layer = layers[i];
             layer.itemID = layer.id;
-            this.flexipRef.sideMenuAddChildLayer(layer);
+            this.flexipRef.commAddChildLayerWithShapes(layer);
         }
         this.flexipRef.messageBoxHide();
     }
@@ -33,9 +33,6 @@ function imageLoaded() {
 }
 
 function layerAdded(layerId) {
-    console.log(selection);
-
-
     if(selection && selection == layerId)
         flexip.sideMenuActivateLayer(layerId);
 }
@@ -61,7 +58,6 @@ function toolBarButtonClick(fCode) {
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
     swicky.annotate(url, layer.id);
-    console.log(layer.id);
 }
 
 function newLayerMessageBox() {
@@ -82,7 +78,7 @@ function newLayer(layerData) {
     var title = $.trim(layerData.return_inputs[0]);
     if(title != '') {
         layer = newLayerObject(title);
-        flexip.sideMenuAddChildLayer(layer);
+        flexip.commAddChildLayerWithShapes(layer);
     }
 }
 

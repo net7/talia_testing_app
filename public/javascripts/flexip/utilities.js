@@ -59,9 +59,7 @@ var Annotator = function() {
         this.setBusy();
 
         if(fragments) for(var i = 0; i < fragments.length; i++) {
-            layer = JSON.parse($.base64.decode(fragments[i]));
-            layer.itemID = layer.id;
-            layer.parentLayerID = "#root#";
+            layer = fragmentToLayer(fragments[i]);
             if(!this.loadedFragment(layer.id)) {
                 layers.push(layer);
                 this.fragmentLoaded(layer.id, fragments[i]);
@@ -70,7 +68,7 @@ var Annotator = function() {
 
         /// This is a global variable.
         if(selectedFragment)
-            selection = JSON.parse($.base64.decode(selectedFragment)).id;
+            selection = fragmentToLayer(selectedFragment).id;
 
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
@@ -82,8 +80,11 @@ var Annotator = function() {
             return;
         }
 
-        if(layers) for(var i = 0; i < layers.length; i++)
-            flexip.sideMenuAddChildLayer(layers[i]);
+        if(layers) for(var i = 0; i < layers.length; i++)  {
+            layer = layers[i];
+            layer.itemID = layer.id;
+            flexip.commAddChildLayerWithShapes(layer);
+        }
 
         flexip.messageBoxHide();
         this.setFree();
@@ -119,6 +120,15 @@ var Annotator = function() {
         return this.loadedFragments[id]
     }
 }
+
+function fragmentToLayer(fragment) {
+    return JSON.parse($.base64.decode(fragment));
+}
+
+function layerToFragment(layer) {
+    return $.base64.encode(JSON.encode(layer));
+}
+
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();

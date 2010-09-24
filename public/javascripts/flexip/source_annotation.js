@@ -27,9 +27,9 @@ function layerAdded(layerId) {
     if(selection && selection == layerId) flexip.sideMenuActivateLayer(layerId);
 }
 
-function activateImage(image, selectedLayer) {
+function activateImage(image, fragment) {
     url = image
-    selection = selectedLayer;
+    selection = fragmentToLayer(fragment).id;
     if($('div.section.images').prev().hasClass("closed"))
         $('div.section.images').prev().click();
 
