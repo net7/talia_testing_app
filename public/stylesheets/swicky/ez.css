@@ -40,3 +40,17 @@ div.eztipContainer.topRight {
 	background-position: right top;
 	background-repeat: no-repeat;
 }
+
+div.eztipContainer div.eztipClose.hidden { display: none; }
+div.eztipContainer div.eztipClose {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: -10px;
+  right: -10px;
+  background: black url(icons/cross.png) no-repeat 2px 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
