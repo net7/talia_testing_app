@@ -22,7 +22,7 @@ class Admin::Image::AnnotationsController < Image::AnnotationsController
     <button styleName="iconZoomIn"      toolTip="Zoom in (Tn+)"             functionCode="27"   toggleMode="false"/>
     <button styleName="iconZoomOut"     toolTip="Zoom out (Tn-)"            functionCode="28"   toggleMode="false"/>
     <button styleName="iconMoveImage"   toolTip="Enable pan/zoom mode"          functionCode="29"   toggleMode="true"/>
-		<button styleName="iconNewLayer0" 		toolTip="Create a new layer" 			functionCode="24" 	toggleMode="false"/>		
+		<button styleName="iconNewLayer0" 		toolTip="Create a new layer" 			functionCode="999" 	toggleMode="false"/>		
   </toolbar>
 	<toolbar toolBarID="shapes" headerLabel="Shapes" toolBarIndex="1" opened="true">
 		<button styleName="iconSelectTool" 		toolTip="Pointer tool" 							functionCode="22" 	toggleMode="true"/>

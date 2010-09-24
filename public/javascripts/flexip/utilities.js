@@ -51,39 +51,39 @@ var Annotator = function() {
         this.busy = false;
     }
     
-    this.loadFragments = function (image, fragments, selection) {
+    this.loadFragments = function (image, fragments, selectedFragment) {
         var layers = [];
         this.loadedFragments = [];
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
 
-        for(var i = 0; i < fragments.length; i++) {
+        if(fragments) for(var i = 0; i < fragments.length; i++) {
             layer = JSON.parse($.base64.decode(fragments[i]));
             layer.itemID = layer.id;
+            layer.parentLayerID = "#root#";
             if(!this.loadedFragment(layer.id)) {
                 layers.push(layer);
                 this.fragmentLoaded(layer.id, fragments[i]);
             }
         }
 
+        /// This is a global variable.
+        if(selectedFragment)
+            selection = JSON.parse($.base64.decode(selectedFragment)).id;
+
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
         if(image != url) {
+            if($('div.section.images').prev().hasClass("closed"))
+                $('div.section.images').prev().click();
             url = image;
-            loadFlexip(image, layers, selection);
+            loadFlexip(image, layers);
             return;
         }
 
         if(layers) for(var i = 0; i < layers.length; i++)
             flexip.sideMenuAddChildLayer(layers[i]);
-
-        /// If selection is given, activate the relative layer.
-        /// TODO: flexip does not support javascript layer selection yet.
-        if(selection) {
-            layer = JSON.parse($.base64.decode(selection));
-            flexip.sideMenuActivateLayer(layer.id)
-        }
 
         flexip.messageBoxHide();
         this.setFree();
@@ -94,17 +94,20 @@ var Annotator = function() {
     }
 
     this.lock = function(message) {
-      this.setBusy();
-      flexip.MessageBoxShowMessage(message);
+        if(!flexip) return false;
+        this.setBusy();
+        flexip.MessageBoxShowMessage(message);
     }
 
     this.unlock = function(message) {
+        if(!flexip) return false;
         this.setFree();
         if(message) flexip.messageBoxShowAlert(message);
         else flexip.messageBoxHide();
     }
 
     this.alert = function(message) {
+        if(!flexip) return false;
         flexip.messageBoxShowAlert(message);
     }
 
@@ -119,7 +122,7 @@ var Annotator = function() {
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();
-    return {itemID: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+    return {itemID: itemId, id: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
 }
 
 function confirmMessageBox(title, text, callback) {

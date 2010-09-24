@@ -2,7 +2,8 @@ var config_url = "/admin/image/annotations/ajax/loadConfiguration/";
 var pseudo_id = null;
 
 var url = '';
-var selection = '';
+var selection = null;
+
 var swicky = new SwickyCommunication();
 var annotator = new Annotator();
 
@@ -16,9 +17,27 @@ $(document).ready(function() {
 });
 
 function imageLoaded() {
+    var layers = this.flexipRef.layers;
+    /// This appens if swicky has requested an image not shown and Flexip was (re)loaded.
+    if(layers && layers.length > 0) {
+        for(var i = 0; i < layers.length; i++) {
+            layer = layers[i];
+            layer.itemID = layer.id;
+            this.flexipRef.sideMenuAddChildLayer(layer);
+        }
+        this.flexipRef.messageBoxHide();
+    }
     firefoxBugFix();
     annotator.setFree();
     swicky.start(url);
+}
+
+function layerAdded(layerId) {
+    console.log(selection);
+
+
+    if(selection && selection == layerId)
+        flexip.sideMenuActivateLayer(layerId);
 }
 
 function dataParseEnd() {}
@@ -26,7 +45,7 @@ function dataParseEnd() {}
 function toolBarButtonClick(fCode) {
     switch(fCode) {
         /// New layer
-    case 24:
+    case 999:
         newLayerMessageBox();
         break;
         /// Annotate (Save)
@@ -42,6 +61,7 @@ function toolBarButtonClick(fCode) {
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
     swicky.annotate(url, layer.id);
+    console.log(layer.id);
 }
 
 function newLayerMessageBox() {
