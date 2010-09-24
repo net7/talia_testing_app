@@ -97,6 +97,7 @@ class SourcesController < ApplicationController
   # rendering the source.
   def dispatch_html
     @requested_fragment = params[:fragment]
+    @requested_file = params[:file]
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
     response.content_type = Mime::HTML
@@ -183,17 +184,17 @@ class SourcesController < ApplicationController
   def check_source_or_redirect
     return true if @source
     if !ActiveSource.exists?(params[:dispatch_uri])
-      source_uri = N::LOCAL + params[:dispatch_uri]
+      source_uri = (N::LOCAL + params[:dispatch_uri]).to_uri
       qry = ActiveRDF::Query.new(N::URI).select(:file, :page).distinct
       qry.where(source_uri, N::RDF.type, N::SWICKY.SourceFragment)
       qry.where(source_uri, N::DISCOVERY.isPartOf, :file)
       qry.where(source_uri, N::SWICKY.appearsIn, :page)
-      fragment, page = qry.execute.first
-      if fragment
+      file, page = qry.execute.first
+      if file
         #TODO: this hack works now because pages as URLs like
         # http://www.site.org/page/sourceid?locale=en
         # if that ?locale=en wasn't there, it wouldn't work
-        redirect_to page + '&fragment=' + fragment and return false
+        redirect_to page + '&fragment=' + params[:dispatch_uri] + '&file=' + file and return false
       else
         raise(ActiveRecord::RecordNotFound)
       end

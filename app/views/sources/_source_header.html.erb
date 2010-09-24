@@ -1,10 +1,21 @@
-<div class="back"><%= index_link %></div>
+<div class="breadcrumb">
+  <%= index_link %>
+  <% crumbs = breadcrumbs(@source.types) %>
+  <% if crumbs.count > 0 %>
+    |
+    <% crumbs.each do |type| %>
+      <%= type %>
+      |
+    <% end %>
+  <% end %>
+  <%= @source.name %>
+</div>
 <br />
 
 <div class="source_icon">
-    <%= type_images_medium(@source.types) %>
+  <%= type_images_medium(@source.types) %>
 </div>
 
 <h2>
-    <%= title_for(@source) %>
+  <%= title_for(@source) %>
 </h2>

@@ -2,7 +2,7 @@ module SourcesHelper
 
   # Link to the index
   def index_link
-    link_to 'Index', :action => 'index'
+    link_to 'Home', :action => 'index'
   end
 
   #Links to collections
@@ -231,6 +231,16 @@ module SourcesHelper
     result
   end
 
+  def breadcrumbs(types)
+    result = []
+    types.each do |t|
+      name = t.local_name.titleize
+      result << link_to(name, :action => 'index', :filter => t.to_name_s('+')
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
+    end
+    result
+  end
+
   def data_icons(source)
     result = ''
     source.talia_files.each do |talia_file|
@@ -247,12 +257,12 @@ module SourcesHelper
       )
 
 
-#        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
-#        { :controller => 'source_data',
-#          :action => 'show',
-#          :id => data_record.id },
-#        link_data.last
-#      )
+      #        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
+      #        { :controller => 'source_data',
+      #          :action => 'show',
+      #          :id => data_record.id },
+      #        link_data.last
+      #      )
     end
     result
   end
@@ -262,13 +272,13 @@ module SourcesHelper
     result = []
     sources.each do |s|
       s = s.becomes(TaliaSource)
-#      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+      #      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
       if(images = s.files_of_type(TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData)).count > 0
         # If the source has images, it is a TaliaFile source and the data we want to show is about the 
         # correspoding "isFileOf" relation object.
         images.each do |image|
-#          has_iip = data_record_has_an_iip_related(s, image)
-#          image = has_iip || image
+          #          has_iip = data_record_has_an_iip_related(s, image)
+          #          image = has_iip || image
           result << {:uri => s.uri.to_s, :title => title_for(s), :image => image}
         end
       end

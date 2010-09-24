@@ -6,7 +6,7 @@ class TaliaSource < TaliaCore::Source
   extend RandomId
 
   cattr_reader :per_page
-  @@per_page = 10
+  @@per_page = 15
 
 #  rdf_property :title, N::DCNS.title
 #  autofill_uri :force => true
