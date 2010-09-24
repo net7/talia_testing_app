@@ -101,7 +101,7 @@ var Annotator = function() {
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();
-    return {itemID: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+    return {itemID: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
 }
 
 function confirmMessageBox(title, text, callback) {

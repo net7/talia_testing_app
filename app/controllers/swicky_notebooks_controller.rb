@@ -70,8 +70,6 @@ class SwickyNotebooksController < ApplicationController
   def annotations
     notes_triples = if(params[:uri])
       Swicky::Notebook.annotations_for_url(params[:uri])
-    elsif(params[:file])
-      Swicky::Notebook.annotations_for_file(params[:file])
     elsif(params[:xpointer])
       Swicky::Notebook.annotations_for_xpointer(params[:xpointer])
     else

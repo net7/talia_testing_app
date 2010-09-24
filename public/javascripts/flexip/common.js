@@ -24,13 +24,13 @@ function loadFlexip(url, layers, selection) {
                 config.toolbars_url = response.data.toolbars_url;
                 config.layers_url = response.data.layers_url;
                 config.image = response.data.image;
-                launchFlexip(fragments, selection);
+                launchFlexip(layers, selection);
             }
         }, 'json');
     }
 }
 
-function launchFlexip(fragments, selection) {
+function launchFlexip(layers, selection) {
   /// Flexip could be already loaded;
   ///  if it is, for now, reload everything.
   flexip_id = 'flexip';
@@ -53,7 +53,11 @@ function launchFlexip(fragments, selection) {
   }
 
   myFjsApi.imageLoaded = (typeof(imageLoaded) != "undefined") ? imageLoaded: function() {
-    this.flexipRef.commLoadData(config.layers_url);
+      if(layers && layers.length > 0) {
+          for(var i = 0; i < layers.length; i++) this.flexipRef.sideMenuAddChildLayer(layers[i]);
+          this.flexipRef.messageBoxHide();
+      }
+      else this.flexipRef.commLoadData(config.layers_url);
   }
 
   myFjsApi.commDataParseEnd = (typeof(dataParseEnd) != "undefined") ? dataParseEnd : function() {
