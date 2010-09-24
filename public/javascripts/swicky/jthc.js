@@ -141,7 +141,7 @@ $(function() {
             if (o.hasClass('hide')) {
                 $('div.section.has_notes').removeClass('annotated');
                 $('h3.page_annotations').addClass('hidden');
-                o.removeClass('hide').html("Load them!");
+                o.removeClass('hide').html("Show them!");
             } else {
                 $('h3.page_annotations').removeClass('hidden');
                 $('div.section.has_notes').addClass('annotated');
@@ -267,7 +267,9 @@ $(function() {
                     // $('#'+self.options.containerID).show();
 
                     if (self.xpointersToLoad == self.xpointersLoaded) {
-                        $('#'+self.options.containerID).removeClass('loading');
+                        // TODO: no more containers !
+                        // $('#'+self.options.containerID).removeClass('loading');
+                        $('#annotations_dialog').removeClass('loading');
                     }
 
                 },
@@ -328,7 +330,9 @@ $(function() {
                         self.setTipContent();
 
                         if (self.xpointersToLoad == self.xpointersLoaded) {
-                            $('#'+self.options.containerID).removeClass('loading');
+                            // TODO no more containers!
+                            // $('#'+self.options.containerID).removeClass('loading');
+                            $('#annotations_dialog').removeClass('loading');
                         }
 
                     },
@@ -491,8 +495,8 @@ $(function() {
 
             self.annotationsNumber++;
             if (self.annotationsNumber == 1) {
-                $("body").append("<div id='annotations_dialog'>There's <span id='annotations_number'>1</span> annotations on this page!"+
-                                 "<span id='load_annotations'>Show them!</span></div>");
+                $("body").append("<div id='annotations_dialog' class='loading'>There's <span id='annotations_number'>1</span> annotations on this page!"+
+                                 "<span id='load_annotations'>Show them!</span><span id='annotations_loading'>Loading ... </span></div>");
             } else {
                 $("span#annotations_number").html(self.annotationsNumber);
             }
@@ -554,7 +558,8 @@ $(function() {
 
                 var ret = "";
                 for (wut in item)
-                    ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
+                    if ($.inArray(""+wut, ['id', 'hash']) == -1)
+                        ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
                 
                 myEztip.setContent(obj, ret);
             });

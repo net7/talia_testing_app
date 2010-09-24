@@ -119,3 +119,13 @@ div#annotations_dialog span#load_annotations:hover {
 h3.page_annotations.hidden {
   display: none;
 }
+
+div#annotations_dialog.loading span#load_annotations {
+  display: none;
+}
+div#annotations_dialog.loading span#annotations_loading {
+  display: block;
+}
+div#annotations_dialog span#annotations_loading {
+  display: none;
+}
