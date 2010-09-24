@@ -1,7 +1,12 @@
 <index-page>
-
+  
 	<content: replace>
-		<sidebared-content>
+
+          <p>
+            <a href="import">Import XML file </a>
+          </p>
+
+          <sidebared-content>
 			<collection:>
 				<item:>
 					<card-with-drag-handle />

@@ -6,8 +6,16 @@
       <div class='section_content_container'>
           <div class='section_content'>
               <% for data_record in @files['TaliaCore::DataTypes::XmlData'] %>
-                  <% element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
-                  <%= thctag(element_uri, data_record.content_string) %>
+   <%  # TODO: crude, find a better way to get talia_file pseudo_id
+                # (I already have all the talia files in memory, I should remember which one of them this belongs to.
+            %>
+            <% talia_file = TaliaFile.find(data_record.source_id) %>
+
+            <%= thctag(talia_file.uri.to_s, data_record.content_string, :title => data_record.location) %>
+
+
+    <%# element_uri = (@source.uri + "/data#{data_record.id}").to_s %>
+                  <%#= thctag(element_uri, data_record.content_string) %>
               <% end %>
           </div>
           <div class='section_notes'></div>
