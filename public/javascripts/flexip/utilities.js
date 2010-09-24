@@ -12,14 +12,14 @@ var SwickyCommunication = function() {
 </annotator_message>';
     }
 
-    this.annotate = function(url, layerId) {
+    this.annotate = function(url, layer) {
         window.status = '\
 <annotator_message action="annotation_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+annotator.loadedFragment(layerId)+'</layer>\
+<layer>'+layerToFragment(layer)+'</layer>\
 </fragment>\
 </annotator_message>';
     }
@@ -126,7 +126,7 @@ function fragmentToLayer(fragment) {
 }
 
 function layerToFragment(layer) {
-    return $.base64.encode(JSON.encode(layer));
+    return $.base64.encode(JSON.stringify(layer));
 }
 
 

@@ -57,7 +57,7 @@ function toolBarButtonClick(fCode) {
 
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
-    swicky.annotate(url, layer.id);
+    swicky.annotate(url, layer);
 }
 
 function newLayerMessageBox() {
