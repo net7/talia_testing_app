@@ -1,29 +1,4 @@
 $(function() {
-    /*
-    var eztipCode = 
-            "<div class='eztipContainer' id='#eztipid#'>"+
-            "   <div class='eztipBorderTop'>"+
-            "       <b class='ez1'></b>"+
-            "       <b class='ez2'></b>"+
-            "       <b class='ez3'></b>"+
-            "       <b class='ez4'></b>"+
-            "   </div>"+
-            "   <div class='eztipContent'>#eztipcontent#</div>"+
-            "   <div class='eztipBorderBottom'>"+
-            "       <b class='ez4'></b>"+
-            "       <b class='ez3'></b>"+
-            "       <b class='ez2'></b>"+
-            "       <b class='ez1'></b>"+
-            "   </div>"+
-            "</div>";
-
-        var eztipCode = 
-                "<div class='eztipContainer' id='#eztipid#'>"+
-                "   <div class='eztipLeft'></div>"+
-                "   <div class='eztipContent'><br/>#eztipcontent#</div>"+
-                "   <div class='eztipRight'></div>"+
-                "</div>";
-	*/
 	var eztipCode = 
             "<div class='eztipContainer' id='#eztipid#'>"+
                 "   <div class='eztipContent'>#eztipcontent#</div>"+
@@ -61,10 +36,13 @@ $(function() {
 	    introMoveExtent: 25,
 	    
 	    // For each content: show this tip this number of times, 0 for unlimited
-	    showNumPerContent: 10,
+	    showNumPerContent: 999999,
 	    
 	    // default CSS selector of elements to be tipped
 	    selector: '.eztip',
+
+        // Sticky the tips on the screen!
+        sticky: false,
 
         // Internal used thingies
         tipCounter: []
@@ -207,6 +185,8 @@ $(function() {
                             self.options.tipCounter[tipContent]++;
                             $(el).data('showTimer', null);
                             $(el).data('isActive', true);
+                            if (self.options.sticky)
+                                tip.draggable()
                             if (self.options.introMoveExtent > 0) {
                                 // Moving intro: put it a bit away and move it to its position
                                 tip.css({opacity: 0.0, left: tipIntroLeft + 'px', top: tipIntroTop + 'px'}).show();
@@ -219,18 +199,18 @@ $(function() {
                     );
                 }
                 
-                
+
                 // Fadeout if the user stays on the element for too much
-                $(el).data('hideTimer', setTimeout(
-                    function() {
-                        $(el).data('hideTimer', null);
-                        $(el).data('isActive', false);
-                        tip.fadeOut(self.options.hideLength);
-                        return false;
-                    }, 
-                    self.options.forcedHideDelay)
-                );
-                
+                if (!self.options.sticky)
+                    $(el).data('hideTimer', setTimeout(
+                        function() {
+                            $(el).data('hideTimer', null);
+                            $(el).data('isActive', false);
+                            tip.fadeOut(self.options.hideLength);
+                            return false;
+                        }, 
+                        self.options.forcedHideDelay)
+                    );
                 
                 return false;
             }); // MouseOver function
@@ -248,23 +228,26 @@ $(function() {
                 // Tooltip active: start the hideTimer
                 if ($(el).data('isActive') == true) {
                     
-                    $(el).data('hideTimer', setTimeout(
-                        function() {
-                            $(el).data('hideTimer', null);
-                            $(el).data('isActive', false);
-                            tip.fadeOut(self.options.hideLength);
-                            return false;
-                        }, 
-                        self.options.hideDelay)
-                    );
+                    if (!self.options.sticky)
+                        $(el).data('hideTimer', setTimeout(
+                            function() {
+                                $(el).data('hideTimer', null);
+                                $(el).data('isActive', false);
+                                tip.fadeOut(self.options.hideLength);
+                                return false;
+                            }, 
+                            self.options.hideDelay)
+                        );
 
                 // Tooltip inactive and mouseout? Stop everything!
                 } else {
-                    clearTimeout($(el).data('showTimer'));
-                    clearTimeout($(el).data('hideTimer'));
-                    $(el).data('showTimer', null);
-                    $(el).data('showTimer', null);
-                    $('.eztipContainer').remove();
+                    if (!self.options.sticky) {
+                        clearTimeout($(el).data('showTimer'));
+                        clearTimeout($(el).data('hideTimer'));
+                        $(el).data('showTimer', null);
+                        $(el).data('showTimer', null);
+                        $('.eztipContainer').remove();
+                    }
                 }
 
             }); // MouseOUT
