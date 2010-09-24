@@ -1,8 +1,9 @@
 $(function() {
 	var eztipCode = 
             "<div class='eztipContainer' id='#eztipid#'>"+
-                "   <div class='eztipContent'>#eztipcontent#</div>"+
-                "</div>";
+            "   <div class='eztipClose hidden'></div>"+
+            "   <div class='eztipContent'>#eztipcontent#</div>"+
+            "</div>";
 
 
  	// eztip constructor
@@ -185,8 +186,17 @@ $(function() {
                             self.options.tipCounter[tipContent]++;
                             $(el).data('showTimer', null);
                             $(el).data('isActive', true);
-                            if (self.options.sticky)
-                                tip.draggable()
+                            if (self.options.sticky) {
+                                tip.draggable();
+                                var closeButton = tip.find('.eztipClose');
+                                console.log("ConsoleButton? ", closeButton);
+                                closeButton.removeClass('hidden');
+                                closeButton.click(function() {
+                                    $(el).data('isActive', false);
+                                    tip.fadeOut(self.options.hideLength);
+                                    return false;
+                                });
+                            }
                             if (self.options.introMoveExtent > 0) {
                                 // Moving intro: put it a bit away and move it to its position
                                 tip.css({opacity: 0.0, left: tipIntroLeft + 'px', top: tipIntroTop + 'px'}).show();
