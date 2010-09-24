@@ -505,7 +505,7 @@ $(function() {
             if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
                 parentTHCTag = xpointer;
                 if ($('div [about="'+parentTHCTag+'"]').length == 0)
-                    $('div#contents').append('<h3 class="toggle">Annotations on the entire page</h3><div class="section page_annotations">'+
+                    $('div#contents h3:first').before('<h3 class="toggle page_annotations">Annotations on the entire page</h3><div class="section annotated page_annotations">'+
                                             '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
                                             '<div about="'+parentTHCTag+'"></div>'+
                                             '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');
