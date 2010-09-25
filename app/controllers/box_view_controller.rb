@@ -58,7 +58,7 @@ class BoxViewController < ApplicationController
   def render_filter
     filter = params[:type]
 
-    qry = ActiveRDF::Query.new.select(:t)
+    qry = ActiveRDF::Query.new(N::URI).select(:t)
     qry.where(:t, N::RDF.type, N::URI.make_uri(filter, '+'))
     @elements = qry.execute
 
@@ -73,17 +73,22 @@ class BoxViewController < ApplicationController
     source_uri = Base64.decode64(params[:resource])
     @source = TaliaCore::ActiveSource.find(source_uri)
     @source_name = @source.uri.to_uri.local_name.to_s.gsub('_', ' ')
-      
+    html = ''
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
-    html = render_to_string :boxview_description
     if  N::DEMO.Person.in? types
       html += render_to_string :person
-    elsif N::DEMO.City.in? types
-      html += render_to_string :boxview_google_map
+    elsif N::DEMO.Sanctuary.in? types
+      html += render_to_string :sanctuary
+    elsif N::DEMO.Place.in? types
+      html += render_to_string :place
+    elsif N::DEMO.Transcription.in? types
+      html += render_to_string :transcription
+    elsif N::DEMO.Manuscript.in? types
+      html += render_to_string :manuscript
     else
       html += render_to_string :source
     end
-    html += render_to_string :boxview_graph
+    #    html += render_to_string :graph
     data = {'box' => @source_name}
 
     render_json(0, html, data)
