@@ -14,12 +14,14 @@ $(function() {
     }; // $.fn.jthc()
 
     $.jthc.defaults = {
-        debug: true,
+        debug: false,
         // URL to do Ajax query to
         baseURL: "/swicky_notebooks/context/",
         // DOM elements IDs 
         containerID: "THCAnnotations",
-        tooltipID: "THCTooltip"
+        tooltipID: "THCTooltip",
+        selectedImage: null,
+        selectedFragment: null
     };
 
     $.jthc.prototype = {
@@ -63,7 +65,6 @@ $(function() {
             // Get all the THCTag uris in this page
             this.uris = THCTag.getContentURIs();            
 
-            /**/
             for (var i=0; i<this.uris.length; i++) {
                 var uri = this.uris[i];
                 if (!this.isImage(uri)) 
@@ -158,12 +159,10 @@ $(function() {
             }
         },
 
-        /**/
         isImage: function(uri) {
             return ($("div[about='"+uri+"']").length && $("div[about='"+uri+"']").hasClass("ImageFragment"))
         },
 
-        /**/
         askForImageFragments: function(uri) {
             self = this;
             self.ajaxmanager.add({
@@ -173,6 +172,10 @@ $(function() {
                 type: 'POST',
                 success: function(data) {
                     self.imageFragments[uri] = data
+                    if(typeof(activateImage) != "undefined" && self.options.selectedImage) {
+                        if(self.option.selectedFragment) activateImage(self.options.selectedImage, self.option.selectedFragment);
+                        else activateImage(self.options.selectedImage);
+                    }
                 },
                 error: function(req, status, err) {}
             });

@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 });
 
-function imageLoaded() {
+function commInterfaceSettingsParseEnd() {
     if(jthc && jthc.imageFragments[url]) {
         fragments = [];
         for(fragment in jthc.imageFragments[url])

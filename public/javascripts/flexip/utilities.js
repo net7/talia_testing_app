@@ -2,7 +2,7 @@ $.base64.is_unicode = true;
 
 var SwickyCommunication = function() {
     this.start = function(url) {
-        window.status = '\
+        var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
@@ -10,30 +10,49 @@ var SwickyCommunication = function() {
 <container_uri>'+url+'</container_uri>\
 </fragment>\
 </annotator_message>';
+
+        /**/
+        console.warn(message);
+
+        window.status = message;
     }
 
-    this.annotate = function(url, layer) {
-        window.status = '\
+    this.annotate = function(url, fragment) {
+        var message = '\
 <annotator_message action="annotation_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+layerToFragment(layer)+'</layer>\
+<layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
+
+        /**/
+        console.warn(message);
+
+        window.status = message;
     }
 
     this.selected = function(url, layerId) {
-        window.status = '\
+        var fragment = annotator.loadedFragment(layerId);
+        if(fragment) {
+
+            var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+annotator.loadedFragment(layerId)+'</layer>\
+<layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
+
+            /**/
+            console.warn(message);
+
+            window.status = message;
+        }
     }
 }
 
@@ -80,11 +99,7 @@ var Annotator = function() {
             return;
         }
 
-        if(layers) for(var i = 0; i < layers.length; i++)  {
-            layer = layers[i];
-            layer.itemID = layer.id;
-            flexip.commAddChildLayerWithShapes(layer);
-        }
+        if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
 
         flexip.messageBoxHide();
         this.setFree();
@@ -97,7 +112,7 @@ var Annotator = function() {
     this.lock = function(message) {
         if(!flexip) return false;
         this.setBusy();
-        flexip.MessageBoxShowMessage(message);
+        flexip.MessageBoxShow(message);
     }
 
     this.unlock = function(message) {
@@ -132,7 +147,13 @@ function layerToFragment(layer) {
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();
-    return {itemID: itemId, id: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+    return {id: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+}
+
+function addLayerJS(layer) {
+    layer.itemID = layer.id;
+    layer.parentLayerID = "#root#";
+    flexip.commAddChildLayerWithShapes(layer);
 }
 
 function confirmMessageBox(title, text, callback) {

@@ -16,16 +16,13 @@ $(document).ready(function() {
     });
 });
 
-function imageLoaded() {
-    var layers = this.flexipRef.layers;
+function commInterfaceSettingsParseEnd() {
+    var layers = flexip.layers;
+    
     /// This appens if swicky has requested an image not shown and Flexip was (re)loaded.
     if(layers && layers.length > 0) {
-        for(var i = 0; i < layers.length; i++) {
-            layer = layers[i];
-            layer.itemID = layer.id;
-            this.flexipRef.commAddChildLayerWithShapes(layer);
-        }
-        this.flexipRef.messageBoxHide();
+        for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
+        flexip.messageBoxHide();
     }
     firefoxBugFix();
     annotator.setFree();
@@ -57,7 +54,10 @@ function toolBarButtonClick(fCode) {
 
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
-    swicky.annotate(url, layer);
+    var fragment = layerToFragment(layer);
+
+    annotator.fragmentLoaded(layer.id, fragment);
+    swicky.annotate(url, fragment);
 }
 
 function newLayerMessageBox() {
@@ -78,7 +78,7 @@ function newLayer(layerData) {
     var title = $.trim(layerData.return_inputs[0]);
     if(title != '') {
         layer = newLayerObject(title);
-        flexip.commAddChildLayerWithShapes(layer);
+        addLayerJS(layer);
     }
 }
 

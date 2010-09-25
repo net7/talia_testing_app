@@ -48,24 +48,23 @@ function launchFlexip(layers) {
                           '/flexip/');
 
 
-
     myFjsApi.allModulesLoaded = (typeof(allModulesLoaded) != "undefined") ? allModulesLoaded : function() {
-        this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
         this.flexipRef.imageLoadSource(config.image);
     }
 
     myFjsApi.imageLoaded = (typeof(imageLoaded) != "undefined") ? imageLoaded: function() {
-        var layers = this.flexipRef.layers;
+        this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
+    }
+
+    myFjsApi.commInterfaceSettingsParseEnd = (typeof(commInterfaceSettingsParseEnd) != "undefined") ? commInterfaceSettingsParseEnd: function() {
+        var layers = flexip.layers;
         if(layers && layers.length > 0) {
-            for(var i = 0; i < layers.length; i++) {
-                layer = layers[i];
-                layer.itemID = layer.id;
-                this.flexipRef.commAddChildLayerWithShapes(layer);
-            }
+            for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
             this.flexipRef.messageBoxHide();
         }
         else this.flexipRef.commLoadData(config.layers_url);
     }
+
 
     myFjsApi.commDataParseEnd = (typeof(dataParseEnd) != "undefined") ? dataParseEnd : function() {
         firefoxBugFix();
