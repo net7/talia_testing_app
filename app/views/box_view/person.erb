@@ -48,6 +48,16 @@
   </p>
   <% end %>
 
+  <% unless (author_of = @source.inverse[N::DCNS.creator]).empty? %>
+  <p>
+    <% i = 1 %>
+    <%=  source_label %> the author of <%  author_of.each do |c| %>
+      <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
+      <%= title_for(c) %></a><% if i < author_of.count %>, <%end%><% i = i + 1 %>
+     <% end %>
+  </p>
+  <% end %>
+
   <% unless (cited_in = @source[N::DEMO.cited_in]).empty?  %>
   <p>
     <% i = 1 %>
@@ -57,6 +67,8 @@
      <% end %>
   </p>
   <% end %>
+
+
 
   <%= render :partial => 'more_info' %>
   </div>
