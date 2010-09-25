@@ -10,10 +10,6 @@ var SwickyCommunication = function() {
 <container_uri>'+url+'</container_uri>\
 </fragment>\
 </annotator_message>';
-
-        /**/
-        console.warn(message);
-
         window.status = message;
     }
 
@@ -27,10 +23,6 @@ var SwickyCommunication = function() {
 <layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
-
-        /**/
-        console.warn(message);
-
         window.status = message;
     }
 
@@ -47,10 +39,6 @@ var SwickyCommunication = function() {
 <layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
-
-            /**/
-            console.warn(message);
-
             window.status = message;
         }
     }
