@@ -18,7 +18,8 @@ function commInterfaceSettingsParseEnd() {
         for(fragment in jthc.imageFragments[url])
             if(coordinates = jthc.imageFragments[url][fragment]["http://discovery-project.eu/ontologies/philoSpace/hasCoordinates"])
                 fragments.push(coordinates);
-        annotator.resetFragments();
+
+        annotator.resetLoadedFragments();
         annotator.loadFragments(url, fragments);
     }
     this.flexipRef.messageBoxHide();

@@ -24,7 +24,7 @@ function commInterfaceSettingsParseEnd() {
         flexip.messageBoxHide();
     }
     firefoxBugFix();
-    annotator.resetLoadedImages();
+    annotator.resetLoadedFragments();
     annotator.setFree();
     swicky.start(url);
 }
