@@ -62,8 +62,8 @@ var Annotator = function() {
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
-        if(image != url) this.resetLoadedFragments();
 
+        if(image != url) annotator.resetLoadedFragments();
         if(fragments) for(var i = 0; i < fragments.length; i++) {
             layer = fragmentToLayer(fragments[i]);
             if(!this.loadedFragment(layer.id)) {
@@ -77,6 +77,7 @@ var Annotator = function() {
             selection = fragmentToLayer(selectedFragment).id;
             ignoreActivationEvent = true;
         }
+
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
         if(image != url) {

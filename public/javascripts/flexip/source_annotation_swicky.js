@@ -24,6 +24,8 @@ function commInterfaceSettingsParseEnd() {
         for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
         flexip.messageBoxHide();
     }
+    else annotator.resetLoadedFragments();
+
     firefoxBugFix();
     annotator.setFree();
     swicky.start(url);
@@ -86,11 +88,11 @@ function newLayer(layerData) {
 
 function layerClick(layerId) {}
 function layerActivated(layerId) {
-    if(!ignoreActivationEvent)
-        flexip.sideMenuGetLayerInfo(layerId, true, 'selectedLayer');
-    ignoreActivationEvent = false;
+    flexip.sideMenuGetLayerInfo(layerId, true, 'selectedLayer');
 }
 
 function selectedLayer(layer) {
-    swicky.selected(url, layer.id)
+    if(!ignoreActivationEvent)
+        swicky.selected(url, layer.id)
+    ignoreActivationEvent = false;
 }
