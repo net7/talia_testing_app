@@ -1,6 +1,4 @@
 var ignoreActivationEvent = false;
-
-
 $.base64.is_unicode = true;
 
 var SwickyCommunication = function() {
@@ -49,6 +47,7 @@ var SwickyCommunication = function() {
 
 var Annotator = function() {
     this.loadedFragments = [];
+    this.fragmentsByLayerId = {};
 
     /// Used to ignore requests when doing stuff.
     this.busy = false;

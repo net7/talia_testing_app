@@ -100,27 +100,30 @@ $(function() {
             });
 
             $('.THCStatementSubject,.THCStatementObject').live('click', function() {
-                var uri = $(this).attr('about'),
-                item = self.getItemFromURI(uri),
-                xpointer = self.getXpointerFromURI(uri),
-                xpointerId = item['hasCoordinates'],
-                newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
-                parentItem = self.getItemFromXI(xpointer, item['isPartOf']),
-                url = item['uri'];
+                var uri = $(this).attr('about');
 
-                if ($(this).hasClass('SourceFragment')) {
-                    if (self.isOnThisPage(xpointer, item))
-                        THCTag.showByXPointer(newXpointer);  
-                    else
-                        if (confirm("Navigate to fragment "+url+"? "))
-                            window.location = url;
-                } else {
-                    if (!self.isOnThisPage(uri, item)) {
-                        if (confirm("Navigate to "+uri+"? "))
-                            window.location = uri;
+                if((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(uri)) {
+
+                    var item = self.getItemFromURI(uri),
+                    xpointer = self.getXpointerFromURI(uri),
+                    xpointerId = item['hasCoordinates'],
+                    newXpointer = self.getFieldFromId(xpointer, xpointerId, 'uri'),
+                    parentItem = self.getItemFromXI(xpointer, item['isPartOf']),
+                    url = item['uri'];
+
+                    if ($(this).hasClass('SourceFragment')) {
+                        if (self.isOnThisPage(xpointer, item))
+                            THCTag.showByXPointer(newXpointer);  
+                        else
+                            if (confirm("Navigate to fragment "+url+"? "))
+                                window.location = url;
+                    } else {
+                        if (!self.isOnThisPage(uri, item)) {
+                            if (confirm("Navigate to "+uri+"? "))
+                                window.location = uri;
+                        }
                     }
                 }
-
                 return false;
             });
             
@@ -144,6 +147,10 @@ $(function() {
 
         toggleShowAnnotationButton : function () {
             var o = $("span#load_annotations");
+            /**/
+            if(!$.isEmptyObject(this.imageFragments) && $('div.section.images').prev().hasClass("closed"))
+                $('div.section.images').prev().click();
+
             if (o.hasClass('hide')) {
                 $('div.section.has_notes').removeClass('annotated');
                 $('h3.page_annotations').addClass('hidden');
@@ -599,22 +606,23 @@ $(function() {
             hash = self.getHashFromXpointer(xpointer),
             selectId = hash,
             deselectId = hash+"-desel";
-            
+
             $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
-
-                if ($(this).hasClass('collapsed')) 
-                    if (!$("span#load_annotations").hasClass('hide')) 
-                        self.toggleShowAnnotationButton();
-
-                self.showNote(xp);
-                if (xp != window.location.href)
-                    THCTag.showByXPointer(xp);
-
+                /**/            
+                if((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
+                    if ($(this).hasClass('collapsed')) 
+                        if (!$("span#load_annotations").hasClass('hide'))
+                            self.toggleShowAnnotationButton();
+                    
+                    self.showNote(xp);
+                    if (xp != window.location.href)
+                        THCTag.showByXPointer(xp);
+                }
                 return false;
             });
-
+            
             $("a#" + deselectId).live("click", function() {
                 var xp = $(this).attr('about');
                 THCTagCore.Annotate.deselectFragment(); 
