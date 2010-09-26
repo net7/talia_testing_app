@@ -14,16 +14,6 @@ var SwickyCommunication = function() {
     }
 
     this.annotate = function(url, fragment) {
-        console.warn('\
-<annotator_message action="annotation_request">\
-<fragment>\
-<type>image</type>\
-<context_url>'+window.location+'</context_url>\
-<container_uri>'+url+'</container_uri>\
-<layer>'+fragment+'</layer>\
-</fragment>\
-</annotator_message>');
-
         var message = '\
 <annotator_message action="annotation_request">\
 <fragment>\
@@ -39,7 +29,6 @@ var SwickyCommunication = function() {
     this.selected = function(url, layerId) {
         var fragment = annotator.loadedFragment(layerId);
         if(fragment) {
-
             var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
