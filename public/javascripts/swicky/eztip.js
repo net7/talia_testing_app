@@ -189,7 +189,7 @@ $(function() {
                             if (self.options.sticky) {
                                 tip.draggable();
                                 var closeButton = tip.find('.eztipClose');
-                                console.log("ConsoleButton? ", closeButton);
+                                // console.log("ConsoleButton? ", closeButton);
                                 closeButton.removeClass('hidden');
                                 closeButton.click(function() {
                                     $(el).data('isActive', false);

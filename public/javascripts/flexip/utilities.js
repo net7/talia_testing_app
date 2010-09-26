@@ -1,3 +1,6 @@
+var ignoreActivationEvent = false;
+
+
 $.base64.is_unicode = true;
 
 var SwickyCommunication = function() {
@@ -28,7 +31,7 @@ var SwickyCommunication = function() {
 
     this.selected = function(url, layerId) {
         var fragment = annotator.loadedFragment(layerId);
-        if(fragment) {
+        if(!ignoreActivationEvent && fragment) {
             var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
@@ -40,6 +43,7 @@ var SwickyCommunication = function() {
 </annotator_message>';
             window.status = message;
         }
+        ignoreActivationEvent = false;
     }
 }
 
@@ -89,10 +93,6 @@ var Annotator = function() {
         }
 
         if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
-        if(selection) {
-            flexip.sideMenuActivateLayer(selection);
-            ignoreActivationEvent = false;
-        }
 
         flexip.messageBoxHide();
         this.setFree();

@@ -3,7 +3,6 @@ var pseudo_id = null;
 
 var url = '';
 var selection = null;
-var ignoreActivationEvent = false;
 
 var swicky = new SwickyCommunication();
 var annotator = new Annotator();
@@ -92,7 +91,5 @@ function layerActivated(layerId) {
 }
 
 function selectedLayer(layer) {
-    if(!ignoreActivationEvent)
-        swicky.selected(url, layer.id)
-    ignoreActivationEvent = false;
+    swicky.selected(url, layer.id)
 }

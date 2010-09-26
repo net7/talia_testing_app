@@ -1,5 +1,4 @@
 $(function() { 
-
     $.jthc = function (opts) {
         // Options for this JTHC object
         this.options = $.extend({}, $.jthc.defaults, opts);
@@ -54,6 +53,7 @@ $(function() {
                }
             */
             this.fragments = {};
+            /**/
             this.imageFragments = {};
             this.pageFragments = {};
             this.annotationsNumber = 0;
@@ -67,11 +67,7 @@ $(function() {
 
             for (var i=0; i<this.uris.length; i++) {
                 var uri = this.uris[i];
-                if (!this.isImage(uri)) 
-                    this.askForFragments(uri);
-                else 
-                    this.askForImageFragments(uri);
-
+                this.askForFragments(uri);
             }
             this.askForPageNotes();
             
@@ -163,24 +159,6 @@ $(function() {
             return ($("div[about='"+uri+"']").length && $("div[about='"+uri+"']").hasClass("ImageFragment"))
         },
 
-        askForImageFragments: function(uri) {
-            self = this;
-            self.ajaxmanager.add({
-                url: this.options.baseURL + "image_fragments",
-                data: {uri: uri},
-                dataType: 'json',
-                type: 'POST',
-                success: function(data) {
-                    self.imageFragments[uri] = data
-                    if(typeof(activateImage) != "undefined" && self.options.selectedImage) {
-                        if(self.option.selectedFragment) activateImage(self.options.selectedImage, self.option.selectedFragment);
-                        else activateImage(self.options.selectedImage);
-                    }
-                },
-                error: function(req, status, err) {}
-            });
-        },
-
         // DEBUG/TODO: temporary crappy tooltip.. replace with something nicer
         // TODO: useless from integration with EZTIP?
         /*
@@ -217,7 +195,7 @@ $(function() {
 
             self.ajaxmanager.add({
                 url: this.options.baseURL + "annotated_fragments",
-                data: { uri: uri },
+                data: {uri: uri},
                 dataType: 'json',
                 type: 'POST',
                 success: function(data) { 
@@ -227,12 +205,22 @@ $(function() {
 
                         var n = data.length;
                         for (var i=0; i<n; i++) {
-                            var xp = data[i];
-                            self.fragments[xp] = {'parenturl': uri};
-                            self.log("## Created xpointer section: '"+xp+"' for "+uri);
+                            /**/
+                            if(self.isImage(uri)) {
+                                if(!self.imageFragments[uri]) self.imageFragments[uri] = [];
+                                self.imageFragments[uri][data[i].fragment] = data[i].coordinates;
+                                self.fragments[data[i].fragment] = {
+                                    parenturl: uri,
+                                    myType: 'image'
+                                }
+                            }
+                            else {
+                                var xp = data[i]['coordinates'];
+                                self.fragments[xp] = {'parenturl': uri, myType: 'xpointer'};
+                                self.log("## Created xpointer section: '"+xp+"' for "+uri);
+                            }
                         }
-                        
-                        self.askForXPointers();
+                        self.askForData();
 
                     } else {
                         self.log("## No fragments associated to "+uri);
@@ -272,7 +260,7 @@ $(function() {
                     self.log("## Got "+n+" new items for this page "+hash+" / "+href);
                     self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
 
-                    self.fragments[href] = {};3
+                    self.fragments[href] = {};
                     self.addItemsToXPointer(href, data);
                     self.addNotesForXpointer(href);
                     self.setTipContent();
@@ -293,9 +281,8 @@ $(function() {
             
         }, // askForPageNotes
         
-        
-        // Gets the xpointers associated to the saved fragments
-        askForXPointers : function () {
+
+        askForData : function () {
 
             var self = this;
 
@@ -305,39 +292,51 @@ $(function() {
             }
 
             // Cycle over all URIs, then over all fragments for the given URI
+            /// TODO: change name, not an xpointer for images.
             for (xpointer in self.fragments) {
-
+                self.refToXpointer = xpointer;
                 // DEBUG TODO: Add a "done" field to avoid duplicate requests?
                 // and to display a progress bar or something.
                 // TODO: when we're done, 
 
                 self.log("#### Checking out xpointer " + xpointer);
 
+                // TODO: again: change name, not just xpointers anymore.
                 self.xpointersToLoad++;
+
+                /**/
+                var myParams = {xpointer: xpointer};
+                if(self.fragments[xpointer].myType == 'image')
+                    myParams = {image: self.fragments[xpointer].parenturl};
 
                 $.ajax({
                     url: this.options.baseURL + "annotations",
-                    data: { xpointer: xpointer },
+                    data: myParams,
                     dataType: 'json',
                     type: 'POST',
                     success: function(data, text, xmlhr) {
-
-                        var n = data.items.length,
-                        xpointer = data['annotation-for']['uri'],
-                        hash = data['annotation-for']['hash'];
-                        
+                        var n = data.items.length;
                         if (n == 0) {
                             self.log("## No annotation for an xpointer... "+xpointer+" ?? ");
                             return;
+                        }
+
+                        if(self.fragments[xpointer].myType == 'image') {
+                            xpointer = xpointer;
+                            hash = '';
+                        }
+                        else {
+                            xpointer = data['annotation-for']['uri'],
+                            hash = data['annotation-for']['hash'];
                         }
 
                         self.xpointersLoaded++;
                         
                         self.log("## Got "+n+" new items for xpointer "+hash+" / "+xpointer);
                         self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
-
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
+
                         $('#'+self.options.containerID).show();
                         self.setTipContent();
 
@@ -359,20 +358,20 @@ $(function() {
         
 
         addItemsToXPointer : function (xpointer, data) {
-            var self = this,
-            fragment = self.fragments[xpointer];
+            var self = this, fragment = self.fragments[xpointer];
             
             if (typeof self.fragments[xpointer] == "undefined") {
                 self.log("### ERROR! Section for xpointer not defined??! " + xpointer);
             }
 
             fragment.items = data.items;
-            fragment.hash = data['annotation-for']['hash'];
+            /**/
+            if(fragment.myType != 'image')
+                fragment.hash = data['annotation-for']['hash'];
             
             // TODO DEBUG: do we need types and properties?
             fragment.types = data.types;
             fragment.properties = data.properties;
-            
         },
 
         addNotesForXpointer : function (xpointer) {
@@ -386,33 +385,39 @@ $(function() {
             self.log("## Displaying fragment with "+fragment.items.length+" items");
             
             var items = fragment.items;
-            
+
             // TODO DEBUG: bisogna cercare in types com'e' l'id del type Note, ed usare
             // quello per cercare le note.. non una stringa fissa "Note" ..
             for (var k=0; k<items.length; k++) {
                 if (self.isItemOfType(items[k], "Note")) {
-
-                    var id = items[k]['isAssociatedWith'],
-                    associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[k]),
-                    associatedXpointer = self.getAssociatedXpointer(xpointer, items[k]);
-
-                    if (xpointer == window.location.href) {
-                        self.log("### This is a page note, showing in some other strange way? ");
-    
-                    } else if (!self.isOnThisPage(xpointer, associatedSourceFragment)) {
-                        self.log("@@ Hey, this note is not internal! :( ... using original xpointer!")
-                        associatedXpointer = xpointer;
+                    var id = items[k]['isAssociatedWith'];
+                    /**/
+                    /// TODO: ignoring this for now... what is all this for?
+                    if(!self.isImage(fragment.parenturl)) {
+                        var associatedSourceFragment = self.getAssociatedSourceFragment(xpointer, items[k]);
+                        var associatedXpointer = self.getAssociatedXpointer(xpointer, items[k]);
+                        
+                        if (xpointer == window.location.href) {
+                            self.log("### This is a page note, showing in some other strange way? ");
+                            
+                        } else if(!self.isOnThisPage(xpointer, associatedSourceFragment)) {
+                            self.log("@@ Hey, this note is not internal! :( ... using original xpointer!")
+                            associatedXpointer = xpointer;
+                        }
+                        
+                        fragment.associatedXpointer = associatedXpointer;
+                        
+                        if (xpointer != associatedXpointer) {
+                            self.log("## DIFFERENT ASSOCIATED XPOINTER : " + associatedXpointer + " > "+ xpointer);
+                            associatedXpointer = xpointer;
+                        }
                     }
-
-                    fragment.associatedXpointer = associatedXpointer;
-
-                    if (xpointer != associatedXpointer) {
-                        self.log("## DIFFERENT ASSOCIATED XPOINTER : " + associatedXpointer + " > "+ xpointer);
+                    else {
                         associatedXpointer = xpointer;
                     }
                     
                     if ($.inArray(items[k].uri, self.addedNotesUris) == -1) {
-                        self.addNoteToAnnotationBox(xpointer, items[k].id, associatedXpointer);
+                        self.addNoteToAnnotationBox(xpointer, items[k].id, associatedXpointer, fragment);
                         // TODO: no more reposition of note containers ... 
                         // self.repositionNoteContainer();
                         self.addedNotesUris.push(items[k].uri);
@@ -421,15 +426,19 @@ $(function() {
                         self.log("### Already added this note, skipping it: "+ items[k].label);
                     }
 
-                    if ($.inArray(associatedXpointer, self.addedXpointers) > -1)
-                        self.log("## Xpointer already added????!? "+ associatedXpointer);
-                    else {
-                        self.log("## Adding by xpointer: "+ associatedXpointer);
-                        if (associatedXpointer != window.location.href) 
-                            THCTag.addByXPointer(associatedXpointer);
-                        self.addedXpointers.push(associatedXpointer);
-                        self.bindLiveHandlers(associatedXpointer);
+                    /**/
+                    if(!self.isImage(fragment.parenturl)) {
+                        if ($.inArray(associatedXpointer, self.addedXpointers) > -1)
+                            self.log("## Xpointer already added????!? "+ associatedXpointer);
+                        else {
+                            self.log("## Adding by xpointer: "+ associatedXpointer);
+                            if (associatedXpointer != window.location.href) 
+                                THCTag.addByXPointer(associatedXpointer);
+                            self.addedXpointers.push(associatedXpointer);
+                        }
                     }
+                    self.bindLiveHandlers(associatedXpointer);
+
 
                 } else {
                     // self.log(k+" is not a Note: ", items[k]);
@@ -516,21 +525,26 @@ $(function() {
             return;
         },
 
-        addNoteToAnnotationBox: function (xpointer, id, associatedXpointer) {
-            
-            var self = this, 
+        addNoteToAnnotationBox: function (xpointer, id, associatedXpointer, fragment) {
+            var self = this,
             note = self.getItemFromXI(xpointer, id),
-            hash = self.getHashFromXpointer(associatedXpointer),
-            parentTHCTag = self.getParentTHCTagFromXpointer(associatedXpointer); 
+            hash = self.getHashFromXpointer(associatedXpointer);
+            /**/
+            if(!self.isImage(fragment.parenturl)) {
+                var parentTHCTag = self.getParentTHCTagFromXpointer(associatedXpointer);
 
-            if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
-                parentTHCTag = xpointer;
-                if ($('div [about="'+parentTHCTag+'"]').length == 0)
-                    $('div#contents h3:first').before('<h3 class="toggle page_annotations hidden">Annotations on the entire page</h3><div class="section page_annotations">'+
-                                            '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
-                                            '<div about="'+parentTHCTag+'"></div>'+
-                                            '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');
+                if (typeof(parentTHCTag) == 'undefined' && xpointer == window.location.href) {
+                    parentTHCTag = xpointer;
+                    if ($('div [about="'+parentTHCTag+'"]').length == 0)
+                        $('div#contents h3:first').before('<h3 class="toggle page_annotations hidden">Annotations on the entire page</h3><div class="section page_annotations">'+
+                                                          '<div class="section_header"></div><div class="section_content_container"><div class="section_content">'+
+                                                          '<div about="'+parentTHCTag+'"></div>'+
+                                                          '</div><div class="section_notes"></div></div><div class="section_footer"></div></div>');
 
+                }
+            }
+            else {
+                var parentTHCTag = fragment.parenturl;
             }
             
             self.increaseAnnotationsNumber();
@@ -564,7 +578,6 @@ $(function() {
             var self = this;
 
             $('table.THCStatementTable span').each(function(i, obj) {
-
                 var uri = $(obj).attr('about'),
                 item = self.getItemFromURI(uri);
 
@@ -787,11 +800,9 @@ $(function() {
 
         // Returns the markup for a single statement
         getSingleStatementMarkup : function (xpointer, statementId) {
-
             var self = this,
             statement = self.getItemFromXI(xpointer, statementId),
             ret = "";
-
             self.log("## get single statement markup " + statementId);
 
             if (statement == false)
