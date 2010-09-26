@@ -62,6 +62,7 @@ var Annotator = function() {
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
+        if(image != url) this.resetLoadedFragments();
 
         if(fragments) for(var i = 0; i < fragments.length; i++) {
             layer = fragmentToLayer(fragments[i]);
@@ -72,9 +73,10 @@ var Annotator = function() {
         }
 
         /// This is a global variable.
-        if(selectedFragment)
+        if(selectedFragment) {
             selection = fragmentToLayer(selectedFragment).id;
-
+            ignoreActivationEvent = true;
+        }
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
         if(image != url) {
@@ -86,6 +88,10 @@ var Annotator = function() {
         }
 
         if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
+        if(selection) {
+            flexip.sideMenuActivateLayer(selection);
+            ignoreActivationEvent = false;
+        }
 
         flexip.messageBoxHide();
         this.setFree();
@@ -118,7 +124,7 @@ var Annotator = function() {
     }
 
     this.loadedFragment = function(id) {
-        return this.loadedFragments[id]
+        return this.loadedFragments[id];
     }
 
     this.resetLoadedFragments = function() {

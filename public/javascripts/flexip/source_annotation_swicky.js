@@ -3,6 +3,7 @@ var pseudo_id = null;
 
 var url = '';
 var selection = null;
+var ignoreActivationEvent = false;
 
 var swicky = new SwickyCommunication();
 var annotator = new Annotator();
@@ -24,7 +25,6 @@ function commInterfaceSettingsParseEnd() {
         flexip.messageBoxHide();
     }
     firefoxBugFix();
-    annotator.resetLoadedFragments();
     annotator.setFree();
     swicky.start(url);
 }
@@ -86,7 +86,9 @@ function newLayer(layerData) {
 
 function layerClick(layerId) {}
 function layerActivated(layerId) {
-    flexip.sideMenuGetLayerInfo(layerId, true, 'selectedLayer');
+    if(!ignoreActivationEvent)
+        flexip.sideMenuGetLayerInfo(layerId, true, 'selectedLayer');
+    ignoreActivationEvent = false;
 }
 
 function selectedLayer(layer) {
