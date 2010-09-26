@@ -14,6 +14,16 @@ var SwickyCommunication = function() {
     }
 
     this.annotate = function(url, fragment) {
+        console.warn('\
+<annotator_message action="annotation_request">\
+<fragment>\
+<type>image</type>\
+<context_url>'+window.location+'</context_url>\
+<container_uri>'+url+'</container_uri>\
+<layer>'+fragment+'</layer>\
+</fragment>\
+</annotator_message>');
+
         var message = '\
 <annotator_message action="annotation_request">\
 <fragment>\
@@ -60,7 +70,6 @@ var Annotator = function() {
     
     this.loadFragments = function (image, fragments, selectedFragment) {
         var layers = [];
-        this.loadedFragments = [];
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
@@ -121,6 +130,10 @@ var Annotator = function() {
 
     this.loadedFragment = function(id) {
         return this.loadedFragments[id]
+    }
+
+    this.resetLoadedFragments = function() {
+        this.loadedFragments = [];
     }
 }
 

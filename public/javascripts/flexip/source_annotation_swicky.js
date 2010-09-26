@@ -18,13 +18,13 @@ $(document).ready(function() {
 
 function commInterfaceSettingsParseEnd() {
     var layers = flexip.layers;
-    
     /// This appens if swicky has requested an image not shown and Flexip was (re)loaded.
     if(layers && layers.length > 0) {
         for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
         flexip.messageBoxHide();
     }
     firefoxBugFix();
+    annotator.resetLoadedImages();
     annotator.setFree();
     swicky.start(url);
 }
@@ -54,9 +54,11 @@ function toolBarButtonClick(fCode) {
 
 function annotateLayer(layer) {
     flexip.messageBoxShowMessage('Please wait...');
-    var fragment = layerToFragment(layer);
-
-    annotator.fragmentLoaded(layer.id, fragment);
+    fragment = annotator.loadedFragment(layer.id, fragment);
+    if(!fragment) {
+        var fragment = layerToFragment(layer);
+        annotator.fragmentLoaded(layer.id, fragment);
+    }
     swicky.annotate(url, fragment);
 }
 
