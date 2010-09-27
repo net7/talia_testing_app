@@ -13,6 +13,7 @@ $(function() {
     }; // $.fn.jthc()
 
     $.jthc.defaults = {
+        /***/
         debug: false,
         // URL to do Ajax query to
         baseURL: "/swicky_notebooks/context/",
@@ -216,7 +217,6 @@ $(function() {
                             } else {
                              
                                 self.xpointersToLoad++;
-                                /**/
                                 if (self.isImage(uri)) {
                                     if(!self.imageFragments[uri]) self.imageFragments[uri] = [];
                                     self.imageFragments[uri][data[i].fragment] = data[i].coordinates;
@@ -230,7 +230,6 @@ $(function() {
                                 }
                             }
                         } // for 
-                        
                         self.askForData();
 
                     } else {
@@ -294,7 +293,6 @@ $(function() {
         askForData : function () {
 
             var self = this;
-
             if (self.fragments == {}) {
                 self.log("## No fragments to load xpointers for ..");
                 return;
@@ -303,16 +301,17 @@ $(function() {
             // Cycle over all URIs, then over all fragments for the given URI
             /// TODO: change name, not an xpointer for images.
             for (xpointer in self.fragments) {
-                self.refToXpointer = xpointer;
 
+                console.warn(xpointer);
+                self.refToXpointer = xpointer;
                 if (typeof(self.loadedXpointers[xpointer]) != 'undefined') {
                     self.log("## Already checked out xpointer "+xpointer+" !!! .. skipping.");
-                    return false;
+                    continue;
                 }
+
                 self.loadedXpointers[xpointer] = true;
                 self.log("#### Checking out xpointer " + xpointer+" ("+self.xpointersToLoad+"/"+self.xpointersLoaded+")");
 
-                /**/
                 var myParams = {xpointer: xpointer};
                 if(self.fragments[xpointer].myType == 'image')
                     myParams = {image: self.fragments[xpointer].parenturl};

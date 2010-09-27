@@ -14,7 +14,7 @@
         var jthc, myEztip;
         $(function() {
             myEztip = new $.eztip({selector: 'table.THCStatementTable span', 'forcedHideDelay': 1000000, sticky: true, showDelay: 2000});
-            jthc = new $.jthc({selectedImage: <%= "'#{@requested_file}'" %>, selectedFragment: <%= "'#{@requested_fragment}'" %>, debug: false});
+            jthc = new $.jthc({selectedImage: <%= "'#{@requested_file}'" %>, selectedFragment: <%= "'#{@requested_fragment}'" %>});
         });
     </script>
 <% end %>
