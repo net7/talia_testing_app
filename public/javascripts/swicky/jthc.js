@@ -146,7 +146,7 @@ $(function() {
         toggleShowAnnotationButton : function () {
             var o = $("span#load_annotations");
             /**/
-            if(!$.isEmptyObject(this.imageFragments) && $('div.section.images').prev().hasClass("closed"))
+            if (!$.isEmptyObject(this.imageFragments) && $('div.section.images').prev().hasClass("closed"))
                 $('div.section.images').prev().click();
 
             if (o.hasClass('hide')) {
@@ -426,7 +426,6 @@ $(function() {
                         // TODO: no more reposition of note containers ... 
                         // self.repositionNoteContainer();
                         self.addedNotesUris.push(items[k].uri);
-
                     } else {
                         self.log("### Already added this note, skipping it: "+ items[k].label);
                     }
@@ -605,9 +604,18 @@ $(function() {
             selectId = hash,
             deselectId = hash+"-desel";
 
-            $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
+            $("a#" + selectId).live("click", function() {
                 var xp = $(this).attr('about');
-                self.log("Clicked on "+selectId+" !! "+xp)
+                self.log("Clicked on RDF icon "+selectId+" !! "+xp)
+                self.showNote(xp);
+                if (xp != window.location.href)
+                    THCTag.showByXPointer(xp);
+                return false;
+            });
+
+            $("div.THCNoteItem").live("click", function() {
+                var xp = $(this).attr('about');
+                self.log("Clicked on THCNoteItem "+selectId+" !! "+xp)
 
                 /**/            
                 if ((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
