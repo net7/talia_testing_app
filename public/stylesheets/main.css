@@ -513,6 +513,145 @@ div#tl {
 	margin-top: 30px;
 }
 
+/* New sections layout */
+div.section {
+  position: relative;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+div.section div.section_header.gallery {
+  background: #c7beb4;
+}
+div.section div.section_header.gallery li {
+  /* display: inline; */
+}
+
+div.section div.section_content_container div.section_notes {
+  /* display: none; */
+}
+div.section.annotated div.section_content_container div {
+  /*
+  position: relative;
+  float: left;
+  */
+}
+div.section.annotated div.section_content {
+  /*
+  border: 0px;
+  width: 100%;
+  */
+}
+div.section.annotated div.section_content_container {
+  /* padding-right: 300px; */
+}
+div.section.annotated div.section_content_container div.section_notes {
+  margin-right: -300px;
+  width: 300px;
+  background: #65584c;
+  display: block;
+}
+div.section.annotated div.section_content_container div.section_notes div.THCNoteItem {
+ width: 280px;	
+}
+div.section.annotated div.section_footer {
+  /* clear: both; */
+}
+
+
+
+.section.images {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	clear: both;
+	margin-bottom: 20px;
+}
+/* GALLERY */
+.section.images .section_gallery {
+	width: 100%;
+	margin: 0; padding: 0;
+	clear: both;
+	overflow: hidden;
+}
+	.section.images .section.images .section_gallery ul {
+		list-style: none;
+		margin: 0; padding: 0;
+		clear: both;
+		overflow: hidden;
+	}
+	
+	.section.images .section_gallery ul li{
+		float: left;
+		margin: 0; padding: 0;
+		background: none;
+	}
+	
+	.section.images .section_gallery ul li a {
+		margin: 0; padding: 0;
+		background: none;
+	}
+	
+	.section.images .section_gallery ul li a div {
+		margin: 0; padding: 0;
+		background: none;
+	}
+	
+	.section.images .section_gallery ul li a div img{
+		width: auto;
+		height : 80px;
+		padding: 3px;
+		background-color: #FFF;
+		border: 1px solid #c2c2c2;
+		margin: 0 10px 0 0;
+	}
+	.section.images .section_gallery ul li a span.translation_missing{
+		display: none;
+	}
+	
+	
+/* FLASH */
+.section.images .section_content {
+	width: 60%;
+	/* height: 300px !important; */
+	float: left;
+	padding: 3px;
+	background-color: #FFF;
+	border: 1px solid #c2c2c2 !important;
+	margin: 0 20px 0 0;
+}
+	.section.images .section_content #flexip-loaded {
+		height: 300px !important;
+		width: 100%;
+		/*
+		width: 600px !important;
+		*/
+	}
+	
+/* NOTE */
+.section.images .section_notes {
+	width: 30%;
+	float: left;
+}
+
+
+
+
+div.images .section_content {
+/*
+	padding: 3px;
+	background-color: #FFF;
+	border: 1px solid #c2c2c2 !important;
+	height: 300px !important;
+	width: 600px !important;
+*/
+}
+
+
+
+
+
+
 /* ***************** ************** ************** */
 /* ***************** Pagination - barbz demo ************** */
 /* ***************** ************** ************** */

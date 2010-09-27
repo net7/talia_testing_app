@@ -3,9 +3,16 @@ div#THCAnnotations {
 	position: fixed;
 	top:10px;
 	width: 400px;
-	background-color: rgba(0,0,0,0.88);
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	/* background-color: rgba(0,0,0,0.88); */
+	background-color: #5f5348;
+
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+}
+
+div#THCAnnotations.collapsed {
+	background-color: #a19284;
 }
 
 div#THCAnnotations.collapsed .THCNoteItem {
@@ -34,6 +41,7 @@ div#THCAnnotations h2 {
 .THCNoteItem {
 	border-bottom: 1px solid #515151;
 	padding: 10px;
+	background-color: #a19284;
 }
 
 .THCNoteItem:last-child {
@@ -41,7 +49,7 @@ div#THCAnnotations h2 {
 }
 
 .THCNoteItem.expanded {
-	background-color: rgba(0,0,0,0.91);
+	background-color: #5d5247;
 }
 
 .THCNoteItem:last-child.expanded {
