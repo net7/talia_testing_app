@@ -1,8 +1,8 @@
 class SwickyNotebooksController < ApplicationController
   
-  before_filter :get_user, :except => [:annotated_fragments, :image_fragments, :annotations]
-  before_filter :basic_auth, :except => [:annotated_fragments, :image_fragments, :annotations]
-  before_filter :get_notebook, :except => [:index, :create, :annotated_fragments, :image_fragments, :annotations]
+  before_filter :get_user, :except => [:annotated_fragments, :annotations]
+  before_filter :basic_auth, :except => [:annotated_fragments, :annotations]
+  before_filter :get_notebook, :except => [:index, :create, :annotated_fragments, :annotations]
   skip_before_filter :verify_authenticity_token
 
   rescue_from NativeException, :with => :rescue_native_error
@@ -56,22 +56,13 @@ class SwickyNotebooksController < ApplicationController
     render :text => coordinates.to_json
   end
 
-  #/**/
-  def image_fragments
-    fragments = Swicky::Notebook.annotations_for_file(params[:uri]) unless params[:uri].nil?
-    respond_to do |format|
-      format.xml  {render :text => fragments.to_json}
-      format.rdf  {render :text => fragments.to_json}
-      format.html {render :text => fragments.to_json}
-      format.json {render :text => fragments.to_json}
-    end
-  end
-
   def annotations
     notes_triples = if(params[:uri])
       Swicky::Notebook.annotations_for_url(params[:uri])
     elsif(params[:xpointer])
       Swicky::Notebook.annotations_for_xpointer(params[:xpointer])
+    elsif(params[:image])
+      Swicky::Notebook.annotations_for_image(params[:image])
     else
       raise(ActiveRecord::RecordNotFound, "No parameter given for annotations")
     end
@@ -119,6 +110,4 @@ class SwickyNotebooksController < ApplicationController
       @auth_user = User.authenticate(user_email, pass) if(@user.name == user)
     end
   end
-  
-  
 end

@@ -1,8 +1,9 @@
+var ignoreActivationEvent = false;
 $.base64.is_unicode = true;
 
 var SwickyCommunication = function() {
     this.start = function(url) {
-        window.status = '\
+        var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
@@ -10,35 +11,43 @@ var SwickyCommunication = function() {
 <container_uri>'+url+'</container_uri>\
 </fragment>\
 </annotator_message>';
+        window.status = message;
     }
 
-    this.annotate = function(url, layer) {
-        window.status = '\
+    this.annotate = function(url, fragment) {
+        var message = '\
 <annotator_message action="annotation_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+layerToFragment(layer)+'</layer>\
+<layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
+        window.status = message;
     }
 
     this.selected = function(url, layerId) {
-        window.status = '\
+        var fragment = annotator.loadedFragment(layerId);
+        if(!ignoreActivationEvent && fragment) {
+            var message = '\
 <annotator_message action="selection_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
 <container_uri>'+url+'</container_uri>\
-<layer>'+annotator.loadedFragment(layerId)+'</layer>\
+<layer>'+fragment+'</layer>\
 </fragment>\
 </annotator_message>';
+            window.status = message;
+        }
+        ignoreActivationEvent = false;
     }
 }
 
 var Annotator = function() {
     this.loadedFragments = [];
+    this.fragmentsByLayerId = {};
 
     /// Used to ignore requests when doing stuff.
     this.busy = false;
@@ -53,11 +62,11 @@ var Annotator = function() {
     
     this.loadFragments = function (image, fragments, selectedFragment) {
         var layers = [];
-        this.loadedFragments = [];
         /// Accept calls only if not busy.
         if(this.busy) return false;
         this.setBusy();
 
+        if(image != url) annotator.resetLoadedFragments();
         if(fragments) for(var i = 0; i < fragments.length; i++) {
             layer = fragmentToLayer(fragments[i]);
             if(!this.loadedFragment(layer.id)) {
@@ -67,8 +76,10 @@ var Annotator = function() {
         }
 
         /// This is a global variable.
-        if(selectedFragment)
+        if(selectedFragment) {
             selection = fragmentToLayer(selectedFragment).id;
+            ignoreActivationEvent = true;
+        }
 
         /// If the image is different, or flexip is not loaded yet,
         /// open/change image and go from there.
@@ -80,11 +91,7 @@ var Annotator = function() {
             return;
         }
 
-        if(layers) for(var i = 0; i < layers.length; i++)  {
-            layer = layers[i];
-            layer.itemID = layer.id;
-            flexip.commAddChildLayerWithShapes(layer);
-        }
+        if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
 
         flexip.messageBoxHide();
         this.setFree();
@@ -97,7 +104,7 @@ var Annotator = function() {
     this.lock = function(message) {
         if(!flexip) return false;
         this.setBusy();
-        flexip.MessageBoxShowMessage(message);
+        flexip.MessageBoxShow(message);
     }
 
     this.unlock = function(message) {
@@ -117,7 +124,11 @@ var Annotator = function() {
     }
 
     this.loadedFragment = function(id) {
-        return this.loadedFragments[id]
+        return this.loadedFragments[id];
+    }
+
+    this.resetLoadedFragments = function() {
+        this.loadedFragments = [];
     }
 }
 
@@ -132,7 +143,13 @@ function layerToFragment(layer) {
 
 function newLayerObject(title) {
     var itemId = (new Date()).getTime();
-    return {itemID: itemId, id: itemId, parentLayerID: "#root#", visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+    return {id: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
+}
+
+function addLayerJS(layer) {
+    layer.itemID = layer.id;
+    layer.parentLayerID = "#root#";
+    flexip.commAddChildLayerWithShapes(layer);
 }
 
 function confirmMessageBox(title, text, callback) {
