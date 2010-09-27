@@ -13,7 +13,6 @@ $(function() {
     }; // $.fn.jthc()
 
     $.jthc.defaults = {
-        /***/
         debug: false,
         // URL to do Ajax query to
         baseURL: "/swicky_notebooks/context/",
@@ -301,9 +300,6 @@ $(function() {
             // Cycle over all URIs, then over all fragments for the given URI
             /// TODO: change name, not an xpointer for images.
             for (xpointer in self.fragments) {
-
-                console.warn(xpointer);
-                self.refToXpointer = xpointer;
                 if (typeof(self.loadedXpointers[xpointer]) != 'undefined') {
                     self.log("## Already checked out xpointer "+xpointer+" !!! .. skipping.");
                     continue;
@@ -321,24 +317,24 @@ $(function() {
                     data: myParams,
                     dataType: 'json',
                     type: 'POST',
+                    context: {myXpointer: xpointer},
                     success: function(data, text, xmlhr) {
                         var n = data.items.length;
 
                         self.xpointersLoaded++;
 
                         if (n == 0) {
-                            self.log("## No annotation for an xpointer... "+xpointer+" ?? ");
+                            self.log("## No annotation for an xpointer... "+this.myXpointer+" ?? ");
                             return;
                         }
-
-                        if (self.fragments[xpointer].myType == 'image') {
-                            xpointer = xpointer;
+                        if (self.fragments[this.myXpointer].myType == 'image') {
+                            xpointer = this.myXpointer
                             hash = '';
                         } else {
                             xpointer = data['annotation-for']['uri'],
                             hash = data['annotation-for']['hash'];
                         }
-                        
+
                         self.log("## Got "+n+" new items for xpointer "+hash+" / "+xpointer);
                         self.log("## ASK DATA Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
                         self.addItemsToXPointer(xpointer, data);
