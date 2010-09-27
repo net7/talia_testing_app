@@ -5,6 +5,10 @@ var config_url = "/image/annotations/ajax/loadConfiguration/";
 var annotator = new Annotator();
 
 $(document).ready(function() {
+    if(jthc.options.selectedImage) {
+        if(jthc.options.selectedFragment) activateImageByFragment(jthc.options.selectedFragment);
+        else  activateImage(jthc.options.selectedImage);
+    }
     $(".flexip-toggle").click(function(e) {
         url = $(this).attr("href");
         loadFlexip(url);
@@ -17,8 +21,7 @@ function activateImage(image, fragment) {
         $('div.section.images').prev().click();
 
     url = image
-    selection = fragmentToLayer(fragment).id;
-
+    if(fragment) selection = fragmentToLayer(fragment).id;
     loadFlexip(image);
 }
 
@@ -40,7 +43,6 @@ function commInterfaceSettingsParseEnd() {
     if(jthc && jthc.imageFragments[url]) {
         fragments = [];
         for(fragment in jthc.imageFragments[url])
-            console.log(jthc.imageFragments);
             if(coordinates = jthc.imageFragments[url][fragment])
                 fragments.push(coordinates);
 
