@@ -10,7 +10,8 @@ var config = {
         comm: 'modules/comm/sicar/communication.swf',
         background: null,
         sideMenu: 'modules/SideMenuSicar.swf',
-        skin: 'skins/default/skin.swf'
+        //skin: 'skins/default/skin.swf'
+        skin: 'skins/talia/skin.swf'
     }
 };
 
