@@ -251,13 +251,11 @@ $(function() {
 
                 // Tooltip inactive and mouseout? Stop everything!
                 } else {
-                    if (!self.options.sticky) {
-                        clearTimeout($(el).data('showTimer'));
-                        clearTimeout($(el).data('hideTimer'));
-                        $(el).data('showTimer', null);
-                        $(el).data('showTimer', null);
-                        $('.eztipContainer').remove();
-                    }
+                    clearTimeout($(el).data('showTimer'));
+                    clearTimeout($(el).data('hideTimer'));
+                    $(el).data('showTimer', null);
+                    $(el).data('showTimer', null);
+                    $('.eztipContainer').remove();
                 }
 
             }); // MouseOUT
