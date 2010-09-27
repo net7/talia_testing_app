@@ -171,3 +171,13 @@ function firefoxBugFix() {
   var img = new Image();
   img.src = '/images/rails.png';
 }
+
+function jumpToAnchor(anchor) {
+    if(anchor) {
+        var temp = window.location.toString();
+        if(temp.indexOf('#') != -1) {
+            temp = substring(0, temp.indexOf('#'));
+        }
+        window.location = temp+anchor
+    }
+}

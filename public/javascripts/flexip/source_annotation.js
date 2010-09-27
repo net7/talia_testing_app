@@ -20,13 +20,20 @@ function activateImage(image, fragment) {
     if($('div.section.images').prev().hasClass("closed"))
         $('div.section.images').prev().click();
 
-    url = image
+
     if(fragment) selection = fragmentToLayer(fragment).id;
-    loadFlexip(image);
+
+    if(url == image) {
+        flexip.sideMenuActivateLayer(selection)
+        jumpToAnchor("flexip-area");
+    }
+    else {
+        url = image
+        loadFlexip(image);
+    }
 }
 
 function activateImageByFragment(fragment) {
-    
     if(jthc && !$.isEmptyObject(jthc.imageFragments)) {
         for(url in jthc.imageFragments)
             for(urlFragment in jthc.imageFragments[url])
@@ -39,6 +46,13 @@ function activateImageByFragment(fragment) {
     return false;
 }
 
+
+
+function allModulesLoaded() {
+    this.flexipRef.imageLoadSource(config.image);
+}
+
+
 function commInterfaceSettingsParseEnd() {
     if(jthc && jthc.imageFragments[url]) {
         fragments = [];
@@ -50,10 +64,12 @@ function commInterfaceSettingsParseEnd() {
         annotator.loadFragments(url, fragments);
     }
     this.flexipRef.messageBoxHide();
+    jumpToAnchor("#flexip-area");
 }
 
 function layerAdded(layerId) {
     if(selection && selection == layerId) flexip.sideMenuActivateLayer(layerId);
+    selection = null;
 }
 
 function layerActivated(layerId) {
@@ -61,5 +77,4 @@ function layerActivated(layerId) {
     for(fragment in jthc.imageFragments[url]) {
         jthc.showNote(fragment);
     }
-
 }
