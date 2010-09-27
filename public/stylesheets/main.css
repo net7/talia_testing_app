@@ -528,7 +528,7 @@ div.section div.section_header.gallery li {
 }
 
 div.section div.section_content_container div.section_notes {
-  /* display: none; */
+   display: none; 
 }
 div.section.annotated div.section_content_container div {
   /*
