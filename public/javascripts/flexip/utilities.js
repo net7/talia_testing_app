@@ -149,7 +149,8 @@ function newLayerObject(title) {
 function addLayerJS(layer) {
     layer.itemID = layer.id;
     layer.parentLayerID = "#root#";
-    flexip.commAddChildLayerWithShapes(layer);
+//    flexip.commAddChildLayerWithShapes(layer);
+    flexip.sideMenuAddChildLayer(layer);
 }
 
 function confirmMessageBox(title, text, callback) {
