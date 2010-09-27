@@ -83,7 +83,7 @@ class SourcesController < ApplicationController
     case request.format
     when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
     when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
-    else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri]
+    else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri], :file => params[:file]
     end
   end
 
@@ -97,6 +97,7 @@ class SourcesController < ApplicationController
   # rendering the source.
   def dispatch_html
     fill_requested_file_fragment_and_coordinates(params[:fragment]) if (params[:fragment])
+    fill_file(params[:file]) if (params[:file])
     # If we come here, it means that we want HTML, no matter what :format says
     request.format = 'html'
     response.content_type = Mime::HTML
@@ -198,7 +199,7 @@ class SourcesController < ApplicationController
       end
     elsif TaliaFile.exists?(params[:dispatch_uri])
       @source = TaliaFile.find(params[:dispatch_uri]).owner
-      redirect_to @source.uri.to_s and return false
+      redirect_to @source.uri.to_s + '?file=' + params[:dispatch_uri] and return false
     else
       @source = TaliaCore::Source.find params[:dispatch_uri], :prefetch_relations => true
     end
@@ -227,7 +228,10 @@ class SourcesController < ApplicationController
       @requested_fragment = fragment
       @requested_coordinates = coordinates
     end
+  end
 
+  def fill_file(file)
+    @requested_file = N::LOCAL + file
   end
   # Hack around routing limitation: We use the @ instead of the dot as a delimiter
   def setup_format
