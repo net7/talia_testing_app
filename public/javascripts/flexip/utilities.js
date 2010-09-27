@@ -176,7 +176,7 @@ function jumpToAnchor(anchor) {
     if(anchor) {
         var temp = window.location.toString();
         if(temp.indexOf('#') != -1) {
-            temp = substring(0, temp.indexOf('#'));
+            temp = temp.substring(0, temp.indexOf('#'));
         }
         window.location = temp+anchor
     }

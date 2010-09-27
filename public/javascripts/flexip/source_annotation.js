@@ -20,16 +20,15 @@ function activateImage(image, fragment) {
     if($('div.section.images').prev().hasClass("closed"))
         $('div.section.images').prev().click();
 
-
     if(fragment) selection = fragmentToLayer(fragment).id;
 
-    if(url == image) {
-        flexip.sideMenuActivateLayer(selection)
-        jumpToAnchor("flexip-area");
-    }
-    else {
+    if(flexip == null || url != image) {
         url = image
         loadFlexip(image);
+    }
+    else {
+        flexip.sideMenuActivateLayer(selection)
+        jumpToAnchor("flexip-area");
     }
 }
 
