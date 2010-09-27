@@ -128,9 +128,6 @@ $(function() {
                 return false;
             });
             
-            $('.THCStatementSubject, .THCStatementObject')
-            
-            
             $('.THCHighlightButton').live('click', function() {
                 var xpointer = $(this).attr('about');
                 
@@ -611,15 +608,20 @@ $(function() {
             $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
+
                 /**/            
-                if((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
-                    if ($(this).hasClass('collapsed')) 
+                if ((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
+
+                    if ($(this).hasClass('collapsed')) {
                         if (!$("span#load_annotations").hasClass('hide'))
                             self.toggleShowAnnotationButton();
-                    
-                    self.showNote(xp);
-                    if (xp != window.location.href)
-                        THCTag.showByXPointer(xp);
+                        self.showNote(xp);
+                        if (xp != window.location.href)
+                            THCTag.showByXPointer(xp);
+                    } else {
+                        THCTagCore.Annotate.deselectFragment(); 
+                        self.hideNote(xp);
+                    }
                 }
                 return false;
             });
