@@ -85,6 +85,8 @@ class BoxViewController < ApplicationController
       html += render_to_string :transcription
     elsif N::DEMO.Manuscript.in? types
       html += render_to_string :manuscript
+    elsif N::DEMO.Event.in? types
+      html += render_to_string :event
     else
       html += render_to_string :source
     end

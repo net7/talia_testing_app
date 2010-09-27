@@ -1,0 +1,72 @@
+<div class='widget'>
+
+  <%= render :partial => 'images' %>
+
+  <%= render :partial => 'description' %>
+
+  <div class='widgetHeader metadata'>
+    <h3 class='widgetHeaderTitle'>Relations</h3>
+    <div class='widgetHeaderTools'>
+      <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    </div>
+  </div>
+  <div class='widgetContent expanded metadata'>
+
+    <% source_label = title_for(@source) %>
+
+    <% unless (beginning_date = @source[N::DEMO.beginning_date].first).nil? or
+        (finished_in = @source[N::DEMO.finished_in].first).nil?
+    %>
+      <p>
+        The <%=  source_label %> began in <%= beginning_date %> and finished in <%= finished_in %>.
+      </p>
+    <% end %>
+
+
+    <% unless (preceding_empire = @source.inverse[N::DEMO.following_empire].first).nil? %>
+      <p>
+        Before the <%= source_label %> there was the
+        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(preceding_empire.to_uri.to_s) %>&type=source"><%= title_for(preceding_empire) %></a>.
+      </p>
+    <% end %>
+
+    <% unless (following_empire = @source[N::DEMO.following_empire].first).nil? %>
+      <p>
+        After the <%= source_label %> it came the
+        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(following_empire.to_uri.to_s) %>&type=source"><%= title_for(following_empire) %></a>.
+      </p>
+    <% end %>
+
+    <% unless (capital = @source[N::DEMO.capital].first).nil? %>
+      <p>
+        Its capital was the city of
+        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(capital.to_uri.to_s) %>&type=source"><%= title_for(capital) %></a>
+      </p>
+    <% end %>
+
+
+    <% unless (period = @source.inverse[N::DEMO.period]).empty? %>
+      <p>
+        <% i = 1 %>
+        <% period.each do |c| %>
+          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
+            <%= title_for(c) %></a><% if i < period.count %>, <%end%><% i = i + 1 %>
+          <% end %> belong<% if period.count == 1 %>s<%end%> to the <%= source_label %>
+      </p>
+    <% end %>
+
+    <% unless (partecipant = @source[N::DEMO.partecipant]).empty? %>
+      <p>
+        <% i = 1 %>
+        <% partecipant.each do |c| %>
+          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
+            <%= title_for(c) %></a><% if i < partecipant.count %>, <%end%><% i = i + 1 %>
+          <% end %> took part in the <%= source_label %>
+      </p>
+    <% end %>
+
+
+    <%= render :partial => 'more_info' %>
+  </div>
+
+</div>
