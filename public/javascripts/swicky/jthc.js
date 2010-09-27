@@ -57,6 +57,7 @@ $(function() {
             this.imageFragments = {};
             this.pageFragments = {};
             this.annotationsNumber = 0;
+            this.loadedXpointers = {};
             this.xpointersToLoad = 0;
             this.xpointersLoaded = 0;
             this.addedNotesUris = [];
@@ -126,9 +127,6 @@ $(function() {
                 }
                 return false;
             });
-            
-            $('.THCStatementSubject, .THCStatementObject')
-            
             
             $('.THCHighlightButton').live('click', function() {
                 var xpointer = $(this).attr('about');
@@ -208,25 +206,31 @@ $(function() {
                 success: function(data) { 
                     if (data) {
                         // TODO: sanity checks on length? 
-                        self.log("## Got "+data.length+" new fragments for: "+uri);
+                        self.log("## ASK FOR FR Got "+data.length+" new fragments for: "+uri);
 
                         var n = data.length;
                         for (var i=0; i<n; i++) {
-                            /**/
-                            if(self.isImage(uri)) {
-                                if(!self.imageFragments[uri]) self.imageFragments[uri] = [];
-                                self.imageFragments[uri][data[i].fragment] = data[i].coordinates;
-                                self.fragments[data[i].fragment] = {
-                                    parenturl: uri,
-                                    myType: 'image'
+                            var xp = data[i]['coordinates'];
+                            if (typeof(self.fragments[xp]) != 'undefined') {
+                                self.log("@@ Already asked notes for this xpointer? Skipping " + xp);
+                            } else {
+                             
+                                self.xpointersToLoad++;
+                                /**/
+                                if (self.isImage(uri)) {
+                                    if(!self.imageFragments[uri]) self.imageFragments[uri] = [];
+                                    self.imageFragments[uri][data[i].fragment] = data[i].coordinates;
+                                    self.fragments[data[i].fragment] = {
+                                        parenturl: uri,
+                                        myType: 'image'
+                                    }
+                                } else {
+                                    self.fragments[xp] = {'parenturl': uri, myType: 'xpointer'};
+                                    self.log("## Created xpointer section: '"+xp+"' for "+uri+" (ToLoad: "+self.xpointersToLoad+"/"+self.xpointersLoaded+")");
                                 }
                             }
-                            else {
-                                var xp = data[i]['coordinates'];
-                                self.fragments[xp] = {'parenturl': uri, myType: 'xpointer'};
-                                self.log("## Created xpointer section: '"+xp+"' for "+uri);
-                            }
-                        }
+                        } // for 
+                        
                         self.askForData();
 
                     } else {
@@ -242,7 +246,7 @@ $(function() {
 
         askForPageNotes : function () {
 
-            // self.pageFragments.push(document.location.href);
+            var self = this;
             var href = document.location.href;
             self.xpointersToLoad++;
 
@@ -258,14 +262,14 @@ $(function() {
                     hash = data['annotation-for']['hash'];
 
                     self.xpointersLoaded++;
-                    
+                
                     if (n == 0) {
                         self.log("## No annotation for the page "+href+" ?? ");
                         return;
                     }
                     
                     self.log("## Got "+n+" new items for this page "+hash+" / "+href);
-                    self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
+                    self.log("## ASK PN Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
 
                     self.fragments[href] = {};
                     self.addItemsToXPointer(href, data);
@@ -274,8 +278,6 @@ $(function() {
                     // $('#'+self.options.containerID).show();
 
                     if (self.xpointersToLoad == self.xpointersLoaded) {
-                        // TODO: no more containers !
-                        // $('#'+self.options.containerID).removeClass('loading');
                         $('#annotations_dialog').removeClass('loading');
                     }
 
@@ -302,14 +304,13 @@ $(function() {
             /// TODO: change name, not an xpointer for images.
             for (xpointer in self.fragments) {
                 self.refToXpointer = xpointer;
-                // DEBUG TODO: Add a "done" field to avoid duplicate requests?
-                // and to display a progress bar or something.
-                // TODO: when we're done, 
 
-                self.log("#### Checking out xpointer " + xpointer);
-
-                // TODO: again: change name, not just xpointers anymore.
-                self.xpointersToLoad++;
+                if (typeof(self.loadedXpointers[xpointer]) != 'undefined') {
+                    self.log("## Already checked out xpointer "+xpointer+" !!! .. skipping.");
+                    return false;
+                }
+                self.loadedXpointers[xpointer] = true;
+                self.log("#### Checking out xpointer " + xpointer+" ("+self.xpointersToLoad+"/"+self.xpointersLoaded+")");
 
                 /**/
                 var myParams = {xpointer: xpointer};
@@ -323,33 +324,30 @@ $(function() {
                     type: 'POST',
                     success: function(data, text, xmlhr) {
                         var n = data.items.length;
+
+                        self.xpointersLoaded++;
+
                         if (n == 0) {
                             self.log("## No annotation for an xpointer... "+xpointer+" ?? ");
                             return;
                         }
 
-                        if(self.fragments[xpointer].myType == 'image') {
+                        if (self.fragments[xpointer].myType == 'image') {
                             xpointer = xpointer;
                             hash = '';
-                        }
-                        else {
+                        } else {
                             xpointer = data['annotation-for']['uri'],
                             hash = data['annotation-for']['hash'];
                         }
-
-                        self.xpointersLoaded++;
                         
                         self.log("## Got "+n+" new items for xpointer "+hash+" / "+xpointer);
-                        self.log("## Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
+                        self.log("## ASK DATA Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
                         self.addItemsToXPointer(xpointer, data);
                         self.addNotesForXpointer(xpointer);
 
-                        $('#'+self.options.containerID).show();
                         self.setTipContent();
 
                         if (self.xpointersToLoad == self.xpointersLoaded) {
-                            // TODO no more containers!
-                            // $('#'+self.options.containerID).removeClass('loading');
                             $('#annotations_dialog').removeClass('loading');
                         }
 
@@ -361,7 +359,7 @@ $(function() {
                 }); // $.ajax
             } // for uri
             
-        }, // askForXpointers()
+        }, // askForData()
         
 
         addItemsToXPointer : function (xpointer, data) {
@@ -610,15 +608,20 @@ $(function() {
             $("a#" + selectId + ", div.THCNoteItem").live("click", function() {
                 var xp = $(this).attr('about');
                 self.log("Clicked on "+selectId+" !! "+xp)
+
                 /**/            
-                if((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
-                    if ($(this).hasClass('collapsed')) 
+                if ((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
+
+                    if ($(this).hasClass('collapsed')) {
                         if (!$("span#load_annotations").hasClass('hide'))
                             self.toggleShowAnnotationButton();
-                    
-                    self.showNote(xp);
-                    if (xp != window.location.href)
-                        THCTag.showByXPointer(xp);
+                        self.showNote(xp);
+                        if (xp != window.location.href)
+                            THCTag.showByXPointer(xp);
+                    } else {
+                        THCTagCore.Annotate.deselectFragment(); 
+                        self.hideNote(xp);
+                    }
                 }
                 return false;
             });
