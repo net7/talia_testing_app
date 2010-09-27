@@ -63,7 +63,7 @@ function commInterfaceSettingsParseEnd() {
         annotator.loadFragments(url, fragments);
     }
     this.flexipRef.messageBoxHide();
-    jumpToAnchor("#flexip-area");
+    jumpToAnchor("flexip-area");
 }
 
 function layerAdded(layerId) {
