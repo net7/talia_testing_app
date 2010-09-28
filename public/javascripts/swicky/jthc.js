@@ -863,14 +863,19 @@ $(function() {
         },
         
         
-        showNote : function (xpointer) {
-            var self = this,
-            hash = self.getHashFromXpointer(xpointer),
-            noteDivId = hash+"-note";
-
-            self.log("## Show note "+xpointer);
-            self.hideAllNotes();
-            $('div#' + noteDivId).removeClass('collapsed').addClass('expanded');
+        showNote : function (xpointer, byFragment) {
+            var self = this;
+            if(byFragment) {
+                hash = self.getHashFromXpointer(xpointer);
+                noteDivId = hash+"-note";
+                self.log("## Show note "+xpointer);
+                self.hideAllNotes();
+                $('div#' + noteDivId).removeClass('collapsed').addClass('expanded');
+            }
+            else {
+                self.hideAllNotes();
+                $('div[about="'+xpointer+'"]').removeClass('collapsed').addClass('expanded');
+            }
             return;
         },
         
