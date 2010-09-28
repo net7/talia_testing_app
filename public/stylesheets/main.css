@@ -575,10 +575,13 @@ div.section.annotated div.section_footer {
 	margin-bottom: 20px;
 }
 
+/*
+Sezione Immagini
+*/
 /* GALLERY */
 .section.images .section_gallery {
 	width: 100%;
-	margin: 0; padding: 0;
+	margin: 0 0 10px 0; padding: 0;
 	clear: both;
 	overflow: hidden;
 }
@@ -623,28 +626,50 @@ div.section.annotated div.section_footer {
 	display: none;
 }
 
-.section.images .section_content.flexip-loaded {
+.section.images .section_content.flexip-loaded { /* div che wrappa l'object, quando è caricato il flash */
 	display: block;
-	width: 60%;
-	float: left;
+	/* width: 100%; */
 	padding: 3px;
 	background-color: #FFF;
 	border: 1px solid #c2c2c2 !important;
-	margin: 0 20px 0 0;
+	margin: 0 15px 15px 0;
 }
 
-.section.images .section_content #flexip-loaded {
-	height: 300px !important;
+.section.images .section_content #flexip-loaded { /* Object */
+	height: 500px !important;
 	width: 100%;
 }
 	
 /* NOTE */
 .section.images .section_notes {
+	
+}
+
+/*
+Sezione Testo
+*/
+
+.section.text .section_content {
+	width: 100%;
+	float: left;
+	margin-bottom: 15px;
+}
+.section.text.annotated .section_content {
+	width: 60%;
+	float: left;
+}
+.section.text.annotated .section_notes {
 	width: 30%;
 	float: left;
 }
 
+.section.text.annotated .section_notes {
+   display: block;
+}
 
+.section.text .section_notes {
+   display: none;
+}
 
 
 
