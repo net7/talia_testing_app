@@ -26,8 +26,7 @@ function activateImage(image, fragment) {
     if(fragment) selection = fragmentToLayer(fragment).id;
 
     if(flexip == null || url != image) {
-        if(jhtc) jthc.hideAllNotes();
-        url = image
+        url = image;
         loadFlexip(image);
     }
     else {
@@ -56,7 +55,7 @@ function activateImageByFragment(fragment, element) {
                         }
                     }
                     else {
-                        activateImage(myUrl, jthc.imageFragments[myUrl][fragment]);                        
+                        activateImage(myUrl, jthc.imageFragments[myUrl][fragment]);
                     }
                     return true;
                 }

@@ -43,6 +43,18 @@ var SwickyCommunication = function() {
         }
         ignoreActivationEvent = false;
     }
+
+    this.unselected = function(url) {
+            var message = '\
+<annotator_message action="selection_request">\
+<fragment>\
+<type>image</type>\
+<context_url>'+window.location+'</context_url>\
+<container_uri>'+url+'</container_uri>\
+</fragment>\
+</annotator_message>';
+        window.status = message;
+    }
 }
 
 var Annotator = function() {
