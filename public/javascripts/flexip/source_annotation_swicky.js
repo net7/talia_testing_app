@@ -93,3 +93,7 @@ function layerActivated(layerId) {
 function selectedLayer(layer) {
     swicky.selected(url, layer.id)
 }
+
+function layerDeactivated(layerId) {
+    flexip.sideMenuSetLayerVisible(layerId, false);
+}

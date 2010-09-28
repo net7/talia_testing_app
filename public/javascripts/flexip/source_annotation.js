@@ -13,7 +13,7 @@ $(document).ready(function() {
         else  activateImage(jthc.options.selectedImage);
     }
     $(".flexip-toggle").click(function(e) {
-        url = $(this).attr("href");
+        var url = $(this).attr("href");
         loadFlexip(url);
         return false;
     });
@@ -26,11 +26,12 @@ function activateImage(image, fragment) {
     if(fragment) selection = fragmentToLayer(fragment).id;
 
     if(flexip == null || url != image) {
+        if(jhtc) jthc.hideAllNotes();
         url = image
         loadFlexip(image);
     }
     else {
-        flexip.sideMenuActivateLayer(selection)
+        flexip.sideMenuActivateLayer(selection);
         jumpToAnchor("flexip-area");
     }
 }

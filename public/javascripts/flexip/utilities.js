@@ -149,7 +149,7 @@ function newLayerObject(title) {
 function addLayerJS(layer , invisible) {
     layer.itemID = layer.id;
     layer.parentLayerID = "#root#";
-    if(invisible) layer.visible = false;
+    if(invisible && invisible == false) layer.visible = true;
     flexip.sideMenuAddChildLayer(layer);
 }
 
