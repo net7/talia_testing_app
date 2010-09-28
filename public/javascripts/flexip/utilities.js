@@ -46,7 +46,7 @@ var SwickyCommunication = function() {
 
     this.unselected = function(url) {
             var message = '\
-<annotator_message action="selection_request">\
+<annotator_message action="deselection_request">\
 <fragment>\
 <type>image</type>\
 <context_url>'+window.location+'</context_url>\
@@ -158,10 +158,11 @@ function newLayerObject(title) {
     return {id: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
 }
 
-function addLayerJS(layer , invisible) {
+function addLayerJS(layer , visible) {
     layer.itemID = layer.id;
     layer.parentLayerID = "#root#";
-    if(invisible && invisible == false) layer.visible = true;
+    layer.visible = false;
+    if(visible && visible == true) layer.visible = true;
     flexip.sideMenuAddChildLayer(layer);
 }
 

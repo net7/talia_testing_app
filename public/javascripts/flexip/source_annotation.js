@@ -76,7 +76,7 @@ function commInterfaceSettingsParseEnd() {
                 fragments.push(coordinates);
 
         annotator.resetLoadedFragments();
-        annotator.loadFragments(url, fragments, null, true);
+        annotator.loadFragments(url, fragments);
     }
     this.flexipRef.messageBoxHide();
     jumpToAnchor("flexip-area");
