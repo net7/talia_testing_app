@@ -32,12 +32,15 @@ function activateImage(image, fragment) {
     }
 }
 
-function activateImageByFragment(fragment) {
+function activateImageByFragment(fragment, hideNote) {
     if(jthc && !$.isEmptyObject(jthc.imageFragments)) {
         for(url in jthc.imageFragments)
             for(urlFragment in jthc.imageFragments[url])
                 if(urlFragment == fragment) {
-                    jthc.showNote(fragment);
+                    
+                    if(hideNote) self.hideNote(fragment);
+                    else jthc.showNote(fragment);
+
                     activateImage(url, jthc.imageFragments[url][fragment]);
                     return true;
                 }

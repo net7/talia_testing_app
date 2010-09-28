@@ -606,7 +606,7 @@ $(function() {
                 self.log("Clicked on THCNoteItem "+selectId+" !! "+xp)
 
                 /**/            
-                if ((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp)) {
+                if ((typeof activateImageByFragment == 'undefined') || !activateImageByFragment(xp, !$(this).hasClass('collapsed'))) {
 
                     if ($(this).hasClass('collapsed')) {
                         if (!$("span#load_annotations").hasClass('hide'))
