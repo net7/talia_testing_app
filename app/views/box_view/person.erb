@@ -48,7 +48,7 @@
   </p>
   <% end %>
 
-  <% unless (author_of = @source.inverse[N::DCNS.creator]).empty? %>
+  <% unless (author_of = @source.inverse[N::DEMO.author]).empty? %>
   <p>
     <% i = 1 %>
     <%=  source_label %> is the author of <%  author_of.each do |c| %>
