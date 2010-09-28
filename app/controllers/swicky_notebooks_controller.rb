@@ -61,16 +61,14 @@ class SwickyNotebooksController < ApplicationController
       Swicky::Notebook.annotations_for_url(params[:uri])
     elsif(params[:xpointer])
       Swicky::Notebook.annotations_for_xpointer(params[:xpointer])
-    elsif(params[:image])
-      Swicky::Notebook.annotations_for_image(params[:image])
     else
       raise(ActiveRecord::RecordNotFound, "No parameter given for annotations")
     end
     respond_to do |format|
-      format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
+      format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri] || params[:fragment]).to_json }
       format.rdf { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
       format.html { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
-      format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
+      format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri] || params[:fragment]).to_json }
     end
   end
   

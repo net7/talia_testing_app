@@ -310,30 +310,24 @@ $(function() {
 
                 var myParams = {xpointer: xpointer};
                 if(self.fragments[xpointer].myType == 'image')
-                    myParams = {image: self.fragments[xpointer].parenturl};
-
+                    myParams = {uri: xpointer};
                 $.ajax({
                     url: this.options.baseURL + "annotations",
                     data: myParams,
                     dataType: 'json',
                     type: 'POST',
-                    context: {myXpointer: xpointer},
                     success: function(data, text, xmlhr) {
                         var n = data.items.length;
 
                         self.xpointersLoaded++;
 
                         if (n == 0) {
-                            self.log("## No annotation for an xpointer... "+this.myXpointer+" ?? ");
+                            self.log("## No annotation for an xpointer... "+xpointer+" ?? ");
                             return;
                         }
-                        if (self.fragments[this.myXpointer].myType == 'image') {
-                            xpointer = this.myXpointer
-                            hash = '';
-                        } else {
-                            xpointer = data['annotation-for']['uri'],
-                            hash = data['annotation-for']['hash'];
-                        }
+
+                        xpointer = data['annotation-for']['uri'];
+                        hash = data['annotation-for']['hash'];
 
                         self.log("## Got "+n+" new items for xpointer "+hash+" / "+xpointer);
                         self.log("## ASK DATA Loaded "+self.xpointersLoaded+" out of "+self.xpointersToLoad+" xpointers");
@@ -359,15 +353,14 @@ $(function() {
 
         addItemsToXPointer : function (xpointer, data) {
             var self = this, fragment = self.fragments[xpointer];
-            
+
             if (typeof self.fragments[xpointer] == "undefined") {
                 self.log("### ERROR! Section for xpointer not defined??! " + xpointer);
             }
 
             fragment.items = data.items;
-            /**/
-            if(fragment.myType != 'image')
-                fragment.hash = data['annotation-for']['hash'];
+
+            fragment.hash = data['annotation-for']['hash'];
             
             // TODO DEBUG: do we need types and properties?
             fragment.types = data.types;
