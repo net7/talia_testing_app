@@ -43,6 +43,7 @@ function activateImageByFragment(fragment, element) {
                         var collapsed = element.hasClass('collapsed');
                         jthc.hideAllNotes();
                         if(collapsed) {
+                            ignoreNextLayerActivation = true;
                             element.removeClass('collapsed').addClass('expanded');
                             activateImage(url, jthc.imageFragments[url][fragment]);
                         }
@@ -86,9 +87,9 @@ function layerAdded(layerId) {
 function layerActivated(layerId) {
     if(!ignoreNextLayerActivation) {
         if(jthc) {
-            coordinates = annotator.loadedFragment(layerId);
+            jthc.hideAllNotes();
             for(fragment in jthc.imageFragments[url]) {
-                jthc.showNote(fragment);
+                $('div[about="'+fragment+'"]').removeClass("collapsed").addClass("expanded");
             }
         }
     }
