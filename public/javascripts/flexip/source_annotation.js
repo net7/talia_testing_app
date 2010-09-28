@@ -1,6 +1,8 @@
 var url = '';
 var selection = null;
 
+var ignoreNextLayerActivation = false;
+
 var config_url = "/image/annotations/ajax/loadConfiguration/";
 var annotator = new Annotator();
 
@@ -44,6 +46,7 @@ function activateImageByFragment(fragment, element) {
                         activateImage(url, jthc.imageFragments[url][fragment]);
                     }
                     else {
+                        ignoreNextLayerActivation = true;
                         if(flexip) flexip.sideMenuActivateLayer();
                     }
                     return true;
@@ -76,12 +79,17 @@ function layerAdded(layerId) {
 }
 
 function layerActivated(layerId) {
-    coordinates = annotator.loadedFragment(layerId);
-    for(fragment in jthc.imageFragments[url]) {
-        jthc.showNote(fragment);
+    if(!ignoreNextLayerActivation) {
+        if(jthc) {
+            coordinates = annotator.loadedFragment(layerId);
+            for(fragment in jthc.imageFragments[url]) {
+                jthc.showNote(fragment);
+            }
+        }
     }
+    ignoreNextLayerActivation = false;
 }
 
 function layerDeactivated(layerId) {
-    jthc.hideAllNotes();
+    if(jthc) jthc.hideAllNotes();
 }
