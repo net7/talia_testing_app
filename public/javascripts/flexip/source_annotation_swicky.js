@@ -16,12 +16,6 @@ $(document).ready(function() {
     });
 });
 
-function imageLoaded() {
-    if($("#flexip-loaded").parent().hasClass("section_content"))
-        $("#flexip-loaded").parent().addClass("flexip-loaded");
-    this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
-}
-
 function commInterfaceSettingsParseEnd() {
     var layers = flexip.layers;
     /// This appens if swicky has requested an image not shown and Flexip was (re)loaded.

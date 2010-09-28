@@ -36,6 +36,12 @@ function launchFlexip(layers) {
     ///  if it is, for now, reload everything.
     flexip_id = 'flexip';
     if($("#flexip-loaded").length) flexip_id = "flexip-loaded";
+    var container = $("#"+flexip_id).parent();
+
+    if(!container.hasClass("flexip-loaded")) {
+        container.addClass("flexip-loaded");
+    }
+
     myFjsApi = new FJSAPI('myFjsApi',
                           'flexip-loaded',
                           flexip_id,
