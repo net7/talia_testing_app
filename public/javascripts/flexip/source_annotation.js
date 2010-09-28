@@ -8,14 +8,13 @@ var config_url = "/image/annotations/ajax/loadConfiguration/";
 var annotator = new Annotator();
 
 $(document).ready(function() {
+/*
     if(jthc.options.selectedImage) {
-        /*
         if(jthc.options.selectedFragment) activateImageByFragment(jthc.options.selectedFragment);
         else 
-        */
         activateImage(jthc.options.selectedImage);
     }
-
+*/
     $(".flexip-toggle").click(function(e) {
         url = $(this).attr("href");
         loadFlexip(url);
