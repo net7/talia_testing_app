@@ -96,5 +96,5 @@ function selectedLayer(layer) {
 
 function layerDeactivated(layerId) {
     flexip.sideMenuSetLayerVisible(layerId, false);
-    swicky.unselected(url);
+    swicky.deselected(url);
 }

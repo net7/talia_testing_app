@@ -13,7 +13,7 @@ $(document).ready(function() {
         else  activateImage(jthc.options.selectedImage);
     }
     $(".flexip-toggle").click(function(e) {
-        var url = $(this).attr("href");
+        url = $(this).attr("href");
         loadFlexip(url);
         return false;
     });
@@ -76,7 +76,7 @@ function commInterfaceSettingsParseEnd() {
                 fragments.push(coordinates);
 
         annotator.resetLoadedFragments();
-        annotator.loadFragments(url, fragments, null, true);
+        annotator.loadFragments(url, fragments);
     }
     this.flexipRef.messageBoxHide();
     jumpToAnchor("flexip-area");
