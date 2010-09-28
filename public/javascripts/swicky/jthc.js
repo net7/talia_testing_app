@@ -575,7 +575,7 @@ $(function() {
 
                 var ret = "";
                 for (wut in item)
-                    if ($.inArray(""+wut, ['id', 'hash']) == -1)
+                    if ($.inArray(""+wut, ['id', 'hash', 'hasCoordinates']) == -1)
                         ret += "<span class='swicky_tooltip_entry'><span class='swicky_tooltip_field_name'>" + wut +":</span> " + item[wut] + "</span>";
                 
                 myEztip.setContent(obj, ret);
