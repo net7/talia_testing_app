@@ -2,6 +2,7 @@ var url = '';
 var selection = null;
 
 var ignoreNextLayerActivation = false;
+var ignoreNextLayerDeactivation = false;
 
 var config_url = "/image/annotations/ajax/loadConfiguration/";
 var annotator = new Annotator();
@@ -42,13 +43,13 @@ function activateImageByFragment(fragment, element) {
                     if(typeof element != "undefined")  {
                         var collapsed = element.hasClass('collapsed');
                         jthc.hideAllNotes();
+                        ignoreNextLayerActivation = true;
+                        ignoreNextLayerDeactivation = true;
                         if(collapsed) {
-                            ignoreNextLayerActivation = true;
                             element.removeClass('collapsed').addClass('expanded');
                             activateImage(url, jthc.imageFragments[url][fragment]);
                         }
                         else {
-                            ignoreNextLayerActivation = true;
                             if(flexip) flexip.sideMenuActivateLayer();
                         }
                     }
@@ -97,5 +98,5 @@ function layerActivated(layerId) {
 }
 
 function layerDeactivated(layerId) {
-    if(jthc) jthc.hideAllNotes();
+    if(!ignoreNextLayerDeactivation && jthc) jthc.hideAllNotes();
 }
