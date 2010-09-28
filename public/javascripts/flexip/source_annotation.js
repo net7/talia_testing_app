@@ -37,23 +37,23 @@ function activateImageByFragment(fragment, hideNote) {
         for(url in jthc.imageFragments)
             for(urlFragment in jthc.imageFragments[url])
                 if(urlFragment == fragment) {
-                    
-                    if(hideNote) self.hideNote(fragment);
-                    else jthc.showNote(fragment);
-
-                    activateImage(url, jthc.imageFragments[url][fragment]);
+                    if(hideNote) {
+                        if(jthc) jthc.hideNote(fragment);
+                        if(flexip) flexip.sideMenuActivateLayer();
+                    }
+                    else {
+                        jthc.showNote(fragment);
+                        activateImage(url, jthc.imageFragments[url][fragment]);
+                    }
                     return true;
                 }
     }
     return false;
 }
 
-
-
 function allModulesLoaded() {
     this.flexipRef.imageLoadSource(config.image);
 }
-
 
 function commInterfaceSettingsParseEnd() {
     if(jthc && jthc.imageFragments[url]) {
