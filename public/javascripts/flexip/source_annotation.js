@@ -32,18 +32,19 @@ function activateImage(image, fragment) {
     }
 }
 
-function activateImageByFragment(fragment, hideNote) {
+function activateImageByFragment(fragment, element) {
     if(jthc && !$.isEmptyObject(jthc.imageFragments)) {
         for(url in jthc.imageFragments)
             for(urlFragment in jthc.imageFragments[url])
                 if(urlFragment == fragment) {
-                    if(hideNote) {
-                        if(jthc) jthc.hideNote(fragment);
-                        if(flexip) flexip.sideMenuActivateLayer();
+                    var collapsed = element.hasClass('collapsed');
+                    jthc.hideAllNotes();
+                    if(collapsed) {
+                        element.removeClass('collapsed').addClass('expanded');
+                        activateImage(url, jthc.imageFragments[url][fragment]);
                     }
                     else {
-                        jthc.showNote(fragment);
-                        activateImage(url, jthc.imageFragments[url][fragment]);
+                        if(flexip) flexip.sideMenuActivateLayer();
                     }
                     return true;
                 }
@@ -79,4 +80,8 @@ function layerActivated(layerId) {
     for(fragment in jthc.imageFragments[url]) {
         jthc.showNote(fragment);
     }
+}
+
+function layerDeactivated(layerId) {
+    jthc.hideAllNotes();
 }
