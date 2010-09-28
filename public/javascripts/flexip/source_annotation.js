@@ -62,8 +62,15 @@ function activateImageByFragment(fragment, element) {
     return false;
 }
 
+/// TODO: remove? Is the same as in common.
 function allModulesLoaded() {
     this.flexipRef.imageLoadSource(config.image);
+}
+
+function imageLoaded() {
+    if($("#flexip-loaded").parent().hasClass("section_content"))
+        $("#flexip-loaded").parent().addClass("flexip-loaded");
+    this.flexipRef.commLoadInterfaceSettings(config.toolbars_url);
 }
 
 function commInterfaceSettingsParseEnd() {
@@ -89,14 +96,17 @@ function layerActivated(layerId) {
     if(!ignoreNextLayerActivation) {
         if(jthc) {
             jthc.hideAllNotes();
-            for(fragment in jthc.imageFragments[url]) {
-                $('div[about="'+fragment+'"]').removeClass("collapsed").addClass("expanded");
-            }
+            var coordinates = annotator.loadedFragments[layerId];
+            for(fragment in jthc.imageFragments[url])
+                if(jthc.imageFragments[url][fragment] == coordinates)
+                    $('div[about="'+fragment+'"]').removeClass("collapsed").addClass("expanded");
         }
     }
     ignoreNextLayerActivation = false;
+    ignoreNextLayerDeactivation = false;
 }
 
 function layerDeactivated(layerId) {
     if(!ignoreNextLayerDeactivation && jthc) jthc.hideAllNotes();
+    ignoreNextLayerDeactivation = false;
 }
