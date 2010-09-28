@@ -17,7 +17,6 @@
 										'100%',
 										'9.0.0',
 										'modules/comm/sicar/communication.swf',
-										//'modules/comm/base/communication.swf',
 										//'modules/image/multisimple/imageHolder.swf',
 										'modules/image/simple/imageHolder.swf',
 										//'modules/image/iip/imageHolder.swf',
@@ -31,6 +30,7 @@
 			myFjsApi.commInterfaceSettingsParseEnd = commInterfaceSettingsParseEnd;
 			myFjsApi.commInterfaceSettingsParseError = commInterfaceSettingsParseError;
 			myFjsApi.imageLoaded = imageLoaded;
+			//myFjsApi.imageMetadataLoaded = imageMetadataLoaded;
 			myFjsApi.commDataParseEnd = commDataParseEnd
 			myFjsApi.initialize();
 			
@@ -42,16 +42,16 @@
 				ff = this.flexipRef;
 				this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.xml');	
 				//this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.json');	
-				//this.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
+				this.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
 				//this.flexipRef.imageLoadSource('data/img/testicon1.png');
-				this.flexipRef.imageLoadSource('data/img/campeggio.gif');
-				//setImageSource(0);	
+				//this.flexipRef.imageLoadSource('data/img/campeggio.gif');
+				//setImageSource(0);
 			}
 			
 			function commInterfaceSettingsParseEnd()
 			{
-				myFjsApi.flexipRef.messageBoxHide();
-				//myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/globe.256x256.tif');
+				myFjsApi.flexipRef.messageBoxHide();				
+				myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/globe.256x256.tif');
 				//myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/heic0601a.tif');
 				//myFjsApi.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
 			}
@@ -63,10 +63,16 @@
 			
 			function imageLoaded()
 			{
-			myFjsApi.flexipRef.messageBoxHide();	
-				//myFjsApi.flexipRef.commLoadData('data/data.zip',true);			
+				myFjsApi.flexipRef.messageBoxHide();	
+				myFjsApi.flexipRef.commLoadData('data/data.zip',true);			
 				//myFjsApi.flexipRef.commLoadData('data/datasaved.xml');
 				//myFjsApi.flexipRef.commLoadData('data/dataempty.xml');
+			}
+			
+			function imageMetadataLoaded()
+			{
+				myFjsApi.flexipRef.messageBoxHide();	
+				myFjsApi.flexipRef.commLoadData('data/data.zip',true);	
 			}
 			
 			function commDataParseEnd()
@@ -246,7 +252,8 @@
 		  		}
 		  	}
 		  	
-		  	var imagesArray = [{url:'data/img/vew1.jpg', name:'view normale', loaded:false, currentLoadIndex:-1, value:100},
+		  	var imagesArray = [{url:'data/img/view3.jpg', name:'view normale', loaded:false, currentLoadIndex:-1, value:100},
+		  		{url:'data/img/view1.jpg', name:'view normale', loaded:false, currentLoadIndex:-1, value:100},
 		  		{url:'data/img/view.jpg', name:'view wire frame', loaded:false, currentLoadIndex:-1, value:100},
 		  		{url:'data/img/view2.jpg', name:'view rosina', loaded:false, currentLoadIndex:-1, value:100}
 		  	];

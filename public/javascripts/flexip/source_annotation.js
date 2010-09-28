@@ -75,7 +75,7 @@ function commInterfaceSettingsParseEnd() {
                 fragments.push(coordinates);
 
         annotator.resetLoadedFragments();
-        annotator.loadFragments(url, fragments);
+        annotator.loadFragments(url, fragments, null, true);
     }
     this.flexipRef.messageBoxHide();
     jumpToAnchor("flexip-area");
@@ -101,6 +101,7 @@ function layerActivated(layerId) {
 }
 
 function layerDeactivated(layerId) {
+    flexip.sideMenuSetLayerVisible(layerId, false);
     if(!ignoreNextLayerDeactivation && jthc) jthc.hideAllNotes();
     ignoreNextLayerDeactivation = false;
 }

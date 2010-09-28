@@ -60,7 +60,7 @@ var Annotator = function() {
         this.busy = false;
     }
     
-    this.loadFragments = function (image, fragments, selectedFragment) {
+    this.loadFragments = function (image, fragments, selectedFragment, invisible) {
         var layers = [];
         /// Accept calls only if not busy.
         if(this.busy) return false;
@@ -91,7 +91,7 @@ var Annotator = function() {
             return;
         }
 
-        if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i]);
+        if(layers) for(var i = 0; i < layers.length; i++) addLayerJS(layers[i], invisible);
 
         flexip.messageBoxHide();
         this.setFree();
@@ -146,10 +146,10 @@ function newLayerObject(title) {
     return {id: itemId, visible: "true", opened: "true", layerType: "shapesContainer", title: title};
 }
 
-function addLayerJS(layer) {
+function addLayerJS(layer , invisible) {
     layer.itemID = layer.id;
     layer.parentLayerID = "#root#";
-//    flexip.commAddChildLayerWithShapes(layer);
+    if(invisible) layer.visible = false;
     flexip.sideMenuAddChildLayer(layer);
 }
 
