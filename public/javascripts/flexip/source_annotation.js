@@ -39,15 +39,20 @@ function activateImageByFragment(fragment, element) {
         for(url in jthc.imageFragments)
             for(urlFragment in jthc.imageFragments[url])
                 if(urlFragment == fragment) {
-                    var collapsed = element.hasClass('collapsed');
-                    jthc.hideAllNotes();
-                    if(collapsed) {
-                        element.removeClass('collapsed').addClass('expanded');
-                        activateImage(url, jthc.imageFragments[url][fragment]);
+                    if(typeof element != "undefined")  {
+                        var collapsed = element.hasClass('collapsed');
+                        jthc.hideAllNotes();
+                        if(collapsed) {
+                            element.removeClass('collapsed').addClass('expanded');
+                            activateImage(url, jthc.imageFragments[url][fragment]);
+                        }
+                        else {
+                            ignoreNextLayerActivation = true;
+                            if(flexip) flexip.sideMenuActivateLayer();
+                        }
                     }
                     else {
-                        ignoreNextLayerActivation = true;
-                        if(flexip) flexip.sideMenuActivateLayer();
+                        activateImage(url, jthc.imageFragments[url][fragment]);                        
                     }
                     return true;
                 }
