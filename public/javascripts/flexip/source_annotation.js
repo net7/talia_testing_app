@@ -13,7 +13,7 @@ $(document).ready(function() {
         else  activateImage(jthc.options.selectedImage);
     }
     $(".flexip-toggle").click(function(e) {
-        var url = $(this).attr("href");
+        url = $(this).attr("href");
         loadFlexip(url);
         return false;
     });

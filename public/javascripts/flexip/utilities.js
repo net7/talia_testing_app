@@ -44,7 +44,7 @@ var SwickyCommunication = function() {
         ignoreActivationEvent = false;
     }
 
-    this.unselected = function(url) {
+    this.deselected = function(url) {
             var message = '\
 <annotator_message action="deselection_request">\
 <fragment>\
