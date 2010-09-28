@@ -36,9 +36,10 @@ function activateImage(image, fragment) {
 }
 
 function activateImageByFragment(fragment, element) {
+    var myUrl = '';
     if(jthc && !$.isEmptyObject(jthc.imageFragments)) {
-        for(url in jthc.imageFragments)
-            for(urlFragment in jthc.imageFragments[url])
+        for(myUrl in jthc.imageFragments)
+            for(urlFragment in jthc.imageFragments[myUrl])
                 if(urlFragment == fragment) {
                     if(typeof element != "undefined")  {
                         var collapsed = element.hasClass('collapsed');
@@ -47,14 +48,14 @@ function activateImageByFragment(fragment, element) {
                         ignoreNextLayerDeactivation = true;
                         if(collapsed) {
                             element.removeClass('collapsed').addClass('expanded');
-                            activateImage(url, jthc.imageFragments[url][fragment]);
+                            activateImage(myUrl, jthc.imageFragments[myUrl][fragment]);
                         }
                         else {
                             if(flexip) flexip.sideMenuActivateLayer();
                         }
                     }
                     else {
-                        activateImage(url, jthc.imageFragments[url][fragment]);                        
+                        activateImage(myUrl, jthc.imageFragments[myUrl][fragment]);                        
                     }
                     return true;
                 }
