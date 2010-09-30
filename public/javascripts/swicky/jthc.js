@@ -116,11 +116,11 @@ $(function() {
                         if (self.isOnThisPage(xpointer, item))
                             THCTag.showByXPointer(newXpointer);  
                         else
-                            if (confirm("Navigate to fragment "+url+"? "))
+                            if (confirm("This link will load a new page. Do you want to proceed? "))
                                 window.location = url;
                     } else {
                         if (!self.isOnThisPage(uri, item)) {
-                            if (confirm("Navigate to "+uri+"? "))
+                            if (confirm("This link will load a new page. Do you want to proceed? "))
                                 window.location = uri;
                         }
                     }
