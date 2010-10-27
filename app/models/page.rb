@@ -1,12 +1,16 @@
 class Page < TaliaCore::Source
-hobo_model
+  hobo_model
+
+  extend RdfProperties
+
   after_save :insert_in_collection
 
-  singular_property :name, N::SCHOP.page_name
-  singular_property :position, N::SCHOP.page_position
+  rdf_property :name, N::SCHOP.page_name
+  rdf_property :position, N::SCHOP.page_position
+#  rdf_property :book, N::DCT.isPartOf
 
   def insert_in_collection
-    book = TaliaCore::Book.find(self.book)
+    book = Book.find(self.book)
     book [Integer(self.position.to_s)] = self
     book.save!
   end

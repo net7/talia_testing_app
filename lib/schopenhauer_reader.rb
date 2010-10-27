@@ -9,13 +9,14 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
     nested :attribute do
       # Read the predicate name(s) from "predicate" tag(s)
       predicate = from_element(:predicate)
-      add predicate, from_element(:value)
+      add predicate, all_elements(:value)
+      add_rel predicate, all_elements(:object)
     end
   end
 
   element :index_element do
     @current.attributes["uri"] ||= Guid.new
-    add 'type', TaliaCore::BookIndexSection
+    add 'type', BookIndexSection
     add 'index_section_number', from_element(:position)
     add 'index_section_title', from_element(:title)
     add 'index_section_starting_page', from_element(:start_page)
@@ -25,18 +26,21 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
 
   element :page do
     add 'uri', from_element(:uri)
-    add 'type', TaliaCore::Page
+    add 'type', Page
     add 'name', from_element(:name)
     add 'position', from_element(:position)
     add_rel  N::DCT.isPartOf, N::LOCAL + from_element(:book)
+#  add_rel  'dct:isPartOf, from_element(:book)
   end
 
   element :facsimile do
     # Use the content of the "file" tag as a URI/filename for loading a data
     # file
     @current.attributes["uri"] ||= Guid.new
-    add 'type', TaliaCore::Facsimile
-    add_rel N::DCT.isFormatOf, N::LOCAL + from_element(:page)
+    add 'type', Facsimile
+    add_rel N::DCT.isFormatOf, from_element(:page)
+#     add_rel :page , N::LOCAL + from_element(:page)
+
     add_file all_elements(:file)
   end
   
