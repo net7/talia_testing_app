@@ -341,7 +341,6 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="uri, type" param/>
           </section>
     </content:>
 

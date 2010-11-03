@@ -1,25 +1,38 @@
 <h3 class="toggle">Sources Map</h3>
 <div id="map">
 
-  <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAOY6Zv9NunttIT5fALwpiRhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQqmgWagvLoTUIzsSG7cbelkvUAMQ" type="text/javascript">
+  <script type="text/javascript" src="http://www.google.com/jsapi?key=<%= googlemap_key %>" type="text/javascript">
   </script>
 
   <script type="text/javascript">
 
+    function createMarker(point, title, uri) {
+
+      var marker = new GMarker(point);
+      GEvent.addListener(marker, "click", function() {
+        marker.openInfoWindowHtml("<br/> <a href='"+uri+"'><b>" + title + "</b></a> <br/> " + point.lat() + ", " + point.lng() );
+      });
+
+      return marker;
+    }
+
+
     google.load("maps", "2.x");
 
     $(document).ready(function(){
+
       var map = new GMap2(document.getElementById('map_canvas'));
-      var location = new GLatLng('<%= coordinates.first.first %>' , '<%= coordinates.first.last %>');
+      var location = new GLatLng('<%= coordinates.first[:coordinates].first %>' , '<%= coordinates.first[:coordinates].last %>');
+      <%#*map.addControl(new GSmallMapControl());%>
+      <%#*map.addControl(new GMapTypeControl());%>
+      map.setUIToDefault();
       map.setCenter(location, 5);
-      map.addControl(new GSmallMapControl());
-      <% for coordinate in coordinates %>
-        <% lat, lang = coordinate %>
-        var point = new GLatLng('<%= lat %>', '<%= lang %>');
-        marker = new GMarker(point);
-        map.addOverlay(marker);
-      <% end %>
-    });
+<% for coordinate in coordinates %>
+  <% lat, lang = coordinate[:coordinates] %>
+      var point = new GLatLng('<%= lat %>', '<%= lang %>');
+      map.addOverlay(createMarker(point, '<%= coordinate[:title] %>', '<%= coordinate[:uri] %>'));
+<% end %>
+  });
 
   </script>
   <div id="map_canvas" style="width: 100%; height: 200px"></div>

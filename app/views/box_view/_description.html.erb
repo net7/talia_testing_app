@@ -1,0 +1,13 @@
+<% if !@source[N::DCNS.description].empty? %>
+<div class='widget'>
+    <div class='widgetHeader text'>
+        <h3 class='widgetHeaderTitle'>Description</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded text'>
+        <p><%= @source[N::DCNS.description].first %></p>
+    </div>
+</div>
+<% end %>

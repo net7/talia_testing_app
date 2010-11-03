@@ -1,0 +1,37 @@
+<div class='widget'>
+
+
+  <%
+  # TODO: do a real check to see if there's images or not
+  if (records = @source.files_of_type TaliaCore::DataTypes::IipData).count > 0 %>
+
+    <div class='widgetHeader image'>
+      <h3 class='widgetHeaderTitle'>Images</h3>
+      <div class='widgetHeaderTools'>
+        <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+
+
+        <% related_transcription = @source[N::DEMO.has_transcription].first %>
+        <% unless related_transcription.nil? %>
+          <p class="anastatica">
+            <a class="resource anas" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(related_transcription.to_uri.to_s) %>&type=source" title="Transcription">Transcription</a>
+          </p>
+
+        <% end %>
+
+      </div>
+    </div>
+    <div class='widgetContent expanded image'>
+      <% for record in records %>
+
+    <%#= iip_flash_viewer(record, 600, 600)%>
+        <% image_url = url_for({ :controller => 'source_data', :action => 'show', :id => record.id }) %>
+        <img src="<%= image_url %>" alt="" class="resizeme" /><br /><br />
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render :partial => 'description' %>
+  <%= render :partial => 'data' %>
+</div>
+

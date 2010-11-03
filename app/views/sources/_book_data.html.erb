@@ -1,0 +1,29 @@
+<h3 class="toggle">Data</h3>
+<div class="section data">
+    <div class='section_header'></div>
+    <div class='section_content_container'>
+        <div class='section_content'>
+
+            <% unless @source.inverse[N::DEMO.cited_in].first.nil? %>
+            <p>Works: 
+                <% @source.inverse[N::DEMO.cited_in].each do |cited|  %>
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(cited.uri.to_s)), 
+                        { :controller => 'sources', :action => 'dispatch', :dispatch_uri => cited.uri.local_name }) %>
+                <% end %>
+            </p>
+            <% end %>
+
+            <% unless @source.demo.author.first.nil? %>
+            <p>Authors: 
+                <%  @source.demo.author.each do |author| %>
+                    <%=  link_to(title_for(TaliaCore::ActiveSource.find(author.uri.to_s)), 
+                        { :controller => 'sources', :action => 'dispatch', :dispatch_uri => author.uri.local_name}) %>
+                <% end %>
+            </p>
+            <% end %>
+
+        </div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
+</div>

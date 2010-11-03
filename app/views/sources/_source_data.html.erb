@@ -1,50 +1,13 @@
-<% non_iip_data_records = [] %>
-
-<% if data_records_contain_objects_of_type?(@source.data_records, TaliaCore::DataTypes::IipData)  %>
-  <h3 class="toggle closed">Images</h3>
-  <div style="display: none;">
-    <% for record in @source.data_records %>
-
-      <% if record.is_a?(TaliaCore::DataTypes::IipData) %>
-        <%= iip_flash_viewer(record, 600, 600)%>
-      <% elsif(record.is_a?(TaliaCore::DataTypes::ImageData) && !record.mime.include?('image/png')) %>
-      <%#*images, unless when they are png, are already inserted as IipData objects%>
-      <% else %>
-        <%  non_iip_data_records << record  %>
-      <%  end %>
-
-    <% end %>
-  </div>
-<% else %>
-  <% non_iip_data_records = @source.data_records %>
+<% images = @source.files_of_type TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData %>
+<% if images.count > 0 %>
+    <%= render :partial => 'image', :locals => {:images => images}%>
 <% end %>
 
-<% if(non_iip_data_records.size > 0) %>
-  <h3 class="toggle">Data Records</h3>
-  <div>
-    <%= render(:partial => 'data_list', :locals => {:records => non_iip_data_records}) %>
-  </div>
+<% prepare_data_records %>
+<% if @data_records.size > 0 %>
+    <%= render :partial => 'data_records', :locals => {:records => @data_records} %>
 <% end %>
 
-
-<% if data_records_contain_objects_of_type?(@source.data_records, TaliaCore::DataTypes::XmlData)  %>
-  <h3 class="toggle">Text</h3>
-  <div>
-    <% for record in @source.data_records %>
-      <% if(record.is_a?(TaliaCore::DataTypes::XmlData)) %>
-        <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
-        <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
-          <h2>This element has <%= ncount %> annotations</h2>
-        <% end %>
-        <%= thctag(element_uri, record.content_string) %>
-      <% end %>
-    <% end %>
-  </div>
-
-<% elsif !@source[N::DCNS.description].empty? %>
-  <h3 class="toggle">Description</h3>
-  <div>
-<%= @source[N::DCNS.description].first %>
-  </div>
+<% if @files['TaliaCore::DataTypes::XmlData'] || !@source[N::DCNS.description].empty? %>
+    <%= render :partial => 'text' %>
 <% end %>
-

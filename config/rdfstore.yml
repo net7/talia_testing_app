@@ -9,6 +9,5 @@ test:
   backend: native
 development: 
   type: sesame
-  location: ./sesame_development.db
-  backend: native
-  inferencing: true
+  url: http://babylon.netseven.it:9090/openrdf-sesame/repositories/talia_demo_development
+  backend: http

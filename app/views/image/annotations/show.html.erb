@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:dc="http://purl.org/dc/elements/1.1/" >
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title><%= h(yield(:title) || "Talia | The Digital Library") %></title>
+    <%= stylesheet_link_tag 'main' %>
+    <%= stylesheet_link_tag 'style' %>
+    <%= javascript_include_tag 'jquery-1.4.1.min' %>
+    <%= javascript_include_tag '/flexip/scripts/swfobject.js' %>
+    <%= javascript_include_tag '/flexip/scripts/flexip_api.js' %>
+    <%= javascript_include_tag 'flexip/utilities.js' %>
+    <%= javascript_include_tag 'flexip/common.js' %>
+<% if @mode == "write" %>
+    <%= javascript_include_tag 'flexip/annotations_admin.js' %>
+<% else %>
+    <%= javascript_include_tag 'flexip/annotations.js' %>
+<% end %>
+    <style>
+      #flexip, #flexip-loaded {width:800px;height:600px;float:left;}
+      #image-annotations-form {float:right;}
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="title_bar">
+        <h1><a><%= h yield(:title) || "Talia | Semantic Digital Library" %></a></h1>
+        <h2 class="header_subtitle">Demo site</h2>
+        <div align="right"></div>
+      </div>
+<!-- REAL CONTENT BEGINS HERE -->
+      <div>
+        <% flash.each do |type, message| %>
+        <p class="flash <%= type %>"><%= message %></p>
+        <% end %>
+      </div>
+      <div id="flexip">
+        <a href="http://www.adobe.com/go/getflashplayer"></a>
+        <a href="http://www.adobe.com/go/getflashplayer">get flash player</a>
+      </div>     
+      <div id="image-annotations">
+        <form id="image-annotations-form">
+          <input type="hidden" id="image-annotations-pseudo_id" name="pseudo_id" value="<%= params[:pseudo_id] %>"/>
+        </form>
+      </div>
+    </div>
+<!-- REAL CONTENT ENDS HERE -->
+    <div id="footer">
+      <div class="footer_left">
+        <p>Demo site is powered by Talia.
+          <br/>
+          <small>Talia is a project of the Muruca initiative.</small>
+        </p>
+        <span class="muruca_sticker">Muruca</span><span class="talia_sticker">Talia</span>
+      </div>
+      <div class="footer_right">
+        <p>Unless otherwise stated the content of this demo is subject to a CC-BY-SA 3.0 License.
+          <br/>
+          <small>
+            Most of the content has been extracted from Wikipedia. Wikipedia's copyright policy is available at
+            <a href="http://en.wikipedia.org/wiki/Wikipedia_Copyright">http://en.wikipedia.org/wiki/Wikipedia_Copyright</a>
+          </small>
+        </p>
+        <span id="stickers"><%= link_to(image_tag("demo/valid-xhtml-rdfa.png"), "http://validator.w3.org/check?uri=referer") %></span>
+      </div>
+    </div>
+  </body>
+</html>

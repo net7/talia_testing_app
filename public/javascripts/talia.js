@@ -1,12 +1,5 @@
 $(document).ready(function() {
-	setUpH3Togglers();
+    $('h3.toggle').live('click', function() {
+		$(this).toggleClass("closed").next("div").toggle();
+    });
 });
-
-function setUpH3Togglers()
-{
-	$('h3.toggle').each(function(index) {
-    	$(this).click(function() {
-		  $(this).toggleClass("closed").next("div").toggle();
-		});
-  	});
-}

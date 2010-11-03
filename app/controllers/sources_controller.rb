@@ -1,9 +1,10 @@
 class SourcesController < ApplicationController
   include TaliaCore
   
+  before_filter :set_swicky_mode
   before_filter :setup_format, :only => [ 'show' ]
 
-  PER_PAGE = 10
+  PER_PAGE = 15
   
   # GET /sources
   # GET /sources.xml
@@ -11,25 +12,29 @@ class SourcesController < ApplicationController
     @rdf_types ||= self.class.source_types
 
     conditions = { :prefetch_relations => true, :include => :data_records, :order => "uri"}
+
     if(filter = params[:filter])
-      uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, N::URI.make_uri(filter, '+')).execute
+      @filter = N::URI.make_uri(filter, '+')
+      uris = ActiveRDF::Query.new(N::URI).select(:source).where(:source, N::RDF.type, @filter).execute
       conditions.merge!(:conditions => { :uri => uris.collect { |ur| ur.to_s } })
     end
-    puts conditions.inspect
     if(will_paginate?)
-      @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
+      #     @sources = TaliaCore::ActiveSource.paginate(conditions.merge(:page => params[:page]))
+      @sources = TaliaSource.paginate(conditions.merge(:page => params[:page]))
     else
-      @sources = TaliaCore::ActiveSource.find(:all, conditions)
+      #      @sources = TaliaCore::ActiveSource.find(:all, conditions)
+      @sources = TaliaSource.find(:all, conditions)
     end
-    
+
     @conditions = conditions
   end
 
   # GET /sources/1
   # GET /sources/1.xml
   def show
-    raise(ActiveRecord::RecordNotFound) unless(ActiveSource.exists?(params[:id]))
-    @source = ActiveSource.find(params[:id])
+    #TODO: is this used anymore ?
+    check_source_or_redirect
+
     respond_to do |format|
       format.xml { render :text => @source.to_xml }
       format.rdf { render :text => @source.to_rdf }
@@ -57,45 +62,111 @@ class SourcesController < ApplicationController
     render :text => predicates, :status => status
   end
   
-  # Semantic dispatch. This will try to auto-handle URLs that are not otherwise
-  # caught and see if a source exists. If the source exists, the system will
-  # try to figure out how to render it. In this case, all relations on the source are
-  # automaticaly prefetched when it's loaded.
+
+  # Semantic dispatch. This method will try to auto-handle URLs that are not otherwise
+  # caught and try to handle them.
   #
+  # This method is designed with the Linked Open Data standard in mind: depending on the 
+  # requested format, as determined either by HTTP_ACCEPT header or :format, this action will issue a 
+  # "HTTP/1.1 303 See Other" response pointing to a url specific to the determined format. E.g.:
+  # http://localhost:3000/data/Whatever will render data in rdf format
+  # http://localhost:3000/page/Whatever will render data in html format
+  # http://localhost:3000/xml/Whatever will render data in xml format
+  # The last one is not specified by LOD, but we also have xml format and it looks good this way.
+  # The actual URLs we will be redirected to will be determined in config/routes.rb, of course, 
+  # and they will have to point to one of #dispatch_html, #dispatch_rdf or #dispatch_xml methods.
+  #
+  # LOD reference: http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
+  def dispatch
+    return unless check_source_or_redirect
+    ActionController::Base.use_accept_header = true
+    case request.format
+    when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
+    when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
+    else            redirect_to :status => 303, :action => 'dispatch_html', :dispatch_uri => params[:dispatch_uri], :file => params[:file]
+    end
+  end
+
+  # This action will display the view for a source forcing output format to HTML, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
   #
   # The dispatch also supports callbacks in the controller: If you have a source with
   # type dcns:name, it will try to call the method #dncs_name (if defined) before 
   # rendering the source.
-  def dispatch
-    if (TaliaCore::ActiveSource.exists?(params[:dispatch_uri])) 
-      @source = TaliaCore::ActiveSource.find(params[:dispatch_uri], :prefetch_relations => true)
-      @types = @source.types
-      @types.each do |type|
-        caller = type.to_name_s('_')
-        self.send(caller) if(self.respond_to?(caller))
-      end
-      respond_to do |format|
-        format.html { render :action => template_for(@source) }
-        format.xml { render :text => @source.to_xml }
-        format.rdf { render :text => @source.to_rdf }
-      end
-    else
-      render :text => ''
-    end
+  def dispatch_html
+    fill_requested_file_fragment_and_coordinates(params[:fragment]) if (params[:fragment])
+    fill_file(params[:file]) if (params[:file])
+    # If we come here, it means that we want HTML, no matter what :format says
+    request.format = 'html'
+    response.content_type = Mime::HTML
+    #    if source
+    return unless check_source_or_redirect
+    callback
+    render :action => template_for(@source)
+    #    else
+    #      render :text => ''
+    #    end
+  end
+
+  # This action will display the view for a source forcing output format to RDF, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
+  #
+  # The dispatch also supports callbacks in the controller: If you have a source with
+  # type dcns:name, it will try to call the method #dncs_name (if defined) before 
+  # rendering the source.
+  def dispatch_rdf
+    # If we come here, it means that we want RDF, no matter what :format says
+    request.format = 'rdf'
+    response.content_type = Mime::RDF
+    #    if source
+    return unless check_source_or_redirect
+    callback
+    render :text => @source.to_rdf
+    #    else
+    #      render :text => ''
+    #    end
+  end
+
+  # This action will display the view for a source forcing output format to XML, unless the 
+  # requested URI does not exist, in which case it will just render an empty page.
+  #
+  # If the source exists, all of its  relations will be automaticaly prefetched when it's loaded.
+  #
+  # The dispatch also supports callbacks in the controller: If you have a source with
+  # type dcns:name, it will try to call the method #dncs_name (if defined) before 
+  # rendering the source.
+  def dispatch_xml
+    # If we come here, it means that we want XML, no matter what :format says
+    request.format = 'xml'
+    response.content_type = Mime::XML
+    #    if source
+    return unless check_source_or_redirect
+    callback
+    render :text => @source.to_xml
+    #    else
+    #      render :text => ''
+    #    end
   end
 
   # Autocompletion actions
-  
+
   def auto_complete_for_uri
     if(s_uri = params[:record][:source])
       s_uri_parts = s_uri.split(':')
       options = { :limit => 10 }
       @records = if(s_uri.include?('://'))
-        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
+        #        TaliaCore::ActiveSource.find_by_partial_uri(s_uri, options)
+        TaliaCore::Source.find_by_partial_uri(s_uri, options)
       elsif(s_uri_parts.size == 2)
-        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
+        #        TaliaCore::ActiveSource.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
+        TaliaCore::Source.find_by_partial_local(s_uri_parts.first, s_uri_parts.last, options)
       else
-        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
+        #        TaliaCore::ActiveSource.find_by_uri_token(s_uri, options)
+        TaliaCore::Source.find_by_uri_token(s_uri, options)
       end
 
       render :inline => "<%= content_tag(:ul, @records.map { |rec| content_tag(:li, h(N::URI.new(rec.uri).to_name_s)) }) %>"
@@ -106,6 +177,62 @@ class SourcesController < ApplicationController
   
   private
 
+  def set_swicky_mode
+    @swicky_mode = request.user_agent.index("annotation-client-") == 0
+  end
+
+  def check_source_or_redirect
+    return true if @source
+    if !ActiveSource.exists?(params[:dispatch_uri])
+      source_uri = (N::LOCAL + params[:dispatch_uri]).to_uri
+      qry = ActiveRDF::Query.new(N::URI).select(:page).distinct
+      qry.where(source_uri, N::RDF.type, N::SWICKY.SourceFragment)
+      qry.where(source_uri, N::SWICKY.appearsIn, :page)
+      page = qry.execute.first
+      if page
+        #TODO: this hack works now because pages as URLs like
+        # http://www.site.org/page/sourceid?locale=en
+        # if that ?locale=en wasn't there, it wouldn't work
+        redirect_to page.to_s + '&fragment=' + (N::LOCAL + params[:dispatch_uri]).to_s and return false
+      else
+        raise(ActiveRecord::RecordNotFound)
+      end
+    elsif TaliaFile.exists?(params[:dispatch_uri])
+      @source = TaliaFile.find(params[:dispatch_uri]).owner
+      redirect_to @source.uri.to_s + '?file=' + params[:dispatch_uri] and return false
+    else
+      @source = TaliaCore::Source.find params[:dispatch_uri], :prefetch_relations => true
+    end
+    return true
+  end
+
+  def callback
+    @types = @source.types
+    @types.each do |type|
+      caller = type.to_name_s('_')
+      self.send(caller) if(self.respond_to?(caller))
+    end
+  end
+
+
+  def fill_requested_file_fragment_and_coordinates(fragment)
+    fragment = N::URI.new(fragment)
+    qry = ActiveRDF::Query.new(N::URI).select(:file, :page, :coordinates).distinct
+    qry.where(fragment, N::RDF.type, N::SWICKY.SourceFragment)
+    qry.where(fragment, N::SWICKY.appearsIn, :page)
+    qry.where(fragment, N::DISCOVERY.isPartOf, :file)
+    qry.where(fragment, N::SWICKY.hasCoordinates, :coordinates)
+    file, page, coordinates = qry.execute.first
+    if file
+      @requested_file = file
+      @requested_fragment = fragment
+      @requested_coordinates = coordinates
+    end
+  end
+
+  def fill_file(file)
+    @requested_file = N::LOCAL + file
+  end
   # Hack around routing limitation: We use the @ instead of the dot as a delimiter
   def setup_format
     split_id = params[:id].split('@')

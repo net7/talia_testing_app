@@ -55,7 +55,7 @@ class SwickyNotebooksController < ApplicationController
     end
     render :text => coordinates.to_json
   end
-  
+
   def annotations
     notes_triples = if(params[:uri])
       Swicky::Notebook.annotations_for_url(params[:uri])
@@ -65,10 +65,10 @@ class SwickyNotebooksController < ApplicationController
       raise(ActiveRecord::RecordNotFound, "No parameter given for annotations")
     end
     respond_to do |format|
-      format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
+      format.xml { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri] || params[:fragment]).to_json }
       format.rdf { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
       format.html { render :text => TaliaUtil::Xml::RdfBuilder.xml_string_for_triples(notes_triples) }
-      format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri]).to_json }
+      format.json { render :text => Swicky::ExhibitJson::ItemCollection.new(notes_triples, params[:xpointer] || params[:uri] || params[:fragment]).to_json }
     end
   end
   
@@ -108,6 +108,4 @@ class SwickyNotebooksController < ApplicationController
       @auth_user = User.authenticate(user_email, pass) if(@user.name == user)
     end
   end
-  
-  
 end

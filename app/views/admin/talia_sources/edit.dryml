@@ -1,0 +1,7 @@
+<edit-page>
+  <section class="content-body">
+    <field-list replace fields="name" />
+                        <source-files/>
+  </section>
+</edit-page>
+

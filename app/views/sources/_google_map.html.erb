@@ -1,37 +1,37 @@
-
 <% if !(coordinates = @source[N::DEMO.coordinates].first).nil? %>
-  <h3 class="toggle">Map</h3>
-  <div id="map">
+    <h3 class="toggle">Map</h3>
+    <div class="section map">
+        <div class='section_header'></div>
+        <div class='section_content_container'>
+            <div class='section_content'>
 
-  <%
-    lat = coordinates.split(',').first
-    lng = coordinates.split(',').last
+                <%
+                    lat = coordinates.split(',').first
+                    lng = coordinates.split(',').last
+                %>
 
-  %>
-    <script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAOY6Zv9NunttIT5fALwpiRhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxQqmgWagvLoTUIzsSG7cbelkvUAMQ" type="text/javascript">
-    </script>
+                <script type="text/javascript" src="http://www.google.com/jsapi?key=<%= googlemap_key  %>"></script>
+                <script type="text/javascript">
+                    google.load("maps", "2.x");
+                    $(document).ready(function(){
+                    var lat = '<%= lat %>';
+                    var lng = '<%= lng %>';
 
-    <script type="text/javascript">
+                    var map = new GMap2(document.getElementById('map_canvas'));
+                    var location = new GLatLng(lat , lng);
+                    map.setCenter(location, 5);
+                    map.addControl(new GSmallMapControl());
 
-      google.load("maps", "2.x");
+                    var point = new GLatLng(lat , lng);
+                    marker = new GMarker(point);
+                    map.addOverlay(marker);
+                    });
+                </script>
 
-      $(document).ready(function(){
-
-        var lat = '<%= lat %>';
-        var lng = '<%= lng %>';
-
-        var map = new GMap2(document.getElementById('map_canvas'));
-        var location = new GLatLng(lat , lng);
-        map.setCenter(location, 5);
-        map.addControl(new GSmallMapControl());
-
-        var point = new GLatLng(lat , lng);
-        marker = new GMarker(point);
-        map.addOverlay(marker);
-      });
- 
-    </script>
-    <div id="map_canvas" style="width: 500px; height: 300px"></div>
-
-  </div>
+                <div id="map_canvas" style="width: 500px; height: 300px"></div>
+            </div>
+            <div class='section_notes'></div>
+        </div>
+        <div class='section_footer'></div>
+    </div>
 <% end %>

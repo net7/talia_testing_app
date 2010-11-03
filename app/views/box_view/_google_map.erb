@@ -1,0 +1,41 @@
+<div class='widget'>
+<% 
+        if !(coordinates = @source[N::DEMO.coordinates].first).nil? 
+            lat = coordinates.split(',').first
+            lng = coordinates.split(',').last
+            about = @source_name.gsub('_', ' ')
+%>
+
+    <div class='widgetHeader map'>
+        <h3 class='widgetHeaderTitle'>Map</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded map'>
+        <div class="map_canvas resizeme" style='width: 300px; height: 300px' about="<%= about %>"></div>
+        <script type="text/javascript">
+            // FIXME: added static dimension of the map_canvas to allow the map to pan to the
+            // given marker .. 
+            (function() {
+                var lat = '<%= lat %>',
+                    lng = '<%= lng %>',
+                    myLatlng = new google.maps.LatLng(lat, lng),
+                    myOptions = {
+                        zoom: 4,
+                        center: myLatlng,
+                        mapTypeId: google.maps.MapTypeId.HYBRID
+                    },
+                    map = new google.maps.Map($(".map_canvas[about='<%= about %>']")[0], myOptions),
+                    marker = new google.maps.Marker({
+                        position: myLatlng, 
+                        map: map
+                    });
+                gmaps['<%= about %>'] = map;
+            })();
+        </script>
+    </div>
+
+<% end %>
+
+</div>

@@ -1,90 +1,150 @@
-<h3 class="toggle">Sources timeline</h3>
-<div id="home_timeline">
-<%= timeline('tl', 
-	:bands => [{
-		:width => "70%",
-		:intervalUnit => 'DECADE',
-		:intervalPixels => 100,
-		:layout => 'original',
-		},
-		{
-			:width => "30%",
-			:intervalUnit => 'CENTURY',
-			:intervalPixels => 80,
-			:layout => 'original',
-			:syncWith => 0,
-			:overview => true,
-			:highlight => true
-			}
-                ], :data => { :source_finder => @conditions, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
-</div>
+<% sources = TaliaCore::Source.find(:all, @conditions) %>
+<div class="full_width" style="width: 100%;">
 
-<!--
-<h3 class="toggle closed">Sources map</h3>
--->
-<%
-    sources = TaliaCore::ActiveSource.find(:all, :prefetch_relations => true) 
-    coordinates = []
-    sources.each do |src|
-        unless(src[N::DEMO.coordinates].blank?)
-            coordinates << src[N::DEMO.coordinates].first.split(',')
-        end
-    end
-%>
-<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
-
-<h3 class="toggle">Filter</h3>
+<!-- Tool Filter -->
+<h3>Filter</h3>
+<p>You can use this tool to filter results in the table, map, images and timeline.
+<br />
+With "Clear filter" you can reset the filter and show all data.
+</p>
 <div id="home_filter">
-<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia)}) { |t| filter_link_for(t) }%>
-</div>
-
-
-<script type="text/javascript">
-$(document).ready(function() 
-    { 
-        $("#sources_table").tablesorter();
-    } 
-);
-</script>
-
+<%= ipod_dropdown('filter by type', N::SourceClass.subclass_hierarchy { |sc| sc.used? && (sc.to_uri.namespace != :owl) && (sc.to_uri.namespace != :rdfs) && (sc.to_uri.namespace != :rdf) && (sc.to_uri.namespace != :talia) && (sc.to_uri.namespace != :swicky) && (sc.to_uri.namespace != :discovery)}) { |t| filter_link_for(t) }%>
 <%= link_to 'clear filter', :action => 'index' if(params[:filter]) %>
+</div>
+<!-- Tool Filter -->
 
-<div class="sources_list">
-
-<h3>Sources found: <%= @sources.total_entries  %></h3>
-
-
-<table id="sources_table" class="tablesorter" style="width:100%;">
-	<thead> 
-	<tr> 
-	    <th>Types</th> 
-	    <th>Title</th>
-	<th>Data</th>
-	<th>View</th>  
-	</tr> 
-	</thead>
-	<tbody>
-<% for source in @sources %>
-<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource) || (!source.is_a?(TaliaCore::Source) && !source.is_a?(TaliaCore::ActiveSource))) %>
-
-
-<tr class="<%= cycle("even", "odd") %>" about="<%= source.uri %>">
- <td>
-	<span class="source_type"><%= type_images(source.types) %></span>
-</td>
- <td>
-	<span class="source_title" property="dc:title"><%= title_for(source) %></span>
- </td>
- <td>
-	<span class="source-data"><%= data_icons(source.data_records) %></span>
- </td>
- <td>
-	<span class="more"> <%= link_to 'more...', :action => 'dispatch', :dispatch_uri => N::URI.new(source.uri).local_name %></span>
- </td>
-</tr>
-<% end  %>
-</tbody>
-</table>
 </div>
 
-<%= will_paginate @sources %>
+
+<!-- Colonna di sinistra -->
+<div class="left_column">
+	<!-- Sources -->
+	<script type="text/javascript">
+	$(document).ready(function() 
+	    { 
+	        $("#sources_table").tablesorter();
+	    } 
+	);
+	</script>
+	
+	<div class="sources_list">
+	
+	<h3>Sources found:
+	  <%= @sources.total_entries  %>
+	  <%#=  @sources.count %>
+	
+	  <% if @filter %> (Showing only <%= label_for(@filter) %>)<% end %>
+	
+	</h3>
+	
+	  <table id="sources_table" class="tablesorter" style="width:100%;">
+		<thead> 
+		<tr> 
+		    <th>Types</th> 
+		    <th>Title</th>
+		<th>Data</th>
+		<th>View</th>  
+		</tr> 
+		</thead>
+		<tbody>
+	<% for source in @sources %>
+	<% next if(source.is_a?(TaliaCore::SourceTypes::DummySource) || (!source.is_a?(TaliaCore::Source) && !source.is_a?(TaliaCore::ActiveSource))) %>
+	
+	
+	<tr class="<%= cycle("even", "odd") %>" about="<%= source.uri %>">
+	 <td>
+		<span class="source_type"><%= type_images(source.types) %></span>
+	</td>
+	 <td>
+		<span class="source_title" property="dc:title"><%= title_for(source) %></span>
+	 </td>
+	 <td>
+		<span class="source-data"><%= data_icons(source) %></span>
+	 </td>
+	 <td>
+		<span class="more"> <%= link_to 'more...', :action => 'dispatch', :dispatch_uri => N::URI.new(source.uri).local_name %></span>
+	 </td>
+	</tr>
+	<% end  %>
+	</tbody>
+	</table>
+	</div>
+	
+	<%= will_paginate @sources %>
+	<!-- Sources -->
+</div>
+<!-- Colonna di sinistra -->
+
+
+
+<!-- Colonna di destra -->
+<div class="right_column" style="width: 50%; float: right;">
+
+  	<% timeline_thing =  timeline('tl',
+		:bands => [{
+				:width => "70%",
+				:intervalUnit => 'DECADE',
+				:intervalPixels => 100,
+				:layout => 'original',
+				},
+				{
+				:width => "30%",
+				:intervalUnit => 'CENTURY',
+				:intervalPixels => 80,
+				:layout => 'original',
+				:syncWith => 0,
+				:overview => true,
+				:highlight => true
+				}
+	                ], :data => { :sources => sources, :color => "#567DBB", :start_property => [N::DEMO.birth_date, N::DEMO.beginning_date, N::DEMO.date], :end_property => [N::DEMO.death_date, N::DEMO.finished_in, N::DEMO.end_date] } )%>
+	<!-- Tool Timeline -->
+        <% if timeline_thing %>
+	<h3 class="toggle">Sources timeline</h3>
+	<div id="home_timeline">
+          <%= timeline_thing %>
+	</div>
+        <% end %>
+	<!-- Tool Timeline -->
+	
+	
+	
+	
+	<br />
+	
+	
+	
+	
+	<!-- Tool Google Map -->
+	<%
+
+	    coordinates = []
+	    sources.each do |src|
+	        unless(src[N::DEMO.coordinates].blank?)
+	            coordinates << {:uri => src.uri, :title => title_for(src), :coordinates => src[N::DEMO.coordinates].first.split(',')}
+	        end
+	    end
+	%>
+
+<%= render :partial => 'google_multi', :locals => { :coordinates => coordinates } unless(coordinates.blank?)%>
+	<!-- Tool Google Map -->
+	
+	
+	
+	
+	<br />
+	
+	
+	
+	
+	<!-- Tool Image Carousel -->
+	<% # we already have sources from the google_multi partial above
+	   # uncomment this if moved away
+	   # sources = TaliaCore::Source.find(:all, @conditions) %> 
+	<%= render :partial => 'amazon_scroller', :locals => {:sources => sources} %>
+	<!-- Tool Image Carousel -->
+</div>
+<!-- Colonna di destra -->
+
+<div style="clear: both"></div>
+
+

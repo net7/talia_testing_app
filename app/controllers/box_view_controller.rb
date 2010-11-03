@@ -58,7 +58,7 @@ class BoxViewController < ApplicationController
   def render_filter
     filter = params[:type]
 
-    qry = ActiveRDF::Query.new.select(:t)
+    qry = ActiveRDF::Query.new(N::URI).select(:t)
     qry.where(:t, N::RDF.type, N::URI.make_uri(filter, '+'))
     @elements = qry.execute
 
@@ -72,20 +72,53 @@ class BoxViewController < ApplicationController
   def render_source
     source_uri = Base64.decode64(params[:resource])
     @source = TaliaCore::ActiveSource.find(source_uri)
-    
+    @source_name = @source.uri.to_uri.local_name.to_s.gsub('_', ' ')
+    html = ''
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
     if  N::DEMO.Person.in? types
-      html = render_to_string :person
-    elsif N::DEMO.City.in? types
-      html = render_to_string :city
+      html += render_to_string :person
+    elsif N::DEMO.Sanctuary.in? types
+      html += render_to_string :sanctuary
+    elsif N::DEMO.Place.in? types
+      html += render_to_string :place
+    elsif N::DEMO.Transcription.in? types
+      html += render_to_string :transcription
+    elsif N::DEMO.Manuscript.in? types
+      html += render_to_string :manuscript
+    elsif N::DEMO.Event.in? types
+      html += render_to_string :event
     else
-      html = render_to_string :source
+      html += render_to_string :source
     end
-    data = {'box' => TaliaCore::ActiveSource.find(source_uri).uri.to_uri.local_name.to_s.gsub('_', ' ')}
+    #    html += render_to_string :graph
+    data = {'box' => @source_name}
 
     render_json(0, html, data)
   end
 
+  def graph_xml
+    
+    source_uri = Base64.decode64(params[:id])
+    @source = TaliaCore::ActiveSource.find(source_uri)
+
+    xml = Builder::XmlMarkup.new(:indent => 2)
+
+    xml.graph(:title => '', :bgcolor => 'ffffff', :linecolor => 'cccccc', :viewmode => 'display', :hideLabel => true) {
+
+      # Root node, bigger and with a different color
+      xml.node(:id => Base64.encode64s(@source.uri.to_s), :text => '', :scale => 140, :color => 'cc9900', :textcolor => "ff0000", :hideLabel => true)
+
+      @source.direct_predicates.each do |p|
+        xml.node(:id => Base64.encode64s(p.uri.to_s), :title => 'Titolo nodo', :text => @source[p].values_with_lang(I18n.locale.to_s), :scale => 100, :color => 'ffcc00', :textcolor => "ff0000")
+      end
+
+      @source.direct_predicates.each do |p|
+        uri = p.to_uri
+        xml.edge(:sourceNode => Base64.encode64s(p.uri.to_s), :targetNode => Base64.encode64s(@source.uri.to_s), :label => p.to_name_s, :textcolor => "000000")
+      end
+    }
+    render :xml => xml
+  end
 
   private
 

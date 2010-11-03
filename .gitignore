@@ -1,6 +1,11 @@
 nbproject
-log
 data
 /sesame*
 vendor
 talia_demo_data
+talia_core.yml
+database.yml
+rdfstore.yml
+/config/talia_core.yml
+/config/database.yml
+/config/rdfstore.yml

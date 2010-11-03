@@ -27,7 +27,7 @@
 <def tag="form" for="TaliaSource">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="uri, type" param/>
+    <field-list fields="" param/>
     <div param="actions">
       <submit label="#{ht 'talia_sources.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

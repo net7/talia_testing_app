@@ -3,18 +3,31 @@ var myBoxView = null,
     myEztip = null,
     myPrefs = null,
     myAnchorMan = null,
+    myBookmarks = null,
+    // zeroclipboard
+    clip = null,
     // Default language
     myLang = "it",
     // Ajax get/post method, url to get data from
     ajaxMethod = "get",
     ajaxApiUrl = "/boxView/dispatch",
     // List of boxes we are currently loading
-    boxesBeingLoaded = {};
-
+    boxesBeingLoaded = {},
+    // Google maps loaded, the key is the box id
+    gmaps = [];
 
 $(document).ready(function() {
+
     // Used to decide wether or not load the intro box
     var isEmpty = true;
+
+    // Google analytics initialization
+    var _gaq = _gaq || [], _pageTracker;
+    _gaq.push(['_setAccount', 'UA-17604259-1']);
+    _gaq.push(['_trackPageview']);
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     
     // Resize pageContent and menuContainer heights to fill the page, even on window resize
     $('#pageContent,#menu_container').height(($(window).height() - $('#pageHeader').height() - 1));
@@ -41,15 +54,33 @@ $(document).ready(function() {
         "onReplace": function() { myAnchorMan.set_section("bv", myBoxView.getAnchorManDesc()); } 
     });
 
-    // Config for tooltips and preferences
-    myEztip = new $.eztip({ selector: 'a'});
-    myPrefs = new $.doniPrefs({ boxView: myBoxView, eztip: myEztip });
+    // Tooltips
+    myEztip = new $.eztip({selector: 'a, p.boxTool'});
 
-	myAnchorMan = new $.anchorMan({"debug": false, "checkBackButtonTimerMS": 250, "useCookie": false});
+    // Bookmarks
+    myBookmarks = new $.bookmarks({
+                        boxView: myBoxView, 
+                        ezTip: myEztip, 
+                        bookmarkServer: ajaxApiUrl,
+                        debug: false});
+
+    // .. and preferences
+    myPrefs = new $.doniPrefs({ boxView: myBoxView, eztip: myEztip, bookmarks: myBookmarks, debug: false });
+
+    myAnchorMan = new $.anchorMan({debug: false, "checkBackButtonTimerMS": 250, "useCookie": false});
 	myAnchorMan.add_callbacks("bv", {	
 	    "onAdd": 
 			function(myId, myResId, ty, co, qstring) {
 			    isEmpty = false;
+                if (ty == "myDoni" && myPrefs.isLoggedIn()) {
+                    var data_values = getParametersFromUrl(qstring);
+                    data_values['method'] = "getMyDoniLoggedIn";
+                    data_values['u'] = myBookmarks._user;
+                    data_values['p'] = myBookmarks._pass;
+                    data_values['href'] = qstring;
+                    _loadAuthResource(data_values, myId);
+                    return false;
+                }
                 _loadResource("", qstring, myId, co);
 			},
 		"onRemove":
@@ -76,8 +107,22 @@ $(document).ready(function() {
 	
 	});
 
+    // ZeroClipboard
+    ZeroClipboard.setMoviePath('css/ZeroClipboard.swf');
+    clip = new ZeroClipboard.Client();
+    clip.setHandCursor(true);
+
+    // Clicked on zeroClipboard button
+    clip.addEventListener('onComplete', function(client, text) {
+        alert("Copiato il link nella clipboard:\n" + text);
+        setTimeout(function() { 
+            $('li#copy_button_li').removeClass('copy').addClass('link');
+            $('li#url_to_copy').hide(500);
+        }, 2000);
+    });
+
 	myAnchorMan.call_init_callbacks();
-	
+
     // Load the introduction box right away, if there's no other loaded boxes
     if (isEmpty) _loadResource($('#introButton'));
     updateUndoButton();
@@ -85,14 +130,61 @@ $(document).ready(function() {
 }); // doc.ready()
 
 
+// Auto select on focus
+$('li#url_to_copy input').live('mouseover', function() {
+   $(this).focus();
+   $(this).select(); 
+});
+
+// Copy Link
+$('a#link').live('click', function() {
+
+    displayLoading();
+    var len = (myPrefs.get('animations')) ? myPrefs.get('animationsLength') : 0;
+	
+    var url = getCurrentShortenedUrl(function (data) {
+        clip.setText(data);
+        $('li#url_to_copy input').val(data);
+        // $('li#url_to_copy input')[0].focus();
+        $('li#url_to_copy input')[0].select();
+        hideLoading();
+
+        $('li#url_to_copy').show(len, function() { 
+            $('li#copy_button_li').removeClass('link').addClass('copy');
+            clip.glue('copy_button'); 
+            clip.show();
+            clip.setText(data);
+        });
+
+    });
+    return false;
+});
+
+// MyDoni button on the upper left toolbar
+$('a#myDoni').live("click", function() {
+    if (myPrefs.isLoggedIn()) {
+        var data_values = getParametersFromUrl($(this).attr('href'));
+        data_values['method'] = "getMyDoniLoggedIn";
+        data_values['u'] = myBookmarks._user;
+        data_values['p'] = myBookmarks._pass;
+        data_values['href'] = $(this).attr('href');
+        _loadAuthResource(data_values);
+        return false;
+    } else
+        return _loadResource($(this));
+});
+
 // Undo !
 $('a#undoButton').live("click", function() {
-	myBoxView.undo();
-	updateUndoButton();
+    window.history.back();
+    return false;
 });
 
 // .resource links management, all around the boxes
 $('a.resource').live("click", function() {
+    var box_id = $(this).parents('div.box').attr('id');
+    if (myBoxView.isLoading(box_id)) 
+        return false;
 	return _loadResource($(this));
 });
 
@@ -109,7 +201,11 @@ $('a.quotation_link').live("click", function() {
 
 function _loadResource(link, givenHref, givenId, givenCollapsed) {
 
-    // console.log("LOAD RESOURCE "+link+" - ", givenHref);
+    // Set last link as "last_visited", other visited to "visited"
+    if (typeof link.addClass == "function") {
+        $('a.last_visited').removeClass('last_visited').addClass('visited');
+        link.addClass('last_visited');
+    }
 
     var href = (typeof(givenHref) == 'undefined') ? link.attr('href') : givenHref,
         data_values = getParametersFromUrl(href),
@@ -117,8 +213,8 @@ function _loadResource(link, givenHref, givenId, givenCollapsed) {
         context = data_values['contexts'],
         info = getBoxInfoFromMethod(data_values['method']);
 
-    if (data_values['method'] == "getIndex")
-        return _loadIndex(link, givenHref);
+    if (data_values['method'] == "filter")
+        return _loadIndex(link, givenHref, givenCollapsed);
     
     $.ajax({
         type: ajaxMethod,
@@ -130,13 +226,12 @@ function _loadResource(link, givenHref, givenId, givenCollapsed) {
             if (checkJson(data, h) == false)
                 return false;
 
-            // console.log("AddBOX with "+h);
-
-            if (typeof givenId != "undefined")
+            if (typeof givenId != "undefined") 
                 myBoxView.addBox(h['html'], {id: givenId, collapsed: givenCollapsed, qstring: href, resId: "b_"+$.base64Decode(resource), type: info.boxType, title: h.data.box, verticalTitle: info.vertPrefix+' '+h.data.box});
-            else
+            else 
                 myBoxView.addBox(h['html'], {qstring: href, resId: "b_"+$.base64Decode(resource), type: info.boxType, title: h.data.box, verticalTitle: info.vertPrefix+' '+h.data.box});
-                
+            myBookmarks.addBox(href, myBoxView.getIdFromResId("b_"+$.base64Decode(resource)), h.data.box, info.boxType, info.vertPrefix);
+            gTrack(href);
             return false;
         }
     });
@@ -145,44 +240,45 @@ function _loadResource(link, givenHref, givenId, givenCollapsed) {
 	
 } // _loadResource()
 
+// Will load an entire box using the direct data_values
+function _loadAuthResource (data_values, givenId) {
+    var href = data_values.href,
+        resource = data_values['resource'],
+        context = data_values['contexts'],
+        info = getBoxInfoFromMethod(data_values['method']);
+    
+    $.ajax({
+        type: 'POST',
+        url: ajaxApiUrl, 
+        data: data_values, 
+        success: function(data) {
+
+            var h = {};
+            if (checkJson(data, h, true) == false) 
+                return false;
+            
+            if (typeof givenId != "undefined") 
+                myBoxView.addBox(h['html'], {id: givenId, qstring: href, resId: "b_"+$.base64Decode(resource), type: info.boxType, title: h.data.box, verticalTitle: info.vertPrefix+' '+h.data.box});
+            else
+                myBoxView.addBox(h['html'], {qstring: href, resId: "b_"+$.base64Decode(resource), type: info.boxType, title: h.data.box, verticalTitle: info.vertPrefix+' '+h.data.box});
+            myBookmarks.addBox(href, myBoxView.getIdFromResId("b_"+$.base64Decode(resource)), h.data.box, info.boxType, info.vertPrefix);
+            gTrack(href);
+            return false;
+            
+        } // success()
+    });
+} // _loadAuthResource
+
 
 // Menu items: will call a getIndex or getIndexByFeature
 $('div#menu_container a.indexLink').live("click", function() {
 	return _loadIndex($(this));
-
-   /*
-    var href = $(this).attr('href'),
-        data_values = getParametersFromUrl(href),
-        type = data_values['type'],
-        feature = data_values['feature'],
-        method = data_values['method'],
-        contexts = data_values['contexts'],
-        uniqueName = method+type+feature;
-    
-    $.ajax({
-        type: ajaxMethod,
-        url: ajaxApiUrl, 
-        data: data_values, 
-        success: function(data) { 
-
-            var h = {};
-            if (checkJson(data, h) == false)
-                return false;
-
-            myBoxView.addBox(h['html'], {qstring: href, resId: "index_" + uniqueName + "_" + contexts, type: 'index', title: h.data.box, verticalTitle: h.data.box});
-            return false;
-        }
-    });
-    
-    return false;
-    */
 });
 
-function _loadIndex(link, givenHref) {
-
-    // console.log("LOAD INDEX "+link+" - ", givenHref);
+function _loadIndex(link, givenHref, givenCollapsed) {
 
     var href = (typeof(givenHref) == 'undefined') ? link.attr('href') : givenHref,
+        collapsed = (typeof(givenCollapsed) == 'undefined') ? 0 : parseInt(givenCollapsed),
         data_values = getParametersFromUrl(href),
         type = data_values['type'],
         feature = data_values['feature'],
@@ -200,7 +296,8 @@ function _loadIndex(link, givenHref) {
             if (checkJson(data, h) == false)
                 return false;
 
-            myBoxView.addBox(h['html'], {qstring: href, resId: "index_" + uniqueName + "_" + contexts, type: 'index', title: h.data.box, verticalTitle: h.data.box});
+            myBoxView.addBox(h['html'], {qstring: href, collapsed: collapsed, resId: "index_" + uniqueName + "_" + contexts, type: 'index', title: h.data.box, verticalTitle: h.data.box});
+            gTrack(href);
             return false;
         }
     });
@@ -215,8 +312,13 @@ $("div.box div.widgetHeaderTools p.collapse a").live("click", function() {
 
     var t = $(this),
         h = t.parents('div.widgetHeader').next(),
+        box_id = $(this).parents('div.box').attr('id'),
         len = 0;
-        
+
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
+
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
 
@@ -243,8 +345,13 @@ $("div.box div.widgetHeaderTools p.collapse a").live("click", function() {
 $("div.box span.field_title").live("click", function() { 
 
     var t = $(this), 
-        n = t.next(), 
+        n = t.next(),
+        box_id = $(this).parents('div.box').attr('id'),
         len = 0;
+
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
 
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
@@ -276,6 +383,10 @@ $("div.box p.fenomeni a").live("click", function() {
     var box_id = $(this).parents('div.box').attr('id'),
         fenBox = $("div.box#"+box_id+" div.fenomeni"),
         len = 0;
+
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
 
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
@@ -313,7 +424,7 @@ $("div.box div.fenomeni a.highlight").live("click", function() {
 
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
-        
+
     $('div.box#'+box_id+' span.highlight').removeClass('selected');    
     $('div.box#'+box_id+' span.highlight.'+hi).addClass("selected");
 
@@ -333,7 +444,7 @@ $('div.box a.fen_clear_highlight').live("click", function() {
 
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
-        
+
     $('div.box#'+box_id+' span.highlight').removeClass('selected');    
     $("div.box#"+box_id+" div.fenomeni a").removeClass('selected');
 
@@ -352,6 +463,10 @@ $("div.box a.inBoxNavigation").live("click", function() {
         box_id = $(this).parents('div.box').attr('id'),
         // context = data_values['contexts'],
         info = getBoxInfoFromMethod(data_values['method']);
+
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
 
 	// If we have at least a facsimile box open.. let's try to move to
 	// next or prev facsimile as well
@@ -389,6 +504,8 @@ $("div.box a.inBoxNavigation").live("click", function() {
 
                     myBoxView.replaceBoxContent(fac_box_id, {newQstring: fac_href, newContent: h['html'], newResId: new_fac_res_id, newTitle: h.data.box, newVerticalTitle: fac_info.vertPrefix+' '+h.data.box});
 					myBoxView.setLoading(fac_box_id, false);
+                    myBookmarks.addBox(href, fac_box_id, h.data.box, 'facsimile', info.vertPrefix);
+                    gTrack(fac_href);
 		            return false;
 		        }
 		    });
@@ -409,7 +526,11 @@ $("div.box a.inBoxNavigation").live("click", function() {
                 return false;
 
             myBoxView.replaceBoxContent(box_id, {newQstring: href, newContent: h['html'], newResId: "b_"+$.base64Decode(resource), newTitle: h.data.box, newVerticalTitle: info.vertPrefix+' '+h.data.box});
+
 			myBoxView.setLoading(box_id, false);
+            myBookmarks.addBox(href, box_id, h.data.box, 'transcription', info.vertPrefix);
+            gTrack(href);
+
             return false;
         }
     });
@@ -429,6 +550,10 @@ $('div.box div.boxIndexNodeTools p.collapse a.collapsed').live("click", function
         div = self.parent().parent(),
         box_id = self.parents('div.box').attr('id'),
         len = 0;
+
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
 
 	if (myPrefs.get('animations'))
 	    len = myPrefs.get('animationsLength');
@@ -482,6 +607,10 @@ $('div.box div.boxIndexNodeTools p.vista a.indexSwitchView').live("click", funct
         div = self.parent().parent(),
         box_id = self.parents('div.box').attr('id');
 
+    // Interrupt if the box is already loading something else
+    if (myBoxView.isLoading(box_id))
+        return false;
+
     // What view do we have to load ? 
     if (div.hasClass('tree')) {
         href = self.attr('href');
@@ -528,55 +657,6 @@ $('div.box div.boxIndexNodeTools p.vista a.indexSwitchView').live("click", funct
     
     return false;
 });
-
-
-
-// ImageMapperTool Viewer handling
-
-// Initialization: IMT will call this when it's ready to load an image
-function jsapi_initializeIMW(id) {
-	var b64 = $('#'+id+" embed").attr('b64');
-	getFlashObject(id).initialize(b64, 1);
-} // jsapi_initializeIMW()
-
-function getFlashObject(movieName) {
-	if (navigator.appName.indexOf("Microsoft") != -1) {
-		return window[movieName];		
-	} else {
-		var obj = document[movieName];
-		if (obj.length != 'undefined') {
-			for(var i=0;i<obj.length;i++) { 
-				if(obj[i].tagName.toLowerCase() == 'embed') return obj[i]; 
-			}
-		}
-		return obj;
-	}
-}
-
-function jsapi_mouseOver(fid, ki) {	
-	$("span.image-keyword[title='"+ki+"']").addClass('highlight');
-}
-function jsapi_mouseOut(fid, ki) {
-	$("span.image-keyword[title='"+ki+"']").removeClass('highlight');
-}
-function jsapi_mouseClick(fid, ki) {
-	return true;
-}
-$('span.image-keyword').live("mouseover", function() {
-	var fid = $(this).parents('div.box').find('object.IMTViewer').attr('id');
-	var kid = $(this).attr('title');
-	getFlashObject(fid).setPolygonHighlighted(true, kid);
-	return true;
-});
-
-$('span.image-keyword').live("mouseout", function() {
-	var fid = $(this).parents('div.box').find('object.IMTViewer').attr('id');
-	var kid = $(this).attr('title');
-	getFlashObject(fid).setPolygonHighlighted(false, kid);
-	return false;
-});
-
-
 
 // boxIndexNodeTools .expanded: expanded index link, inside the index box, will
 // collapse (removing the div) its box

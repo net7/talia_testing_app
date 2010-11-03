@@ -1,0 +1,82 @@
+<div class='widget'>
+
+  <%= render :partial => 'google_map' %>
+
+  <%= render :partial => 'description' %>
+
+  <div class='widgetHeader metadata'>
+    <h3 class='widgetHeaderTitle'>Relations</h3>
+    <div class='widgetHeaderTools'>
+      <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    </div>
+  </div>
+  <div class='widgetContent expanded metadata'>
+    <% source_label = title_for(@source) %>
+
+    <% unless (density = @source[N::DEMO.density].first).nil? or
+        (population = @source[N::DEMO.population].first).nil?
+    %>
+      <p>
+        <%= source_label %> has a population of <%= population %> inhabitants and a density of <%= density %>.
+      </p>
+    <% end %>
+
+    <% unless (is_capital_of = @source.inverse[N::DEMO.capital].first).nil? %>
+      <p>
+        <%= source_label %> was the capital of
+        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(is_capital_of.to_uri.to_s) %>&type=source">
+          <%= title_for(is_capital_of) %>
+        </a>
+      </p>
+    <% end %>
+
+    <% unless (born_here = @source.inverse[N::DEMO.birthplace]).empty? %>
+      <p>
+        <% i = 1 %>
+        <%  born_here.each do |b| %>
+          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(b.to_uri.to_s) %>&type=source">
+            <%= title_for(b) %></a><% if i < born_here.count %>, <%end%><% i = i + 1 %>
+          <% end %>
+        <% if born_here.count > 1%> were <% else %> was <% end %>born in <%= source_label %>
+      </p>
+    <% end %>
+
+    <% unless (died_here = @source.inverse[N::DEMO.birthplace]).empty? %>
+      <p>
+        <% i = 1 %>
+        <%  died_here.each do |d| %>
+          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(d.to_uri.to_s) %>&type=source">
+            <%= title_for(d) %></a><% if i < died_here.count %>, <%end%><% i = i + 1 %>
+          <% end %>
+        died in <%= source_label %>
+      </p>
+    <% end %>
+
+
+      <% located_in = []
+        @source.inverse[N::DEMO.city].each do |tmp|
+          located_in << tmp
+        end
+        @source.inverse[N::DEMO.located_in].each do |tmp|
+          located_in << tmp
+        end
+    %>
+
+      <% unless located_in.empty? %>
+      <p>
+        <% i = 1 %>
+        <% located_in.each do |l| %>
+          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(l.to_uri.to_s) %>&type=source">
+            <%= title_for(l) %></a><% if i < located_in.count %>, <%end%><% i = i + 1 %>
+          <% end %>
+        <% if located_in.count > 1 %>are<% else %>is<% end%> located in <%= source_label %>
+      </p>
+
+
+
+      <% end %>
+    <%= render :partial => 'more_info' %>
+  </div>
+
+
+</div>

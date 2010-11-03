@@ -56,6 +56,9 @@
 
             // The current anchor you can read on the URL
             this.current_anchor = "";
+            this.last_parsed_anchor = "";
+            
+            this.checking = false;
 
             // Will keep the values taken from the URL's anchor
             this.values = {};
@@ -157,7 +160,20 @@
 
         check_url: function() {
 
+            if (this.checking == true) {
+                if (this.options.debug) console.log("Already checking .. SO FAST? zomg .. ");
+                return false;
+            }
+
+            this.checking = true;
+
             if (document.location.hash.substring(1) != this.current_anchor) {
+
+                if (this.last_parsed_anchor == document.location.hash.substring(1)) {
+                    if (this.options.debug) console.log("Already parsed this location hash .. interrupting :|");
+                    this.checking = false;
+                    return false;
+                }
 
                 // Copy old values hash into a temporary variable
                 var oldValues = $.extend({}, this.values, {});
@@ -288,7 +304,10 @@
 
                 } // for name
 
+                this.last_parsed_anchor = document.location.hash.substring(1);
             } // if doc.loc.hash != current_anchor
+    
+            this.checking = false;
  
        	}, // check_url()
 
@@ -411,12 +430,15 @@
         // into url's anchor and cookie, if needed
         save: function() {
 
+
             // build the anchor from the saved hash
             this.current_anchor = $.base64Encode(this.build_anchor(this.values));
 
 			// save cookie and url's anchor if needed
-            if (this.options.useUrl && document.location.hash.substring(1) != this.current_anchor) 
-					document.location.hash = this.current_anchor;
+            if (this.options.useUrl && document.location.hash.substring(1) != this.current_anchor) {
+                if (this.options.debug) console.log("Saving new current anchor "+this.current_anchor+ " old was "+document.location.hash);
+				    document.location.hash = this.current_anchor;
+			}
 			
             if (this.options.useCookie)
             	this.set_cookie();

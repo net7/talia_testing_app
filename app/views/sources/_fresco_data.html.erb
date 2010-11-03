@@ -1,0 +1,36 @@
+<h3 class="toggle">Data</h3>
+<div class="section data">
+    <div class='section_header'></div>
+    <div class='section_content_container'>
+        <div class='section_content'>
+            
+            <% unless @source.demo.inspired_by.first.nil? %>
+            <p>Inspired by: 
+                <% @source.demo.inspired_by.each do |inspiration| %>
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(inspiration.uri.to_s)), 
+                        { :controller => 'sources', :action => 'dispatch', :dispatch_uri => inspiration.uri.local_name}) %>
+                <% end %>
+            </p>
+            <%  end %>
+            
+            <p>Authors: 
+                <%  @source.inverse[N::DEMO.author_of].each do |author| %>
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(author.uri.to_s)), 
+                        { :controller => 'sources', :action => 'dispatch', :dispatch_uri => author.uri.local_name}) %>
+                <% end %>
+            </p>
+            
+            <% unless @source.inverse[N::DEMO.depicted_in].first.nil? %>
+            <p>Depicts: 
+                <% @source.inverse[N::DEMO.depicted_in].each do |depiction|%>
+                    <%= link_to(title_for(TaliaCore::ActiveSource.find(depiction.uri.to_s)),
+                        { :controller => 'sources', :action => 'dispatch', :dispatch_uri => depiction.uri.local_name}) %>
+                <% end %>
+            </p>
+            <% end %>
+
+        </div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
+</div>

@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html>
+	<head>
+		<title>Flexip MOD</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript" src="scripts/swfobject.js"></script>
+		<script type="text/javascript" src="scripts/flexip_api.js"></script>		
+		<script type="text/javascript">	
+			if(!window.console || !window.console.firebug) console = {log: function(e) {}, warn: function(a) {}, error: function(a) {}};
+			
+			var now = new Date();
+			var ff;
+			var myFjsApi = new FJSAPI(	'myFjsApi',
+										'flexIP_0',
+										'myAlternativeContent',
+										'100%',
+										'100%',
+										'9.0.0',
+										'modules/comm/sicar/communication.swf',
+										//'modules/image/multisimple/imageHolder.swf',
+										'modules/image/simple/imageHolder.swf',
+										//'modules/image/iip/imageHolder.swf',
+										//'modules/SideMenu.swf',
+										'modules/SideMenuSicar.swf',
+										//'skins/sicar/skin.swf?anticache='+(new Date()).getTime()
+										'skins/talia/skin.swf?anticache='+(new Date()).getTime()
+										);
+			//myFjsApi.openLogWindow();
+			myFjsApi.allModulesLoaded = allModulesLoaded;
+			myFjsApi.commInterfaceSettingsParseEnd = commInterfaceSettingsParseEnd;
+			myFjsApi.commInterfaceSettingsParseError = commInterfaceSettingsParseError;
+			myFjsApi.imageLoaded = imageLoaded;
+			//myFjsApi.imageMetadataLoaded = imageMetadataLoaded;
+			myFjsApi.commDataParseEnd = commDataParseEnd
+			myFjsApi.initialize();
+			
+			var ttt = '<span>facciata tergale</span><input type="slider" id="0" /><span>facciata tergale verdina</span><input type="slider" id="1" />';
+			
+			function allModulesLoaded()
+			{
+				console.log("caricamento moduli completato");
+				ff = this.flexipRef;
+				this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.xml');	
+				//this.flexipRef.commLoadInterfaceSettings('data/interfaceSettings.json');	
+				this.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
+				//this.flexipRef.imageLoadSource('data/img/testicon1.png');
+				//this.flexipRef.imageLoadSource('data/img/campeggio.gif');
+				//setImageSource(0);
+			}
+			
+			function commInterfaceSettingsParseEnd()
+			{
+				myFjsApi.flexipRef.messageBoxHide();				
+				myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/globe.256x256.tif');
+				//myFjsApi.flexipRef.imageLoadSource('http://merovingio.c2rmf.cnrs.fr/fcgi-bin/iipsrv.fcgi?FIF=/home/eros/iipimage/heic0601a.tif');
+				//myFjsApi.flexipRef.imageLoadSource('data/img/facciata_tergale.jpg');
+			}
+			
+			function commInterfaceSettingsParseError()
+			{
+				myFjsApi.flexipRef.messageBoxHide();				
+			}
+			
+			function imageLoaded()
+			{
+				myFjsApi.flexipRef.messageBoxHide();	
+				myFjsApi.flexipRef.commLoadData('data/data.zip',true);			
+				//myFjsApi.flexipRef.commLoadData('data/datasaved.xml');
+				//myFjsApi.flexipRef.commLoadData('data/dataempty.xml');
+			}
+			
+			function imageMetadataLoaded()
+			{
+				myFjsApi.flexipRef.messageBoxHide();	
+				myFjsApi.flexipRef.commLoadData('data/data.zip',true);	
+			}
+			
+			function commDataParseEnd()
+			{
+				console.log("commDataParseEnd");
+				myFjsApi.flexipRef.messageBoxHide();
+			}
+			
+			function test0()
+			{
+				var obj = { toolBarID	: "shapes1",
+							headerLabel	: "Shapes1",
+							buttons:
+							[
+								{ 	styleName: 		"iconSelectTool",
+									functionCode:	22,
+									toolTip:		"Pointer Tool",
+									toggleMode:		true,
+									groupID:		"group0"
+								},
+								{	
+									styleName		: "iconDrawPoly",
+									functionCode	: 19,
+									toolTip			: "Draw polygon free hand",
+									toggleMode		: true,
+									groupID			: "group0"
+								},
+								{	
+									styleName		: "iconDrawPoly",
+									functionCode	: 9,
+									toolTip			: "Draw polygon",
+									toggleMode		: true,
+									groupID			: "group0"
+								},
+								{	
+									styleName		: "iconRectangle",
+									functionCode	: 10,
+									toolTip			: "Draw rectangle",
+									toggleMode		: true,
+									groupID			: "group0"
+								},
+								{	
+									styleName		: "iconCircle",
+									functionCode	: 11,
+									toolTip			: "Draw circle",
+									toggleMode		: true,
+									groupID			: "group0"
+								}								
+							]
+				};
+				myFjsApi.flexipRef.sideMenuAddToolBar(obj);				
+			}
+			
+			function test1()
+			{
+				var layers = [	{ 	itemID	: "item000", 
+									opened: "true", 
+									layerType: "category", 
+									headerIcon	: "iconDelete",	
+									title: "Primo layer categoria", 
+									subtitle: "icona delete",
+									children:[
+										{ 	itemID : "item_a",
+											opened : "true",
+											layerType : "shapesContainer",
+											title: "Primo sub layer sc", 
+											subtitle: "numero poligoni 72<-finto"
+										}									
+									]
+								},
+								{ 	itemID	: "item001", 
+									opened: "true", 
+									layerType: "shapesContainer",
+									title: "Scogli", 
+									subtitle: "Sottotitolo"
+								}
+							];
+				myFjsApi.flexipRef.sideMenuAddChildLayer(layers[0]);
+				myFjsApi.flexipRef.sideMenuAddChildLayer(layers[1]);
+			}
+			
+			function test2()
+			{
+				myFjsApi.flexipRef.addLayerOperationButton({styleName: "iconTrash", functionCode: 34});
+			}
+			
+			function rem(id)
+			{
+				myFjsApi.flexipRef.sideMenuRemoveChildLayer(id);
+			}
+			
+			function shape(id)
+			{
+				var layerID= 'layer_3681';
+				var shapeID= id;
+				var shapeType= 'poly';
+				var shapeData = [[0.23739397649363,0.71350146914789],[0.23693805093046,0.71308031341822],[0.23641209598433,0.71294074436827],[0.23543021547502,0.71301175318315],[0.2344833496572,0.71325661116552],[0.23392238001959,0.7136777668952],[0.23390719882468,0.71375857002938],[0.2343430460333,0.71399363369246],[0.23483398628795,0.71458863858962],[0.23518462291871,0.71490450538688],[0.2356055337904,0.71500734573947],[0.23623677766895,0.71493878550441],[0.23665744368266,0.7147624877571],[0.23683300685602,0.71444906953967],[0.23721865817826,0.71427277179236]];
+				myFjsApi.flexipRef.addShapeToLayer(layerID, shapeID, shapeType, shapeData);
+			}
+			
+			function skin0()
+			{
+				var now = new Date();
+				myFjsApi.flexipRef.loadSkin('skins/default/skin.swf?anticache='+now.getTime());
+			}
+			
+			function skin1()
+			{
+				var now = new Date();
+				myFjsApi.flexipRef.loadSkin('skins/maree/skin.swf?anticache='+now.getTime());
+			}
+			
+			function clear()
+			{
+				myFjsApi.flexipRef.clearLayers();
+			}
+			
+			var initObject = { 	text_array:[
+										{label:'Esempio richiesta autenticazione', label_is_title:true},
+										{input:'username', input_title:'Inserisci il tuo username'},
+										{input:'', input_title:'Inserisci la tua password', input_is_pwd:true},
+										{input_list: [ 
+											{label:"User", data:1}, 
+											{label:"Super user", data:2}, 
+											{label:"Admin", data:3} ] }
+									],
+									
+									btn_array:[
+										{btn_label:'login', btn_callback:'myLoginFunction'},
+										{btn_label:'annulla'}
+									] };
+									
+				function myLoginFunction(returnObject){
+					console.log('username:'+returnObject.return_inputs[0]);
+					console.log('password:'+returnObject.return_inputs[1]);
+					console.log('tipo: '+returnObject.return_inputs[2].label+" ("+returnObject.return_inputs[2].data+")");
+					console.log('btn: '+returnObject['return_button_label']);
+				}
+			
+			
+			
+			function aaa(id)
+			{
+				var textHTML = '<html>'+ttt+'</html>';//'<html>'+document.getElementById('testhtml').innerHTML+'</html>';
+				console.log(textHTML);
+				console.log(myFjsApi.flexipRef.sideMenuSicarAddLayer('titolo di prova1111111111', textHTML));
+				console.log(myFjsApi.flexipRef.sideMenuSicarAddLayer('titolo di prova1', ''));
+				//console.log(myFjsApi.flexipRef.sideMenuSicarAddLayer('titolo di prova2', textHTML));
+			}
+			
+			function myCallBack(layerID,objID,objClass,linkText)
+		  	{
+		  		console.log(layerID+"\n"+objID+"\n"+objClass+"\n"+linkText);
+		  	}
+		  
+		 	 function layerLinkClick(layerID,objID,objClass,linkText)
+		  	{
+		  		console.log("layerLinkClick >>> "+layerID+"\n"+objID+"\n"+objClass+"\n"+linkText);
+		  	}
+		  
+		  	function selectItemChanged(layerID,objID,itemLabel,itemData)
+		  	{
+		  		console.log("selectItemChanged >>> "+layerID+"\n"+objID+"\n"+itemLabel+"\n"+itemData);
+		  	}
+		  	
+		  	function layerHSliderChanged(id,value)
+		  	{
+		  		myFjsApi.flexipRef.imageMultiSimple_setAlphaAt(value,id);
+		  		for(var i=0;i<imagesArray.length;i++)
+		  		{
+		  			if(imagesArray[i].currentLoadIndex==id)
+		  			{
+		  				imagesArray[i].value = value;
+		  				console.log("UPDATED : "+id+" at "+value);
+		  				break;
+		  			}
+		  		}
+		  	}
+		  	
+		  	var imagesArray = [{url:'data/img/view3.jpg', name:'view normale', loaded:false, currentLoadIndex:-1, value:100},
+		  		{url:'data/img/view1.jpg', name:'view normale', loaded:false, currentLoadIndex:-1, value:100},
+		  		{url:'data/img/view.jpg', name:'view wire frame', loaded:false, currentLoadIndex:-1, value:100},
+		  		{url:'data/img/view2.jpg', name:'view rosina', loaded:false, currentLoadIndex:-1, value:100}
+		  	];
+		  	
+		  	var layerHTML_imageManagerID = false;
+		  	
+		  	function setImageSource(idx)
+		  	{
+		  		var loadedCount = 0;
+		  		for(var i=0;i<imagesArray.length;i++)
+		  		{
+		  			if(i==idx)break;
+		  			if(imagesArray[i].loaded)loadedCount++;
+		  		}
+		  		imagesArray[idx].loaded = true;
+		  		myFjsApi.flexipRef.imageLoadSource(imagesArray[idx].url, loadedCount);
+		  		var html = getLayerImageManagerHTML();
+		  		if(!layerHTML_imageManagerID)layerHTML_imageManagerID = myFjsApi.flexipRef.sideMenuSicarAddLayer('titolo di prova', html, -1,'','data/img/testicon.png'); //'iconLayer1');
+		  		else myFjsApi.flexipRef.sideMenuSicarSetLayerHTML(layerHTML_imageManagerID, html);
+		  	}
+		  	
+		  	function getLayerImageManagerHTML()
+		  	{
+		  		var loadedCount = 0;
+		  		var str = '<html>';
+		  		for(var i=0;i<imagesArray.length;i++)
+		  		{
+		  			var obj = imagesArray[i];
+		  			var link = '<a href="'+i+'|'+loadedCount+'" ';
+		  			if(obj.loaded)
+		  			{
+		  				link+='onclick="unloadImageSource">disabilita</a>';
+		  				imagesArray[i].currentLoadIndex = loadedCount;
+		  			}
+		  			else 
+		  			{
+		  				link+='onclick="loadImageSource">abilita</a>';
+		  				imagesArray[i].currentLoadIndex = -1;
+		  			}
+		  			str+='<div><span>';
+		  			str+='('+link+') <b>'+obj.name+'</b>';
+		  			str+='</span></div>';
+		  			if(obj.loaded)str+='<div><input type="slider" id="'+(loadedCount++)+'" value="'+obj.value+'"/></div>';		  			
+		  		}
+		  		str+='</html>';
+		  		return str;
+		  	}
+		  	
+		  	function unloadImageSource(layerID,objID,objClass,linkText)
+		  	{
+		  		var indeces = linkText.split('|');
+		  		var count = 0;
+		  		for(var i=0;i<imagesArray.length;i++)
+		  		{
+		  			if(imagesArray[i].loaded)count++;
+		  		}
+		  		if(count==1)return;
+		  		myFjsApi.flexipRef.imageMultiSimple_removeSourceAt(indeces[1]);
+		  		imagesArray[indeces[0]].loaded = false;
+		  		myFjsApi.flexipRef.sideMenuSicarSetLayerHTML(layerHTML_imageManagerID, getLayerImageManagerHTML());
+		  	}
+		  	
+		  	function loadImageSource(layerID,objID,objClass,linkText)
+		  	{
+		  		var indeces = linkText.split('|');
+		  		setImageSource(indeces[0]);
+		  		myFjsApi.flexipRef.sideMenuSicarSetLayerHTML(layerHTML_imageManagerID, getLayerImageManagerHTML());
+		  	}
+		  	
+		  	var save = "";
+		  	function commDataByLogReady(data)
+		  	{
+		  		save = data;
+		  	}
+		  	
+		  	var s1 = "";
+		  	function commDataFragmentReady(data)
+		  	{
+		  		s1 = data;
+		  	}
+		  	
+		  	function mb()
+		  	{
+		  		var initObject = {
+		  			text_array:[
+		  				{label:"titolo domanda", label_is_title:true},
+		  				{label:"domanda vera e propria\ncon possibilità di andare a capo", /*label_is_title:false - default = false*/},
+		  			],
+		  			btn_array:[
+		  				{btn_label:'OK', btn_callback:'mb_callBack' },
+		  				{btn_label:'NADA', btn_callback:'mb_callBack' }
+		  			]
+		  		}
+		  		ff.messageBoxShow(initObject);
+		  	}
+		  	
+		  	function mb_callBack(data)
+		  	{
+		  		console.log("return button label:"+data.return_button_label);		  		
+		  	}
+		  	
+		  	function edit2()
+		  	{
+		  		ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconLockOn", 
+				    toolTip: "Rilascia lock",
+				    functionCode: "101", 
+				    toggleMode: "false",
+				    pos:"1"
+				  });
+				
+				  /// Add save button (102)
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconSave", 
+				    toolTip: "Salva",
+				    functionCode: "102",
+				    toggleMode: "false",
+				    pos:"2"
+				  });
+				
+				  /// Add undo all button (104)
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconClear", 
+				    toolTip: "Annulla",
+				    functionCode: "104", 
+				    toggleMode: "false",
+				    pos:"3"
+				  });
+				
+				  /// Add edit toolbar buttons
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconMovePoly",
+				    toolTip: "Muovi poligono",
+				    functionCode: "20",
+				    toggleMode: "true",
+				    pos:"4"
+				  });
+				
+				  return;
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconDeletePolygon",
+				    toolTip: "Cancella poligono",
+				    functionCode: "18",
+				    toggleMode: "false",
+				    pos:"5"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconCopyPolygon",
+				    toolTip: "Copia poligono",
+				    functionCode: "21",
+				    toggleMode: "false",
+				    pos:"6"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconAddVertex",
+				    toolTip: "Aggiungi punto",
+				    functionCode: "15",
+				    toggleMode: "true",
+				    pos:"7"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconDelVertex",
+				    toolTip: "Cancella punto",
+				    functionCode: "16",
+				    toggleMode: "true",
+				    pos:"8"
+				  });
+				
+				  ff.sideMenuAddToolBarButton('actionlock', {
+				    styleName: "iconMoveVertex",
+				    toolTip: "Muovi punti",
+				    functionCode: "17",
+				    toggleMode: "true",
+				    pos:"9"
+				  });
+						  		
+		  	}
+		  	
+		  	var ddd;
+		  	function outlayer(data)
+		  	{
+		  	ddd=data;
+		  	  console.log("data:"+ddd);
+		  	}
+			
+		</script>
+    <style type="text/css">
+<!--
+html {
+	height:100%;
+}
+body {
+	margin:0px;
+	height:100%;
+}
+-->
+    </style>
+	</head>
+	<body>
+		<div id="myAlternativeContent">
+			<a href="http://www.adobe.com/go/getflashplayer"></a>
+			<a href="http://www.adobe.com/go/getflashplayer">get flash player</a>
+		</div>
+<div style="display:none" id="testhtml">
+aaa<br />bbb
+<span>facciata tergale</span>
+<input type="slider" id="0" />
+<span>facciata tergale verdina</span>
+<input type="slider" id="1" />
+</div>
+	</body>
+</html>

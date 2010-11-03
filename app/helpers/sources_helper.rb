@@ -2,7 +2,16 @@ module SourcesHelper
 
   # Link to the index
   def index_link
-    link_to 'Index', :action => 'index'
+    link_to 'Home', :action => 'index'
+  end
+
+  #Links to collections
+  def collections_links
+    links = []
+    @source.collections.each do |c|
+      links << [c.uri.to_s, c.title.to_s]
+    end
+    links
   end
 
   # About parameter with the uri of the current source (if the is a current source,
@@ -25,6 +34,10 @@ module SourcesHelper
     #    end
   end
 
+  # returns the google map key, found in the talia_core.yml configuration file
+  def googlemap_key
+    TaliaCore::CONFIG['googlemap_key']
+  end
 
   def label_for(element)
     potential_labels = ActiveRDF::Query.new(N::URI).select(:label).where(element.to_uri, N::RDFS.label, :label).execute
@@ -49,8 +62,41 @@ module SourcesHelper
 
   # Gets the title for a source
   def title_for(source)
-    (source[N::DCNS.title].values_with_lang(I18n.locale.to_s).first || source[N::RDF.label].values_with_lang(I18n.locale.to_s).first || source[N::RDFS.label].values_with_lang(I18n.locale.to_s).first || N::URI.new(source.uri).local_name.titleize)
+    if source[N::DCNS.title].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::DCNS.title].first.nil?
+      source[N::DCNS.title].values_with_lang(I18n.locale.to_s).first
+    elsif source[N::RDF.label].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::RDF.label].first.nil?
+      source[N::RDF.label].values_with_lang(I18n.locale.to_s).first
+    elsif source[N::RDFS.label].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::RDFS.label].first.nil?
+      source[N::RDFS.label].values_with_lang(I18n.locale.to_s).first
+    elsif source[N::DCNS.title].is_a? TaliaCore::SemanticCollectionWrapper and !source[N::DCNS.title].first.nil?
+      source[N::DCNS.title].first.to_s
+    else
+      source[N::DCNS.title].to_s
+    end
+    
+
+    #    result = case TaliaCore::SemanticCollectionWrapper
+    #    when source[N::DCNS.title].is_a?
+    #      source[N::DCNS.title].values_with_lang(I18n.locale.to_s).first
+    #    when source[N::RDF.label].is_a?
+    #      source[N::RDF.label].values_with_lang(I18n.locale.to_s).first
+    #    when source[N::RDFS.label].is_a?
+    #      source[N::RDFS.label].values_with_lang(I18n.locale.to_s).first
+    #    when source[N::DCNS.title].is_a?
+    #      source[N::DCNS.title].first
+    #    else source[N::DCNS.title]
+    #    end
+    #    result
+    #    result = source[N::DCNS.title].values_with_lang(I18n.locale.to_s).first if (source[N::DCNS.title].is_a? TaliaCore::SemanticCollectionWrapper)
+    #    result = source[N::RDF.label].values_with_lang(I18n.locale.to_s).first if (result.nil? and source[N::RDF.label].is_a? TaliaCore::SemanticCollectionWrapper)
+    #    result = source[N::RDFS.label].values_with_lang(I18n.locale.to_s).first if (result.nil? and source[N::RDFS.label].is_a? TaliaCore::SemanticCollectionWrapper)
+    #    result = source[N::DCNS.title].first if (result.nil? and source[N::DCNS.title].is_a? TaliaCore::SemanticCollectionWrapper)
+    #    #    result = N::URI.new(source.uri).local_name.titleize if result.nil?
+    #    result = source[N::DCNS.title]
+    #    result
   end
+
+  
 
   # Creates a link to an external resources (warns that you are leaving the site)
   def external_link_to(element, predicate)
@@ -68,7 +114,7 @@ module SourcesHelper
   end
 
   # If the element is a resource or an uri-like element, create a link to that element (if it's just a string, it
-  # is just passed through). 
+  # is just passed through).
   #
   # If the element is in the "local" namespace, the helper will automatically create a correct URI, even if the
   # current app doesn't run on the "local" domain. Otherwise it will use the URI itself for the link URI.
@@ -83,7 +129,9 @@ module SourcesHelper
       #        external_link_to(element, predicate)
       #      end
       uri = element.to_uri
-      if(uri.local?)
+      if(predicate == N::TALIA.hasFile.to_s || predicate == N::TALIA.isFileOf.to_s)
+        uri.to_s
+      elsif(uri.local?)
         link_to(title_for(TaliaCore::ActiveSource.find(uri.to_s)), :controller => 'sources', :action => 'dispatch', :dispatch_uri => uri.local_name)
       elsif(predicate == N::RDF.type.to_s)
         link_to(uri.to_name_s, :controller => 'sources', :params => {:filter => uri.to_name_s('+')})
@@ -135,8 +183,8 @@ module SourcesHelper
       name = t.local_name.titleize
 
       result << link_to(image_tag("demo/#{image}.png", :alt => name, :title => name),
-      :action => 'index', :filter => t.to_name_s('+')
-      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
+        :action => 'index', :filter => t.to_name_s('+')
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
     end
     result
   end
@@ -177,52 +225,90 @@ module SourcesHelper
       image = @type_map[t] || 'source'
       name = t.local_name.titleize
       result << link_to(image_tag("demo/types_medium/#{image}.png", :alt => name, :title => name, :width => "64px"),
-      :action => 'index', :filter => t.to_name_s('+')
-      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource))
+        :action => 'index', :filter => t.to_name_s('+')
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
     end
     result
   end
 
-  def data_icons(data_records)
-    result = ''
-
-    data_records.each do |rec|
-      link_data = data_record_options(rec)
-      result << link_to(
-      image_tag("demo/#{link_data.first}.png", :alt => rec.location, :title => rec.location),
-      { :controller => 'source_data',
-        :action => 'show',
-        :id => rec.id },
-        link_data.last
-        # we have both imagedata and iipdata of the images, we only show the IipData one
-        # as it will show the thumbnails (instead of very large images, which make no sense
-        # in the overlay)
-        # png, though, will be shown here
-        ) unless ( rec.is_a?(TaliaCore::DataTypes::ImageData) && !rec.mime.include?('image/png'))
-      end
-
-      result
+  def breadcrumbs(types)
+    result = []
+    types.each do |t|
+      name = t.local_name.titleize
+      result << link_to(name, :action => 'index', :filter => t.to_name_s('+')
+      ) unless ((t == N::TALIA.Source) || (t == N::TALIA.DummySource) || (t==N::TALIA.ActiveSource) || (t==N::TALIA.TaliaSource))
     end
-
-    def data_records_contain_objects_of_type?(data_records, type)
-      data_records.each do |dr|
-        return true if dr.is_a?(type)
-      end
-      return false
-    end
-
-    private
-
-    def data_record_options(record)
-      if(record.mime.include?('image/'))
-        ['image', {:class => 'cbox_image'}]
-      elsif(record.mime.include?('text/'))
-        ['text', {:class =>'cbox_inline' }]
-      elsif(record.mime == 'application/xml')
-        ['text', {:class => 'cbox_inline'}]
-      else
-        ['gear', {}]
-      end
-    end
-
+    result
   end
+
+  def data_icons(source)
+    result = ''
+    source.talia_files.each do |talia_file|
+      if talia_file.has_type TaliaCore::DataTypes::ImageData
+        data_record = talia_file.file_by_type_preference TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData
+      else
+        data_record = talia_file.file
+      end
+      link_data = data_record_options(data_record)
+      result << link_to(
+        image_tag("demo/doc_types/#{link_data.first}.gif", :alt => data_record.location, :title => data_record.location),
+        url_for_data_record(data_record),
+        link_data.last
+      )
+
+
+      #        image_tag("demo/#{link_data.first}.png", :alt => data_record.location, :title => data_record.location),
+      #        { :controller => 'source_data',
+      #          :action => 'show',
+      #          :id => data_record.id },
+      #        link_data.last
+      #      )
+    end
+    result
+  end
+
+  # Returns a list of all images related to sources. To be used by amazon_scroller
+  def source_images_amazon_scroller(sources)
+    result = []
+    sources.each do |s|
+      s = s.becomes(TaliaSource)
+      #      if(images = TaliaCore::DataTypes::ImageData::find_data_records(s)).count > 0
+      if(images = s.files_of_type(TaliaCore::DataTypes::IipData, TaliaCore::DataTypes::ImageData)).count > 0
+        # If the source has images, it is a TaliaFile source and the data we want to show is about the 
+        # correspoding "isFileOf" relation object.
+        images.each do |image|
+          #          has_iip = data_record_has_an_iip_related(s, image)
+          #          image = has_iip || image
+          result << {:uri => s.uri.to_s, :title => title_for(s), :image => image}
+        end
+      end
+    end
+    result
+  end
+
+  def data_records_contain_objects_of_type?(data_records, type)
+    data_records.each do |dr|
+      return true if dr.is_a?(type)
+    end
+    return false
+  end
+
+  private
+
+  def data_record_options(record)
+    if(record.mime.include?('image/'))
+      ['icon_img', {:class => 'cbox_image'}]
+    elsif(record.mime.include?('text/'))
+      ['icon_html', {:class =>'cbox_inline' }]
+    elsif(record.mime == 'application/xml')
+      ['icon_html', {:class => 'cbox_inline'}]
+    elsif(record.mime == 'doc')
+      ['icon_doc', {}]
+    elsif(record.mime.include?('pdf'))
+      ['icon_pdf', {}]
+    else
+      ['icon_generic', {}]
+    end
+  end
+
+end

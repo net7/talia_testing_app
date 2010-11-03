@@ -54,6 +54,9 @@
 		
 		// Pixel to substrat to box width when setting .resizeme images
 		resizemeImagesMargin: 20,
+    // Maximum width (in pixels) for the .resizeme elements
+    resizemeImagesForceMaxWidth: true,
+    resizemeImagesMaxWidth: 500,
 
 		// Animations
 		animateAdd: false,
@@ -68,7 +71,6 @@
 		isBeingDragged: 0,
 		isFirstShow: 1,
 		isLoading: false,
-		
 		
 		// Default title and resource id
 		title: "Default title",
@@ -138,7 +140,6 @@
 				});
 
 
-
 			// Little IE fix: put a timer to buffer mutiple resize events:
 			// this will call resize() only after N ms after user stopped 
 			// resizing the window
@@ -196,11 +197,10 @@
 			var boxBaseWidth = Math.floor(expandedWidth / expanded);
 			var boxWidthRemainder = Math.floor(expandedWidth % expanded);
 
-
 			// foox will keep the 'left' css value of the current box, to
 			// position boxes from left to right.
 			// The cycle will add an extra width pixel for each box until
-			// consumed boxWidthRemainder
+			// boxWidthRemainder is consumed
 			var foox = 0;
 			for (i=0; i<this.n; i++) {
 
@@ -220,7 +220,7 @@
 			} // for i
 
 			// Finally repaint with the new values
-			this.repaint();
+			this.repaint() 
 
 		}, // resize()
 
@@ -249,7 +249,6 @@
 
     				// Resize the collapsed and expanded content to parent's width and height
     				if (this.boxOptions[i].collapsed == 1) {
-
     				     
     				    var topHeight = $('#'+this.boxOptions[i].id+' div.boxHeader').height();
     				    var h = box.height() - topHeight;
@@ -261,46 +260,63 @@
     					    e.height(h);
     					    e.width(this.boxOptions[i].width);
 
-                            // Resize the dragOverlay to the full box width and height and and
-                            // flashcontainer to the proper size
-    					    $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .dragOverlay').css({'height': h, 'top': topHeight});
-                            $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .flashcontainer').html(this.getFlashMarkup(this.boxOptions[i].verticalTitle.toUpperCase(), this.boxOptions[i].collapsedWidth, h-5));
+                  // Resize the dragOverlay to the full box width and height and and
+                  // flashcontainer to the proper size
+
+                  // Old flash markup, replaced with css3 vertical text!
+                  // $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .flashcontainer').html(this.getFlashMarkup(this.boxOptions[i].verticalTitle.toUpperCase(), this.boxOptions[i].collapsedWidth, h-5));
+
+    					    $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .dragOverlay').css({'height': h, 'top': topHeight, 'z-index': 1000});
+    					    $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .flashcontainer').css({'width': (h-20)+'px', 'z-index': 10});
+                            $('#'+this.boxOptions[i].id+' div.boxCollapsedContent .flashcontainer').html(this.boxOptions[i].verticalTitle);
                         }
                     
     				} else {
     				    $('#'+this.boxOptions[i].id+' div.boxContent').height(box.height() - $('#'+this.boxOptions[i].id+' div.boxHeaderTools').height());
 				    }
 				
-                    // width of this box minus a resizeme margin
-    				var boxWidth = this.boxOptions[i].width - 2*this.options.resizemeImagesMargin;
+            // width of this box minus a resizeme margin
+    		var resizemeWidth = this.boxOptions[i].width - 2*this.options.resizemeImagesMargin;
+            if (this.options.resizemeImagesForceMaxWidth && resizemeWidth > this.options.resizemeImagesMaxWidth)
+                resizemeWidth = this.options.resizemeImagesMaxWidth;
 
-    				// Autoresize "resizeme" class: img just set the width, divs are flash containers
-    				// need to get the ratio and act concordingly
-    				var img = $("#" + this.boxOptions[i].id + " img.resizeme");
-                    var obj = $("#" + this.boxOptions[i].id + " div.resizeme");
-                    var ratio = parseInt($(obj).find('embed:first').attr('ratio'));
-                    var objHeight = boxWidth*ratio/10000;
+    		// Autoresize "resizeme" class: img just set the width, divs are flash or map containers
+    		// need to get the ratio and act concordingly
+    		var img = $("#" + this.boxOptions[i].id + " img.resizeme"),
+                obj = $("#" + this.boxOptions[i].id + " div.resizeme"),
+                ratio = parseInt($(obj).find('object.IMTViewer:first').attr('ratio')) || 10000,
+                objHeight = resizemeWidth*ratio/10000;
 
-    				if (img.width() != boxWidth)
-    				    if (this.options.animateResize) {
-    					    img.animate({width: boxWidth}, this.options.animationLength);
-                            obj.animate({width: boxWidth, height: objHeight}, this.options.animationLength);
-    				    } else {
-    					    img.css({width: boxWidth});
-                            obj.css({width: boxWidth, height: objHeight});
-					    }
+    			if (img.width() != resizemeWidth)
+    			    if (this.options.animateResize) {
+    				    img.animate({width: resizemeWidth}, this.options.animationLength);
+                        obj.animate({width: resizemeWidth, height: objHeight}, 
+                                    this.options.animationLength, 
+                                    function() { 
+                                        if (obj.attr('about')) 
+                                            google.maps.event.trigger(gmaps[obj.attr('about')], 'resize'); 
+                                     });
+    				} else {
+                        img.css({width: resizemeWidth});
+                        obj.css({width: resizemeWidth, height: objHeight});
+                        if (obj.attr('about')) 
+                            google.maps.event.trigger(gmaps[obj.attr('about')], 'resize'); 
+				    }
 
-
-                } // if !this.dragging
+        } // if !this.dragging
 
 				// First time we display this box, animate or not?
 				if (this.boxOptions[i].isFirstShow == 1) {
 
 					if (this.options.animateAdd == true) {
-						box.css({width: 10, left: (this.boxOptions[i].left + this.boxOptions[i].width)});
+						box.css({width: '10px', left: (this.boxOptions[i].left + this.boxOptions[i].width)});
 						box.animate({width: this.boxOptions[i].width, left: this.boxOptions[i].left}, this.options.animationLength);
-					} else 
-						box.css({width: this.boxOptions[i].width, left: this.boxOptions[i].left});
+					} else {
+					    // Added a micro animation of 10msecs to avoid IE's flaws when rendering
+					    // Ajax-added content........ thanks IE!
+						// box.css({width: this.boxOptions[i].width, left: this.boxOptions[i].left});
+						box.animate({width: this.boxOptions[i].width, left: this.boxOptions[i].left}, 10);
+					}
 						
 					this.boxOptions[i].isFirstShow = 0;
 
@@ -374,7 +390,7 @@
 					"</div>"+
 					// Box Content
 					"<div class='boxContent'>"+boxopt['content']+"</div>"+
-					"<div class='boxCollapsedContent'><div class='dragOverlay boxDragHandle'></div><div class='flashcontainer'></div></div>"+
+					"<div class='boxCollapsedContent'><div class='dragOverlay boxDragHandle'></div><div class='flashcontainer boxDragHandle'></div></div>"+
 					"</div>";
 
 			boxopt['html'] = html;
@@ -390,8 +406,9 @@
 				containment: 'parent', 
 				handle: '.boxDragHandle',
 				cursor: 'move',
+				zIndex: 2000,
+				stack: 'div.box',
 				opacity: 0.70,
-				stack: { group: "gino", min: 10},
 				start: function() { thisBoxView.dragStart($(this).attr('id')); },
 				drag: function() { thisBoxView.drag($(this).attr('id')); },
 				stop: function() { thisBoxView.dragStop($(this).attr('id')); }
@@ -479,18 +496,11 @@
         },
 
 
-		// Returns the box id from the given Resource ID
-		getIdFromResId: function (resId) {
-			for (var i=0; i<this.n; i++)
-				if (this.boxOptions[i].resId == resId)
-					return this.boxOptions[i].id;
-			return -1;
-		}, // getIdFromResId()
-
-
 		// Start and stop Drag function just set/unset the isBeingDragged flag
 		// into the boxOptions hash
 		dragStart: function (id) {
+
+			if (this.options.debug) console.log('DragStart on id '+id);
 
 			this.lastOrder = [];
 			for (var i=0; i<this.n; i++) {
@@ -631,6 +641,13 @@
 			return;
 		},
 
+        isLoading : function(id) {
+			for (i=0; i<this.n; i++) 
+				if (this.boxOptions[i]['id'] == id) 
+				    return this.boxOptions[i]['isLoading'];
+			return false;
+        },
+
 		undoPush : function (box) {
 			// TODO : Check length here!
 			this.undoList.push(box);
@@ -725,6 +742,23 @@
 		}, // toggleCollapseBox()
 
 
+		// Returns the box html id from the given Resource ID
+		getIdFromResId: function (resId) {
+			for (var i=0; i<this.n; i++)
+				if (this.boxOptions[i].resId == resId)
+					return this.boxOptions[i].id;
+			return -1;
+		}, // getIdFromResId()
+
+		// Returns the resource id from the given html ID
+		getResIdFromId: function (id) {
+			for (var i=0; i<this.n; i++)
+				if (this.boxOptions[i].id == id)
+					return this.boxOptions[i].resId;
+			return -1;
+		}, // getResIdFromId()
+
+
 		// Gets an object in the anchorman format: an array of arrays, 
 		// containing info on boxes
 		getAnchorManDesc : function() {
@@ -740,6 +774,12 @@
 			return foo;
 		}, // getAnchorManDesc()
 
+        getQStringFromId : function(id) {
+			for (var i=0; i<this.n; i++)
+				if (this.boxOptions[i].id == id)
+					return (this.options.encodeResId == true) ? $.base64Encode(this.boxOptions[i].qstring) : this.boxOptions[i].qstring; 
+			return -1;
+        },
 
 		// gets an array of boxes ids and sorts the boxes accordingly
 		sortLike : function(newOrder) {
@@ -782,7 +822,17 @@
 			this.options.animateCollapse = value;
 			this.options.animateResize = value;
 		},
-		
+
+		setResizemeImagesWidth : function (value) {
+		    value = parseInt(value);
+		    if (value == 0) 
+		        this.options.resizemeImagesForceMaxWidth = false
+		    else {
+		        this.options.resizemeImagesForceMaxWidth = true;
+		        this.options.resizemeImagesMaxWidth = value;
+	        }
+	        this.repaint();
+		},
 
 		// Generates an N items random hash code, to use as box id
 		createHash : function(n) {

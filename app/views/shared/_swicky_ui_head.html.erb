@@ -1,22 +1,20 @@
 <%= javascript_include_tag 'jquery.colorbox' %>
 <%= stylesheet_link_tag 'colorbox/colorbox.css' %>
 
-<%= stylesheet_link_tag 'swicky/thc.css' %>
-<%= stylesheet_link_tag 'swicky/ez.css' %>
-<%= stylesheet_link_tag 'swicky/jthc.css' %>
-<%= stylesheet_link_tag 'swicky/swicky_ui.css' %>
-
-<%= javascript_include_tag 'swicky/jthc' %>
-<%= javascript_include_tag 'swicky/eztip' %>
-<%= javascript_include_tag 'jquery.ajaxmanager' %>
-<%= javascript_include_tag 'swicky/thc_tag_script_2.2' %>
-
-<script type="text/javascript">
-
-    var jthc, myEztip;
-    $(function() {
-        myEztip = new $.eztip({selector: 'table.THCStatementTable span', 'forcedHideDelay': 1000000});
-        jthc = new $.jthc({'debug': 'false'});
-    });
-    
-</script>
+<% if !@swicky_mode %>
+    <%= stylesheet_link_tag 'swicky/thc.css' %>
+    <%= stylesheet_link_tag 'swicky/ez.css' %>
+    <%= stylesheet_link_tag 'swicky/jthc.css' %>
+    <%= stylesheet_link_tag 'swicky/swicky_ui.css' %>
+    <%= javascript_include_tag 'swicky/jthc' %>
+    <%= javascript_include_tag 'swicky/eztip' %>
+    <%= javascript_include_tag 'jquery.ajaxmanager' %>
+    <%= javascript_include_tag 'swicky/thc_tag_script_2.2' %>
+    <script type="text/javascript">
+        var jthc, myEztip;
+        $(function() {
+            myEztip = new $.eztip({selector: 'table.THCStatementTable span', 'forcedHideDelay': 1000000, sticky: true, showDelay: 2000});
+            jthc = new $.jthc({selectedImage: <%= "'#{@requested_file}'" %>, selectedFragment: <%= "'#{@requested_fragment}'" %>});
+        });
+    </script>
+<% end %>

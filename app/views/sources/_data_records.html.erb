@@ -1,0 +1,39 @@
+<h3 class="toggle">Data Records</h3>
+<div class="section data_records">
+    <div class='section_header'></div>
+    <div class='section_content_container'>
+        <div class='section_content'>
+          <table id="data_table" class="tablesorter">
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (!records.nil? rescue false)
+                data_records = records
+              else
+                data_records = @source.data_records
+              end %>
+              <% for record in data_records %>
+                <% unless record.is_a? TaliaCore::DataTypes::IipData %>
+                    <tr>
+                      <% record_options = data_record_options(record) %>
+                      <td><span class="predicate">
+                          <%= link_to(record.location, { :controller => 'source_data', :action => 'show', :id => record.id }, record_options.last )%>
+                        </span></td>
+                      <td><span class="value">
+                          <%=  image_tag("demo/doc_types/#{record_options.first}.gif", :alt => record.mime, :title => record.mime) %> (<%= record.mime %>)
+                        </span></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+
+        </div>
+        <div class='section_notes'></div>
+    </div>
+    <div class='section_footer'></div>
+</div>

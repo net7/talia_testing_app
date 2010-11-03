@@ -1,0 +1,106 @@
+<def tag="form" for="TaliaSource">
+  <script>
+    var Dom = {
+      get: function(el) {
+        if (typeof el === 'string') {
+          return document.getElementById(el);
+        } else {
+          return el;
+        }
+      },
+      add: function(el, dest) {
+        var el = this.get(el);
+        var dest = this.get(dest);
+        dest.appendChild(el);
+      },
+      remove: function(el) {
+        var el = this.get(el);
+        el.parentNode.removeChild(el);
+      }
+    };
+    var Event = {
+      add: function() {
+        if (window.addEventListener) {
+          return function(el, type, fn) {
+            Dom.get(el).addEventListener(type, fn, false);
+          };
+        } else if (window.attachEvent) {
+          return function(el, type, fn) {
+            var f = function() {
+              fn.call(Dom.get(el), window.event);
+            };
+            Dom.get(el).attachEvent('on' + type, f);
+          };
+        }
+      }()
+    };
+
+    Event.add(window, 'load', function() {
+      var i = 0;
+      Event.add('add-element', 'click', function() {
+        var br = document.createElement('br');
+        var el = document.createElement('input');
+        el.type="file";
+        el.name="talia_source[file][]";
+        el.className="multi";
+        var rem = document.createElement('input');
+        rem.className="button";
+        rem.type="button";
+        rem.value="x";
+        Dom.add(br, 'content');
+        Dom.add(el, 'content');
+        Dom.add(rem, 'content');
+        Event.add(rem, 'click', function(e) {
+          Dom.remove(br);
+          Dom.remove(el);
+          Dom.remove(this);
+        });
+      });
+    });
+  </script>
+  <%= javascript_include_tag 'calendarDateInput.js' %>
+
+  <form merge param="default" multipart="true">
+    <error-messages param/>
+<%#*<field-list fields="name" param/>%>
+    <h3><b><%= this.name %></b></h3> (<%= this.uri%>)
+<source-files/>
+    <field-edit-table>
+      <content:>
+
+
+<%#*<tr>%>
+<%#*<th class="date-label">Date</th>%>
+<%#*<td class="date-view">%>
+<%#*<input type="text" name="date"/>%>
+<%#*</td>%>
+<%#*</tr>%>
+        <% collection_hash = {" " => " "} ; this.unattached_collections.each { |c| collection_hash[c.name] = c.to_uri.safe_encoded } %>
+        <unless test="&(collection_hash.count <= 1)">
+          Add to collection:
+          <select-menu options="&collection_hash" id="source_attach" name="attach_collection" />
+        </unless>
+
+        <field-row fieldname="files">
+          <view:><input type="file" name="talia_source[file][]" class="multi"/><p id="add-element"> add more files...</p><div id="content"></div> </view:>
+        </field-row>
+
+      </content:>
+    </field-edit-table>
+
+    <div param="actions">
+      <submit label="#{ht 'talia_sources.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+
+  </form>
+</def>
+
+<def tag="form" for="TaliaCollection">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="title" param/>
+    <div param="actions">
+      <submit label="#{ht 'talia_collections.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>

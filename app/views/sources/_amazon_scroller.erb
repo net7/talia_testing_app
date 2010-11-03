@@ -1,0 +1,40 @@
+<% source_images_data = source_images_amazon_scroller(sources) %>
+<% unless source_images_data.empty? %>
+  <%= stylesheet_link_tag 'amazon_scroller' %>
+  <%= javascript_include_tag 'amazon_scroller' %>
+  <h3 class="toggle">Sources Images</h3>
+  <div id="amazon_scroller" class="amazon_scroller">
+    <div class="amazon_scroller_mask">
+      <ul>
+        <% source_images_data.each do |data| %>
+          <li><a href="<%= data[:uri]%>" title="<%= data[:title]%>"><img src="<%= url_for_data_record(data[:image]) %>" class="amazon_scroller_image" alt="<%= data[:title] %>"/></a></li>
+        <%end%>
+      </ul>
+    </div>
+    <ul class="amazon_scroller_nav">
+      <li></li>
+      <li></li>
+    </ul>
+    <div style="clear: both"></div>
+  </div>
+
+  <script language="javascript" type="text/javascript">
+
+    $(function() {
+      $("#amazon_scroller").amazon_scroller({
+        scroller_title_show: 'enable',
+        scroller_time_interval: '4000',
+        scroller_window_background_color: "none",
+        scroller_window_padding: '10',
+        scroller_border_size: '0',
+        scroller_border_color: '#CCC',
+        scroller_images_width: '150',
+        scroller_images_height: '100',
+        scroller_title_size: 'none',
+        scroller_title_color: 'none',
+        scroller_show_count: '3',
+        directory: 'images/amazon'
+      });
+    });
+  </script>
+<% end %>

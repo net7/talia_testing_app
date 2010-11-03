@@ -1,14 +1,4 @@
+<%= render(:partial => 'source_header') %>
 <%= render(:partial => 'properties_wrapper') %>
-
-<h3 class="toggle">Data</h3>
-<div>
-  Years: <%= @source[N::DEMO.birth_date].first %> / <%= @source[N::DEMO.death_date].first %> <br/>
-
-  <% unless @source[N::DEMO.author_of].first.nil? %>
-    Works: <% @source[N::DEMO.author_of].each do |work|  %>
-      <%= link_to(title_for(TaliaCore::ActiveSource.find(work.uri.to_s)), { :controller => 'sources', :action => 'dispatch', :dispatch_uri => work.uri.local_name }) %><br/>
-    <% end %>
-  <% end %>
-</div>
-
+<%= render(:partial => 'artist_data' )%>
 <%= render(:partial => 'source_data') %>

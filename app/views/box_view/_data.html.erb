@@ -1,0 +1,20 @@
+<%
+    # TODO: do a real check to see if there's annotations or not
+        if (records = @source.files_of_type TaliaCore::DataTypes::XmlData).count > 0 %>
+    <div class='widgetHeader'>
+        <h3 class='widgetHeaderTitle'>Data</h3>
+        <div class='widgetHeaderTools'>
+            <p class='collapse'><a class='expanded' href='#' title='Collapse'>Collapse</a></p>
+    	</div>
+    </div>
+    <div class='widgetContent expanded'>
+      <% for record in records %>
+          <% element_uri = (@source.uri + "#data#{record.id}").to_s %>
+          <% if((ncount = Swicky::Notebook.annotation_list_for_url(element_uri).size) > 0)%>
+            <h2>This element has <%= ncount %> annotations</h2>
+          <% end %>
+          <%= thctag(element_uri, record.content_string) %>
+      <% end %>
+    </div>
+<% end %>
+ 

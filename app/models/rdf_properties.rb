@@ -2,7 +2,6 @@ module RdfProperties
   
   def rdf_property(shortcut, property, options = {})
     options.to_options!
-#    type = (options.delete(:type) || :string)
     type = (options[:type] || :string)
     unless type.is_a?(Class)
       options.delete(:type)

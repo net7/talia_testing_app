@@ -1,0 +1,24 @@
+<page title="Import">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1>Import data</h1>
+      <section class="welcome-message">
+        
+      
+      </section>
+    </header>
+
+    <section class="content-body">
+      <%= @import_text %>
+        <form action="&url_for(:action => :upload_import)" enctype="multipart/form-data" method="POST">
+            <label for='import_file'><ht key='import.import_file'>Import file</ht></label><br />
+            <input type="file" name="import_file"/><br />
+            <submit label="Import Data file" />
+        </form>
+    </section>
+  </content:>
+  
+</page>

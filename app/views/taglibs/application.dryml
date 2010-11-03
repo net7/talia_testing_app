@@ -7,3 +7,12 @@
 <set-theme name="clean"/>
 
 <def tag="app-name">Talia</def>
+
+<extend tag="page">
+  <old-page merge>
+    <append-scripts:>
+      <%#*<javascript name="jquery-1.4.1.min.js"/>%>
+      <%#*<javascript name="jquery.MultiFile.js"/>%>
+    </append-scripts:>
+  </old-page>
+</extend>
