@@ -10,11 +10,11 @@ extend RdfProperties
   rdf_property :width, N::SCHOP.width
   rdf_property :height, N::SCHOP.height
   rdf_property :date, N::DCT.date
-  rdf_property :page, N::DCT.isFormatOf, :type => Page
+#  rdf_property :page, N::DCT.isFormatOf, :type => Page
 
-#  def page
-#    self.dct.isFormatOf.first
-#  end
+  def page
+    self.dct.isFormatOf.first
+  end
 
   def fill_data_from_image_file
     file = self.data_records.find_by_type('TaliaCore::DataTypes::IipData')
