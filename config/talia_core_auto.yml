@@ -1,5 +1,5 @@
 --- 
-dyno: false
+sindice: false
 rdf_connection_file: rdfstore
 local_uri: k
 thumb_options: 

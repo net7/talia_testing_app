@@ -1,5 +1,5 @@
 --- 
-dyno: false
+sindice: false
 local_uri: http://isalmicart.muruca.org/
 default_namespace_uri: http://default.dummy/
 rdf_connection_file: rdfstore

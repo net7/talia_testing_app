@@ -1,9 +1,9 @@
 $(function() {
     var settings = {
         uri: [],
-        source: 'http://localhost:8182/sindice',
+        source: 'http://131.114.79.25:8080/sindice/',
         lang: 'en',
-        altQuerystring: true,
+        altQuerystring: false,
         jsonp: true
     };
 
@@ -106,7 +106,7 @@ $(function() {
            
 
             var request = (settings.altQuerystring) ? altQuerystring(uri) : settings.source;
-            var params  = (settings.altQuerystring) ? {} : {uri: uri.join(','), lang: config.lang};
+            var params  = (settings.altQuerystring) ? {} : {urls: uri.join(','), lang: config.lang};
             var element = $(this);
 
             $("#loading").show();
