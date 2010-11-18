@@ -7,10 +7,12 @@
         var sources = null;
 
         var config = {
-            uri: null,
             values: null,
+            lang: 'en',
+            uri: null,
             source: null,
-            lang: 'en'
+            jsonp: false,
+            callback: null
         };
 
         function showLoading() {
@@ -37,7 +39,7 @@
 
         function drawImage(data, filter) {
             if(filter && data.source != filter) return '';
-            var image = '<a href="' + data.url + '">';
+            var image = '<a target="_blank" href="' + data.url + '">';
             image += '<img width="50" height="50" src="'+data.url+'" alt="'+data.text+'" title="'+data.text+'"/>';
             image += '</a>' + drawSource(data.source);
             return image;
@@ -45,7 +47,7 @@
 
         function drawLink(data, filter) {
             if(filter && data.source != filter) return '';
-            return '<a href="'+data.url+'">'+data.text+'</a>' + drawSource(data.source) + '<br/>';
+            return '<a target="_blank" href="'+data.url+'">'+data.text+'</a>' + drawSource(data.source) + '<br/>';
         };
 
         function drawText(data, filter) {
@@ -111,6 +113,8 @@
                 });
             }
             hideLoading();
+            if(config.callback) config.callback();
+
             return true;
         }
 

@@ -4,9 +4,24 @@ $(function() {
         source: 'http://131.114.79.25:8080/sindice/',
         lang: 'en',
         altQuerystring: false,
-        jsonp: true
+        jsonp: true,
+        callback: function() {
+            $(".dyno-predicate").tooltip({
+                delay: 0,
+                showURL: false,
+                bodyHandler: function() { 
+                    return '<h3>Predicate URI: ' + this + '</h3>';
+                }
+            });
+            $(".dyno-source").tooltip({
+                delay: 0,
+                showURL: false,
+                bodyHandler: function() { 
+                    return '<h3>Source: ' + this + '<h3>';
+                }
+            });
+        }
     };
-
 
     if($("#dyno-uris a[href]", window.opener.document)) {
         $("#dyno-uris a[href]", window.opener.document).each(function(i, a) {
@@ -19,5 +34,4 @@ $(function() {
             $(".dyno-source").live("click", function(e) {return false});
         }
     }
-    return;
 });
