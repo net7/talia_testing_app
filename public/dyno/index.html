@@ -4,16 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen"/>
     <script type="text/javascript" src="javascripts/jquery-1.4.3.js"></script>
+    <script type="text/javascript" src="javascripts/dyno.js"></script>
     <script type="text/javascript" src="javascripts/main.js"></script>
   </head>
   <body>
     <section id="dyno-attributes" rdf:about="http://dbpedia.org/resource/Bologna">
-      <div id="dyno-title"></div>
+      <div class="dyno-onload-show" id="header">
+        <div id="thanks">Powered by <a href="http://sindice.com"><img src="images/sindice.png"/></a></div>
+        <div id="dyno-title"></div>
+        <div id="sources">
+          <p>Sources:</p>
+          <div id="dyno-sources-list"></div>
+        </div>
+      </div>
       <div class="dyno-attribute">
         <span class="dyno-name"></span>
         <span class="dyno-value"></span>
       </div>
-      <div id="loading">
+      <div id="dyno-loading">
+        <p>Loading data from LOD, please wait...</p>
         <img src="images/ajax-loader.gif" />
       </div>
     </section>
