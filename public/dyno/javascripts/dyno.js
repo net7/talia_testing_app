@@ -33,7 +33,7 @@
 
         function drawSource(source) {
             if(!source) return '';
-            return ' [<a class="dyno-source" alt="'+source+'" href="'+source+'">?</a>] ';
+            return ' [<a class="dyno-source" alt="'+source+'" href="'+source+'">source?</a>] ';
         }
 
         function drawImage(data, filter) {
@@ -108,6 +108,7 @@
                     $(".dyno-attribute").remove();
                     var source = $(this).attr("href") != '#' ? $(this).attr("href") : null;
                     draw(values, element, source);
+                    singleResultSlide();
                     return false;
                 });
             }
