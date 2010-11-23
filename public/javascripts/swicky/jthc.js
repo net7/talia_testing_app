@@ -93,12 +93,14 @@ $(function() {
             });
             */
 
+            /*
             $('.THCStatementSubject.Source,.THCStatementObject.Source,').live('click', function() {
                 var uri = $(this).attr('about');
                 if (confirm("Navigate to "+url+"? "))
                     window.location = url;
                 return false;
             });
+            */
 
             $('.THCStatementSubject,.THCStatementObject').live('click', function() {
                 var uri = $(this).attr('about');
