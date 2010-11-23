@@ -15,7 +15,7 @@ $(function() {
 
             $("#dyno-popup").live('click', function() {
                 dyno_window = window.open('/dyno/', 'dyno_window', 
-                                          "width=840,height=820,scrollbars=no,toolbar=no,location=no,status=no,directories=no,menubar=no");
+                                          "width=840,height=820,scrollbars=yes,toolbar=no,location=no,status=no,directories=no,menubar=no");
 
                 dyno_window.focus();
                 return false;

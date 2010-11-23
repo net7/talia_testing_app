@@ -7,11 +7,10 @@
         var sources = null;
 
         var config = {
-            values: null,
-            lang: 'en',
             uri: null,
+            values: null,
             source: null,
-            jsonp: false,
+            lang: 'en',
             callback: null
         };
 
@@ -29,12 +28,12 @@
 
         function drawPredicate(predicate) {
             if(!predicate) return '';
-            return ' [<a class="dyno-predicate" alt="'+predicate+'" title="'+predicate+'" href="'+predicate+'">?</a>] ';
+            return ' [<a class="dyno-predicate" alt="'+predicate+'" href="'+predicate+'">?</a>] ';
         }
 
         function drawSource(source) {
             if(!source) return '';
-            return ' [<a class="dyno-source" alt="'+source+'" title="'+source+'" href="'+source+'">?</a>] ';
+            return ' [<a class="dyno-source" alt="'+source+'" href="'+source+'">?</a>] ';
         }
 
         function drawImage(data, filter) {
@@ -57,8 +56,8 @@
 
         function addRow(element, name, value, predicate) {
             var temp = $(rowPrototype).clone();
-            $(".dyno-name", temp).html(name+drawPredicate(predicate));
-            $(".dyno-value", temp).html(value);
+            $(".dyno-name p", temp).html(name+drawPredicate(predicate));
+            $(".dyno-value p", temp).html(value);
             temp.appendTo(element);
         };
 
@@ -68,7 +67,7 @@
             if(!rowPrototype) rowPrototype = $(".dyno-attribute", element).first().detach();
             if(!rowPrototype.html()) return false;
 
-            $("#dyno-title", element).text(values['title']);
+            $("#dyno-title h1", element).text(values['title']);
             for(var i in values.rows) {
                 var row = values.rows[i];
                 if(typeof row.value == 'string') row.value = [row.value];
@@ -113,8 +112,8 @@
                 });
             }
             hideLoading();
-            if(config.callback) config.callback();
 
+            if(config.callback) config.callback();
             return true;
         }
 

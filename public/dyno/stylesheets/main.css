@@ -1,71 +1,126 @@
+/* Tags */
 body {
     font-family: Helvetica,Arial,Verdana,sans-serif;
     font-size: 12px;
     margin: 0px;
     border: 0px;
     padding: 0px;
+    background: url(i/main_bg.gif);
 }
 
 a {
-  color: #3d4e86;
+  color: #b03a00;
 }
 
+a:hover {
+}
+
+a:active {
+}
+
+/* Parti interfaccia */
+#dyno-attributes
+{
+	padding-bottom: 100px;
+	overflow: hidden;
+	float: left;
+}
+
+
+
+#header {
+	width: 100%;
+	background-color: #e2e2da;
+}
+
+/* Titolone in alto */
 #dyno-title {
-    color:#493E35;
-    font-size:18px;
-
-    font-weight: bold;
-    border: 1px solid #493e35;
-    -moz-border-radius:    6px;
-    -webkit-border-radius: 6px;
-    border-radius:         6px;
-    background-color: #fff;
-    padding: 5px 5px 5px 5px;
-    margin-right: 180px;
-    margin-bottom: 5px;
+	height: 50px;
+	width: 100%;
+	background: #e2e2da url(i/title_bg.gif) top left repeat-x;
+	margin: 0; padding: 0;
+	z-index: 10000;
+	
+	/* Ombra */
+	/*
+	-moz-box-shadow: 5px 5px 5px #000;
+	-webkit-box-shadow: 5px 5px 5px #000;
+	box-shadow: 5px 5px 5px #000;
+	*/
 }
-
-#dyno-attributes {
-    display: block;
-    height: 800px;
-    width: 800px;
-    padding: 10px 20px 10px 20px;
-    -moz-border-radius:    30px;
-    -webkit-border-radius: 30px;
-    border-radius:         30px;
-    background-color: #a19284;
-    line-height: 1.8em;
-    overflow: auto;
-}
-
+	
+	#dyno-title h1 {
+		line-height: 50px;
+		font-size: 26px;
+		color: #8d8779;
+		font-weight: bold;
+		margin: 0; padding: 0 0 0 17px;
+		
+		/* Rilievo */
+		text-shadow: 0px 1px 0 #FFF;
+	}    
 .dyno-attribute {
-    width: 100%;
+	/*
+	width: 100%;
     margin: 5px 0 5px 0;
+    clear: both;
+    */
+    background: url(i/or_sep.gif) bottom left repeat-x;
+    padding-bottom: 2px;
 }
 
 .dyno-name {
-    display: block;
-    width: 250px;
-    height: 20px;
-    float: left;
-    overflow: hidden;
-    -moz-border-radius:    5px;
-    -webkit-border-radius: 5px;
-    border-radius:         5px;
-    background-color: #fff;
-    padding: 0 5px 0 5px;
-    margin: 2px;
+	display: block;
+	width: 100%;
+	/* background: #f2f2ea url(i/dyno-name-bg.gif) top left repeat-x; */
+	font-size: 14px;
+	font-weight: bold;
+	color: #837d71;
+	position: relative;
+	margin: 0;
+	
+	/* Rilievo */
+	text-shadow: 0px 1px 0 #FFF;
+	
+	/* Ombra */
+	/*
+	-moz-box-shadow: 0px 0px 4px #555;
+	-webkit-box-shadow: 0px 0px 4px #555;
+	box-shadow: 0px 0px 4px #555;
+	*/
+}
+
+.dyno-name p {
+	padding: 10px;
+	margin: 0;
+	cursor: pointer;
+	/* Rilievo */
+	text-shadow: 0px 1px 0 #FFF;
 }
 
 .dyno-value {
-    border: 1px solid #493e35;
-    display: block;
-    -moz-border-radius:    8px;
-    -webkit-border-radius: 8px;
-    border-radius:         8px;
-    background-color: #e7e0d8;
-    padding: 0 10px 0 265px;
+	padding: 0;
+	display: block;
+	line-height: 20px;
+	background-color: #FFF;
+	border-top: 1px solid #e3e2d9;
+	border-bottom: 1px solid #e3e2d9;
+	margin: 0 0 2px 0;
 }
+
+.dyno-value p {
+	padding: 5px 20px;
+	margin: 0;
+	/*
+	-moz-column-count: 2;
+	-moz-column-gap: 20px;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 20px;
+	column-count: 2;
+	column-gap: 20px;
+	*/
+}
+
 
 .dyno-value img {
     border: 1px solid #493e35;    
@@ -102,37 +157,42 @@ a {
 }
 
 #thanks {
-    color: #493e35;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	color: #493e35;
     font-weight: bold;
-    border: 1px solid #493e35;
-    -moz-border-radius:    6px;
-    -webkit-border-radius: 6px;
-    border-radius:         6px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #8d8779;
+    padding: 0;
+    z-index: 3000;
+    text-align: right;
+}
+
+#thanks .right{
+	display: block;
+    height: 35px;
+    line-height: 35px;
     float: right;
-    height: 15px;
-    background-color: #fff;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 0px 5px 8px 5px;
 }
-
+#thanks p {
+	float: left;
+	margin: 0 10px 0 0;
+    line-height: 35px;
+    font-weight: normal;
+}
 #thanks img {
-    vertical-align: middle;
     border: 0;
-    padding-bottom: 4px;
+    margin: 0 10px;
+}
+#thanks a {
+	float: left;
 }
 
+/* Selezione delle sources da cui attingere */
 #sources {
-    padding-left: 10px;
-    color:#493E35;
-    line-height: 1.5em;
-
-    border: 1px solid #493e35;
-    -moz-border-radius:    6px;
-    -webkit-border-radius: 6px;
-    border-radius:         6px;
-    background-color: #e7e0d8;
-
+   z-index: 1;
 }
 
 #sources p {
@@ -145,19 +205,53 @@ a {
     margin-right: 10px;
 }
 
+#dyno-sources-toggle-bar {
+	height: 22px;
+	background: url(i/toggle-bar-bg.gif) top left repeat-x;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+#dyno-sources-toggle-bar p {
+	text-align: center;
+	color: #FFF;
+	line-height: 22px;
+	display: block;
+	width: 100px;
+	margin: 0 auto;
+	background: url(i/sources_arrows_up.gif) center center no-repeat;
+}
+
+#dyno-sources-toggle-bar p.closed {
+	background: url(i/sources_arrows_down.gif) center center no-repeat;
+}
+
 #dyno-sources-list {
-    height: 30px;
-    display: inline;
+	width: 100%;
+	background-color: #787266;
+	padding: 25px 0;
+	color: #FFF;
+	/* Onbra interna */
+	-moz-box-shadow: inset 0px 0px 10px #666157;
+	-webkit-box-shadow: inset 0px 0px 10px #666157;
+	box-shadow: inset 0px 0px 10px #666157;
+}
+
+#dyno-sources-list {
+	text-align: center;
 }
 
 #dyno-sources-list a {
+	color: #FFF;
     margin-right: 5px;
+    text-decoration: none;
+}
+
+#dyno-sources-list a:hover {
+	text-decoration: underline;
 }
 
 .dyno-onload-show {
-    display: none;
-}
-
-.dyno-attribute {
     display: none;
 }

@@ -9,14 +9,14 @@ $(function() {
             $(".dyno-predicate").tooltip({
                 delay: 0,
                 showURL: false,
-                bodyHandler: function() { 
+                bodyHandler: function() {
                     return '<h3>Predicate URI: ' + this + '</h3>';
                 }
             });
             $(".dyno-source").tooltip({
                 delay: 0,
                 showURL: false,
-                bodyHandler: function() { 
+                bodyHandler: function() {
                     return '<h3>Source: ' + this + '<h3>';
                 }
             });
@@ -35,3 +35,28 @@ $(function() {
         }
     }
 });
+
+/* Document Ready */
+$(document).ready(function()
+{
+	singleResultSlide()
+	sourcesSlide();
+});
+
+/*  */
+function sourcesSlide()
+{	
+	$("#dyno-sources-list").hide();
+	$("#dyno-sources-toggle-bar").click(function () { 
+      $(this).prev("#dyno-sources-list").slideToggle();
+      $(this).children("p").toggleClass("closed");
+    });
+}
+
+/*  */
+function singleResultSlide()
+{
+	$(".dyno-name").click(function () { 
+      $(this).next(".dyno-value").slideToggle(); 
+    });
+}
