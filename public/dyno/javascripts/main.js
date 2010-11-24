@@ -50,7 +50,7 @@ function sourcesSlide() {
 }
 
 function singleResultSlide() {
-	  $(".dyno-name").click(function () { 
+	  $(".dyno-name").live('click', function () { 
         $(this).next(".dyno-value").slideToggle();
         $(this).children("p").toggleClass("closed");
     });
