@@ -14,7 +14,7 @@ module BoxViewHelper
     return '' if elements.nil?
     elements.each do |k,v|
       if v.empty?
-        result << "<li class='menu_subitem'><a class='indexLink' id='#{k.to_name_s('+')}' href='/boxView?method=filter&resource=#{Base64.encode64s(k.to_name_s('+'))}&type=#{k.to_name_s('+')}'>#{k.local_name}</a></li>"
+        result << "<li class='menu_subitem'><a class='indexLink' id='#{k.to_name_s('+')}' href='/boxview?method=filter&resource=#{Base64.encode64s(k.to_name_s('+'))}&type=#{k.to_name_s('+')}'>#{k.local_name}</a></li>"
       else
         result << "<li class='menu_item'><a class='menu collapsed' href='#'>#{k.local_name}</a>"
         result << "<ul style='display: none;'>"

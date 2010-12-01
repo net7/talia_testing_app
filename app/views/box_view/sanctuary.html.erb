@@ -22,7 +22,7 @@
 
       <p>
         The <%=  source_label %> was commisioned by <%  commissioned_by.each do |c| %>
-          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source"><%= title_for(c) %></a>,
+          <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source"><%= title_for(c) %></a>,
         <% end %>
         its contruction began in <%= beginning_date %> and it was finished in <%= finished_in %>.
       </p>
@@ -32,14 +32,14 @@
     <% unless (period = @source[N::DEMO.period].first).nil? %>
       <p>
         The <%= source_label %> was built during the
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(period.to_uri.to_s) %>&type=source"><%= title_for(period) %></a>
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(period.to_uri.to_s) %>&type=source"><%= title_for(period) %></a>
       </p>
     <% end %>
 
     <% unless (type_of_decoration = @source[N::DEMO.type_of_decoration].first).nil? %>
       <p>
         The <%= source_label %> is an example of
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(type_of_decoration.to_uri.to_s) %>&type=source"><%= title_for(type_of_decoration) %></a>
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(type_of_decoration.to_uri.to_s) %>&type=source"><%= title_for(type_of_decoration) %></a>
       </p>
     <% end %>
 
@@ -48,7 +48,7 @@
     <% unless (religious_significance = @source[N::DEMO.religious_significance].first).nil? %>
       <p>
         The <%= source_label %> is a important place for the religious event known as
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(religious_significance.to_uri.to_s) %>&type=source"><%= title_for(religious_significance) %></a>,
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(religious_significance.to_uri.to_s) %>&type=source"><%= title_for(religious_significance) %></a>,
       </p>
     <% end %>
 

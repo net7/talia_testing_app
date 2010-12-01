@@ -19,7 +19,7 @@
 
       <%  unless @source[N::DEMO.birthplace].empty? %> in
         <% birthplace = TaliaCore::ActiveSource.find(@source[N::DEMO.birthplace].first) %>
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(birthplace.to_s) %>&type=source">
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(birthplace.to_s) %>&type=source">
           <%= title_for(birthplace) %>
         </a>
       <% end %>
@@ -32,7 +32,7 @@
 
       <%  unless @source[N::DEMO.deathplace].empty? %> in
         <% deathplace = TaliaCore::ActiveSource.find(@source[N::DEMO.deathplace].first) %>
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(deathplace.to_s) %>&type=source">
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(deathplace.to_s) %>&type=source">
           <%= title_for(deathplace) %>
         </a>
       <% end %>
@@ -42,7 +42,7 @@
 
   <% unless (ruled = @source.inverse[N::DEMO.ruler].first).nil? %>
   <p><%= source_label %> was the ruler of the
-    <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(ruled.to_uri.to_s) %>&type=source">
+    <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(ruled.to_uri.to_s) %>&type=source">
       <%= title_for(ruled) %>
     </a>
   </p>
@@ -52,7 +52,7 @@
   <p>
     <% i = 1 %>
     <%=  source_label %> is the author of <%  author_of.each do |c| %>
-      <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
+      <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
       <%= title_for(c) %></a><% if i < author_of.count %>, <%end%><% i = i + 1 %>
      <% end %>
   </p>
@@ -62,7 +62,7 @@
   <p>
     <% i = 1 %>
     <%=  source_label %> is cited in <%  cited_in.each do |c| %>
-      <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
+      <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(c.to_uri.to_s) %>&type=source">
       <%= title_for(c) %></a><% if i < cited_in.count %>, <%end%><% i = i + 1 %>
      <% end %>
   </p>

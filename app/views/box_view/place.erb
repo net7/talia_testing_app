@@ -24,7 +24,7 @@
     <% unless (is_capital_of = @source.inverse[N::DEMO.capital].first).nil? %>
       <p>
         <%= source_label %> was the capital of
-        <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(is_capital_of.to_uri.to_s) %>&type=source">
+        <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(is_capital_of.to_uri.to_s) %>&type=source">
           <%= title_for(is_capital_of) %>
         </a>
       </p>
@@ -34,7 +34,7 @@
       <p>
         <% i = 1 %>
         <%  born_here.each do |b| %>
-          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(b.to_uri.to_s) %>&type=source">
+          <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(b.to_uri.to_s) %>&type=source">
             <%= title_for(b) %></a><% if i < born_here.count %>, <%end%><% i = i + 1 %>
           <% end %>
         <% if born_here.count > 1%> were <% else %> was <% end %>born in <%= source_label %>
@@ -45,7 +45,7 @@
       <p>
         <% i = 1 %>
         <%  died_here.each do |d| %>
-          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(d.to_uri.to_s) %>&type=source">
+          <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(d.to_uri.to_s) %>&type=source">
             <%= title_for(d) %></a><% if i < died_here.count %>, <%end%><% i = i + 1 %>
           <% end %>
         died in <%= source_label %>
@@ -66,7 +66,7 @@
       <p>
         <% i = 1 %>
         <% located_in.each do |l| %>
-          <a class="resource" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(l.to_uri.to_s) %>&type=source">
+          <a class="resource" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(l.to_uri.to_s) %>&type=source">
             <%= title_for(l) %></a><% if i < located_in.count %>, <%end%><% i = i + 1 %>
           <% end %>
         <% if located_in.count > 1 %>are<% else %>is<% end%> located in <%= source_label %>

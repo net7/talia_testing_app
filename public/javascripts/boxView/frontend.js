@@ -10,7 +10,7 @@ var myBoxView = null,
     myLang = "it",
     // Ajax get/post method, url to get data from
     ajaxMethod = "get",
-    ajaxApiUrl = "/boxView/dispatch",
+    ajaxApiUrl = "/boxview/dispatch",
     // List of boxes we are currently loading
     boxesBeingLoaded = {},
     // Google maps loaded, the key is the box id
