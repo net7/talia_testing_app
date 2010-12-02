@@ -150,7 +150,6 @@ a:active {
     top: 360px;
     left: 50%;
     margin-left: -100px;
-
 }
 
 #thanks {
@@ -251,4 +250,21 @@ a:active {
 
 .dyno-onload-show {
     display: none;
+}
+
+#error {
+    display: none;
+    background-color: #8d8779;
+    color: #fff;
+    text-align: center;
+    width: 300px;
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    margin-left: -150px;
+    padding-bottom: 5px;
+}
+
+#error a {
+    color: #fff;
 }

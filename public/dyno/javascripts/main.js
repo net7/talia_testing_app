@@ -1,6 +1,6 @@
 $(function() {
     var settings = {
-        uri: [],
+        uris: [],
         source: 'http://131.114.79.25:8080/sindice/',
         lang: 'en',
         altQuerystring: false,
@@ -20,23 +20,36 @@ $(function() {
                     return '<h3>Source: ' + this + '<h3>';
                 }
             });
+        },
+        callback_error: function(id, message) {
+            var errorBox = $("#error");
+            if(!errorBox || !$("p", errorBox)) {alert(message); return}
+            if(window.opener) {
+                $(".error-close").show();
+                $("a.error-close").live('click', function() {window.close();return false})
+            }
+            else $(".error-close").hide();
+            $(".error-hide").show();
+            $("a.error-hide").live('click', function() {errorBox.hide();return false})
+            $("p", errorBox).first().html(message.replace(/\n/g, "<br/>"));
+            errorBox.show();
         }
     };
 
-    if($("#dyno-uris a[href]", window.opener.document)) {
+    /// An example of how to get the required uri from the opener page if 
+    /// Dyno is shown in a popup or similar fashion.
+    if(window.opener && $("#dyno-uris a[href]", window.opener.document)) {
         $("#dyno-uris a[href]", window.opener.document).each(function(i, a) {
-            if(!$(a).attr("id")) settings.uri.push($(a).attr("href"));
+            if(!$(a).attr("id")) settings.uris.push($(a).attr("href"));
         });
-
-        if(settings.uri.length && $("#dyno-attributes")) {
-            $("#dyno-attributes").dyno(settings);
-            $(".dyno-predicate").live("click", function(e) {return false});
-            $(".dyno-source").live("click", function(e) {return false});
-        }
     }
-});
 
-$(document).ready(function() {
+    if($("#dyno-attributes")) {
+        $("#dyno-attributes").dyno(settings);
+        $(".dyno-predicate").live("click", function(e) {return false});
+        $(".dyno-source").live("click", function(e) {return false});
+    }
+
 	  singleResultSlide()
 	  sourcesSlide();
 });
