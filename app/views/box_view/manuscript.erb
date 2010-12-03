@@ -14,7 +14,7 @@
         <% related_transcription = @source[N::DEMO.has_transcription].first %>
         <% unless related_transcription.nil? %>
           <p class="anastatica">
-            <a class="resource anas" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(related_transcription.to_uri.to_s) %>&type=source" title="Transcription">Transcription</a>
+            <a class="resource anas" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(related_transcription.to_uri.to_s) %>&type=source" title="Transcription">Transcription</a>
           </p>
 
         <% end %>

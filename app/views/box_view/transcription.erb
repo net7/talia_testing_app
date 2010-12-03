@@ -9,7 +9,7 @@
       <% related_book = @source.inverse[N::DEMO.has_transcription].first %>
       <% unless related_book.nil? %>
         <p class="anastatica">
-          <a class="resource anas" href="/boxView/dispatch?method=getSource&resource=<%= Base64.encode64s(related_book.to_uri.to_s) %>&type=source" title="Manuscript">Manuscript</a>
+          <a class="resource anas" href="/boxview/dispatch?method=getSource&resource=<%= Base64.encode64s(related_book.to_uri.to_s) %>&type=source" title="Manuscript">Manuscript</a>
         </p>
         <% end %>
 

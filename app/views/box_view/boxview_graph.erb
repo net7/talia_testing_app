@@ -19,7 +19,7 @@
         <script type="text/javascript"> 
 			// <![CDATA[
 			var so = new SWFObject("/GraphGear.swf", "<%= id %>", "400", "400", "8");
-			so.addVariable("graphXMLFile", "/boxView/graph_xml/<%= Base64.encode64s(@source.uri.to_s) %>"); // rename to your xml file
+			so.addVariable("graphXMLFile", "/boxview/graph_xml/<%= Base64.encode64s(@source.uri.to_s) %>"); // rename to your xml file
 			so.addParam("allowScriptAccess", "always");
 			so.addParam("scale", "noborder");
 			so.addParam("salign", "tl");

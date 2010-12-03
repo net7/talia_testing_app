@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.connect 'annotations/:action.:format', :controller => 'annotations'
+
+
   map.resources :oai
 
   Hobo.add_routes(map)
@@ -37,11 +40,18 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'sources/:action/:id', :controller => 'sources'
   map.resources :sources, :requirements => { :id => /.+/  }
 
+
+  # DEPRECATED: use "boxview" instead of "boxView".
   map.connect 'boxView/', :controller => 'boxView', :action => 'index'
   map.connect 'boxView/dispatch', :controller => 'boxView', :action => 'dispatch'
-  map.connect 'boxView/graph_xml/:id', :controller => 'boxView', :action => 'graph_xml'
- 
+  map.connect 'boxView/graph_xml/:id', :controller => 'boxView', :action => 'graph_xml' 
   map.connect 'boxView/:id', :controller => 'boxView', :action => 'show'
+  # NEW: will slowly replace "boxView".
+  map.connect 'boxview/', :controller => 'boxView', :action => 'index'
+  map.connect 'boxview/dispatch', :controller => 'boxView', :action => 'dispatch'
+  map.connect 'boxview/graph_xml/:id', :controller => 'boxView', :action => 'graph_xml' 
+  map.connect 'boxview/:id', :controller => 'boxView', :action => 'show'
+
   map.resources :requirements => { :id => /.+/}
 
   # Routes for talia_files flexip stuff
@@ -105,6 +115,11 @@ ActionController::Routing::Routes.draw do |map|
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
   map.root :controller => "sources", :action => 'index'
+
+  # DEMO LOD
+  map.connect '/lod/reader', :controller => 'services/lod', :action => 'read'
+
+  map.admin '/admin', :controller => 'admin/front', :action => 'index'
 
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

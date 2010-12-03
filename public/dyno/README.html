@@ -1,0 +1,937 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.3" />
+<title>The Dyno widget documentation</title>
+<style type="text/css">
+/* Sans-serif font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+div#toctitle,
+span#author, span#revnumber, span#revdate, span#revremark,
+div#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+/* Serif font. */
+div.sectionbody {
+  font-family: Georgia,"Times New Roman",Times,serif;
+}
+
+/* Monospace font. */
+tt {
+  font-size: inherit;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+tt {
+  font-size: inherit;
+  color: navy;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+span#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+span#email {
+}
+span#revnumber, span#revdate, span#revremark {
+}
+
+div#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+div#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+div#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+div#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #777777;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  div#footer-badges { display: none; }
+}
+
+div#toc {
+  margin-bottom: 2.5em;
+}
+
+div#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+window.onload = function(){asciidoc.footnotes();}
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  var cont = document.getElementById("content");
+  var noteholder = document.getElementById("footnotes");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      // Use [\s\S] in place of . so multi-line matches work.
+      // Because JavaScript has no s (dotall) regex flag.
+      note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      spans[i].innerHTML =
+        "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+        "' title='View footnote' class='footnote'>" + n + "</a>]";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+}
+
+}
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>The Dyno widget documentation</h1>
+<span id="author">Riccardo Giomi</span><br />
+<span id="email"><tt>&lt;<a href="mailto:giomi@netseven.it">giomi@netseven.it</a>&gt;</tt></span><br />
+<span id="revnumber">version 1.0,</span>
+<span id="revdate">1th of December 2010</span>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>Dyno is a widget that queries the sindice engine (<a href="http://sindice.org/">http://sindice.org/</a>)
+about one or more URIS requested by the user, and creates a pretty
+table with the results. Results can be filtered by "source" (where
+sindice found the information).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_requirements">Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Dyno requires Java to be installed on your machine, unless you want to
+use the most basic of its features.
+For best performance, or you if you already have it -and then, why
+not?- Dyno can use a Java servlet container like Tomcat
+(<a href="http://tomcat.apache.org/">http://tomcat.apache.org/</a>) or GlassFish (<a href="http://glassfish.java.net/">http://glassfish.java.net/</a>).</p></div>
+<div class="paragraph"><p>TODO: better java requirements (version ecc.)</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_and_configuration">Installation and configuration</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_download_from_github">Download from github</h3>
+<div class="paragraph"><p>This code is hosted by github at <a href="https://github.com/net7/dyno">https://github.com/net7/dyno</a>. You can
+download it in tar.gz or .zip format by using the "download" button on
+that page. You can also use git, for example from the command line:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ git clone git://github.com/net7/dyno.git</tt></pre>
+</div></div>
+<div class="paragraph"><p>This will create a <strong>dyno/</strong> directory.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">it is not necessary to clone/decompress the file in a
+web-accessible directory. The application and examples will work all
+the same, if you use <em>file:///&lt;where dyno is&gt;/dyno/index.html</em> as an
+url.</td>
+</tr></table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_choose_a_bridge_and_start_it">Choose a bridge and start it</h3>
+<div class="paragraph"><p>Dyno uses a java application as a bridge towards the sindice
+server. The bridge comes in two versions, a standalone jar file and a
+war file that can be deployed on Tomcat or GlassFish.</p></div>
+<div class="paragraph"><p>Choose and follow one of the following sections:</p></div>
+<div class="sect3">
+<h4 id="_standalone_jar_bridge">Standalone Jar bridge</h4>
+<div class="paragraph"><p>You can start the bridge with the java -jar command. Assuming you are
+in the <strong>dyno/</strong> directory:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>$ java -jar bridges/sindiceservice.jar</tt></pre>
+</div></div>
+<div class="paragraph"><p>You should then see something like this, which indicates the
+standalone server is started:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>Dec 1, 2010 7:48:53 PM
+org.restlet.engine.http.connector.HttpServerHelper start
+INFO: Starting the internal HTTP server on port 8182</tt></pre>
+</div></div>
+<div class="paragraph"><p>The port should be the same in your case, unless the 8182 port is
+already in use. If it is, please take note of the number in "HTTP
+server on port &lt;number&gt;", it will be needed in a few moments to
+configure the rest of the application.</p></div>
+<div class="paragraph"><p>If you want to try to query the service put this url in your browser:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>http://localhost:8182/sindice/http%3A%2F%2Fdbpedia.org%2Fresource%2FBologna/en?callback=jsonp1291286937275</tt></pre>
+</div></div>
+<div class="paragraph"><p>If your port number is different from 8182, change the url accordingly.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_tomcat_glassfish">Tomcat/GlassFish</h4>
+<div class="paragraph"><p>If you have Tomcat or GlassFish installed and working, all you need to
+do is copy the <strong>bridges/sindice.war</strong> file in the <strong>webapps/</strong> directory
+for the servlet container, and wait a few seconds.</p></div>
+<div class="paragraph"><p>You&#8217;ll need to know the port tomcat listens to to configure the rest
+of the application. Usually the port is 8080.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">whichever bridge you use, it is not necessary to keep the
+files in the bridges/ directory. The jar file will work wherever it is
+put, and the war file needs to go somewhere else anyway.</td>
+</tr></table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_the_widget">Configure the widget</h3>
+<div class="paragraph"><p>The main configuration for the widget is at the start of
+dyno/javascripts/main.js.</p></div>
+<div class="paragraph"><p><strong>javascripts/main.js</strong></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-weight: bold"><span style="color: #0000FF">var</span></span> settings <span style="color: #990000">=</span> <span style="color: #FF0000">{</span>
+        values<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">null</span></span><span style="color: #990000">,</span>
+        uris<span style="color: #990000">:</span> <span style="color: #990000">[],</span>
+        source<span style="color: #990000">:</span> <span style="color: #FF0000">'http://localhost:8182/sindice'</span><span style="color: #990000">,</span>
+        lang<span style="color: #990000">:</span> <span style="color: #FF0000">'en'</span><span style="color: #990000">,</span>
+        altQuerystring<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span>
+        jsonp<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">true</span></span><span style="color: #990000">,</span>
+        callback<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+            $<span style="color: #990000">(</span><span style="color: #FF0000">".dyno-predicate"</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">tooltip</span></span><span style="color: #990000">(</span><span style="color: #FF0000">{</span>
+                delay<span style="color: #990000">:</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>
+                showURL<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">,</span>
+                bodyHandler<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">'&lt;h3&gt;Predicate URI: '</span> <span style="color: #990000">+</span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span> <span style="color: #990000">+</span> <span style="color: #FF0000">'&lt;/h3&gt;'</span><span style="color: #990000">;</span>
+                <span style="color: #FF0000">}</span>
+            <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+            $<span style="color: #990000">(</span><span style="color: #FF0000">".dyno-source"</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">tooltip</span></span><span style="color: #990000">(</span><span style="color: #FF0000">{</span>
+                delay<span style="color: #990000">:</span> <span style="color: #993399">0</span><span style="color: #990000">,</span>
+                showURL<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">false</span></span><span style="color: #990000">,</span>
+                bodyHandler<span style="color: #990000">:</span> <span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">()</span> <span style="color: #FF0000">{</span>
+                    <span style="font-weight: bold"><span style="color: #0000FF">return</span></span> <span style="color: #FF0000">'&lt;h3&gt;Source: '</span> <span style="color: #990000">+</span> <span style="font-weight: bold"><span style="color: #0000FF">this</span></span> <span style="color: #990000">+</span> <span style="color: #FF0000">'&lt;h3&gt;'</span><span style="color: #990000">;</span>
+                <span style="color: #FF0000">}</span>
+            <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+        <span style="color: #FF0000">}</span>
+    <span style="color: #FF0000">}</span><span style="color: #990000">;</span></tt></pre></div></div>
+<div class="paragraph"><p><strong>Values</strong> allow to supply the widget with pre-prepared values
+to show without using a bridge. See the dyno/javascripts/example.js
+file for an example and the "<strong>Personalization</strong>" section. When <strong>values</strong> is
+anything but nil all the other settings except from <strong>callback</strong> are
+ignored.</p></div>
+<div class="paragraph"><p>The important settings when using a bridge are <strong>uris</strong>, <strong>source</strong> and
+<strong>altQuerystring</strong>.</p></div>
+<div class="paragraph"><p><strong>uris</strong>
+This is an array of URIs we want to query sindice about. It you are
+asking about a single URI, you can set this to a single string instead
+of an array.</p></div>
+<div class="paragraph"><p>The settings are read later in the code, you have time until this
+call:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        $<span style="color: #990000">(</span><span style="color: #FF0000">"#dyno-attributes"</span><span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">dyno</span></span><span style="color: #990000">(</span>settings<span style="color: #990000">);</span></tt></pre></div></div>
+<div class="paragraph"><p>to set your uris in any dynamic way that suits your needs.</p></div>
+<div class="paragraph"><p>If no values for uris are given, Dyno defaults to the value value of the first
+<strong>rdf:about</strong> attribute it can find in the dyno/index.html file. You can
+see from that file&#8217;s code:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-weight: bold"><span style="color: #0000FF">&lt;div</span></span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-attributes"</span> <span style="color: #009900">rdf:about</span><span style="color: #990000">=</span><span style="color: #FF0000">"http://dbpedia.org/resource/Bologna"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span></tt></pre></div></div>
+<div class="paragraph"><p>That the code will default to <strong>http://dbpedia.org/resource/Bologna</strong> if
+no <strong>uris</strong> or <strong>values</strong> are given. You can change that value instead of
+the uris setting if you want.</p></div>
+<div class="paragraph"><p><strong>source</strong>
+This is the url to the bridge to Sindice.</p></div>
+<div class="paragraph"><p>If you started the <strong>standalone jar file</strong> then the default value should
+be ok, unless the service gave you a different port number.</p></div>
+<div class="paragraph"><p>If you deployed the <strong>war on Tomcat of GlassFish</strong> then, assuming the
+server is on port 8080, the value would be:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        source<span style="color: #990000">:</span> <span style="color: #FF0000">'http://localhost:8080/sindice'</span><span style="color: #990000">,</span></tt></pre></div></div>
+<div class="paragraph"><p><strong>altQuerystring</strong>
+This should be true if the bridge service is started with the jar
+file, false for the war file.</p></div>
+<div class="paragraph"><p>This option tells Dyno to ask the bridge using "/" to separate
+parameters in the request, if true, and the usual ?name=value
+querystring if false.</p></div>
+<div class="paragraph"><p><strong>lang</strong>
+This setting will change the language sindice results will be in. This
+will always translate the result names' and possibly the values -when
+it makes sense.</p></div>
+<div class="paragraph"><p><strong>timeout</strong>
+A query response from the bridge can take some time. By default Dyno
+waits 30 seconds before crying foul. This is usually more than enough
+to get an answer from the bridge. If you want to change the timeout
+milliseconds value, you can do so with:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-weight: bold"><span style="color: #0000FF">var</span></span> settings <span style="color: #990000">=</span> <span style="color: #FF0000">{</span>
+    <span style="color: #990000">...</span>
+    timeout<span style="color: #990000">:</span> <span style="color: #993399">15000</span><span style="color: #990000">,</span>
+    <span style="color: #990000">...</span>
+    <span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>to set it, for example, to 15 seconds.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_trying_it_out">Trying it out</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>If you followed the instructions in the  <strong>installation and
+configuration</strong> section above, it is now time to play with the thing!</p></div>
+<div class="paragraph"><p>Point your browser to dyno/index.html, wait a moment and you should
+see a pretty long -and pretty!- table listing the informations dbpedia
+has about Bologna -or whatever uri-identified-thing you queried about.</p></div>
+<div class="paragraph"><p>For every information you will see a <strong>name</strong>, with a [?] symbol you can
+hover over and get the relative RDF predicate.</p></div>
+<div class="paragraph"><p>Values can be either text, or a link, the latter being for
+references. The links open whatever the reference was to in a new
+window. Hovering over [source?] will show the URI this value is
+related to. This last information is really only useful if you asked
+about more than one URI with the uris settings.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">if you get a "Timeout, 30 seconds have passed&#8230;" error,
+it&#8217;s likely you either haven&#8217;t started the bridge service, or it is
+not configured correctly.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>If you want to see a more interesting example, try setting uris to the
+following values:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        uris<span style="color: #990000">:</span> <span style="color: #990000">[</span><span style="color: #FF0000">"http://sws.geonames.org/3181928/"</span><span style="color: #990000">,</span> <span style="color: #FF0000">"http://dbpedia.org/resource/Bologna"</span><span style="color: #990000">],</span></tt></pre></div></div>
+<div class="paragraph"><p>This is actually taken from a live demo about islamic art, here:
+<a href="http://islamicart.muruca.org/page/Bologna">http://islamicart.muruca.org/page/Bologna</a> (open "Source properties"
+and look for a "Get more data from LOD" button).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_personalization">Personalization</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>As you might have noticed, all this code is part of a bigger
+project. A lot of things, from the graphic style to the code in the
+index.html and javascripts/main.js files are pretty project
+specific.</p></div>
+<div class="paragraph"><p>Luckily, we made <em>some</em> efforts to make Dyno customizable, here is
+what you could do without too many difficulties:</p></div>
+<div class="sect2">
+<h3 id="_load_dyno_as_a_popup_or_similar">Load Dyno as a popup or similar</h3>
+<div class="paragraph"><p>This is easy, in fact, this is how it was used in the original project.
+This code in javascripts/main.js:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>    <span style="font-style: italic"><span style="color: #9A1900">/// An example of how to get the required uri from the opener page if</span></span>
+    <span style="font-style: italic"><span style="color: #9A1900">/// Dyno is shown in a popup or similar fashion.</span></span>
+    <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(</span>window<span style="color: #990000">.</span>opener <span style="color: #990000">&amp;&amp;</span> $<span style="color: #990000">(</span><span style="color: #FF0000">"#dyno-uris a[href]"</span><span style="color: #990000">,</span> window<span style="color: #990000">.</span>opener<span style="color: #990000">.</span>document<span style="color: #990000">))</span> <span style="color: #FF0000">{</span>
+        $<span style="color: #990000">(</span><span style="color: #FF0000">"#dyno-uris a[href]"</span><span style="color: #990000">,</span> window<span style="color: #990000">.</span>opener<span style="color: #990000">.</span>document<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">each</span></span><span style="color: #990000">(</span><span style="font-weight: bold"><span style="color: #0000FF">function</span></span><span style="color: #990000">(</span>i<span style="color: #990000">,</span> a<span style="color: #990000">)</span> <span style="color: #FF0000">{</span>
+            <span style="font-weight: bold"><span style="color: #0000FF">if</span></span><span style="color: #990000">(!</span>$<span style="color: #990000">(</span>a<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">attr</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"id"</span><span style="color: #990000">))</span> settings<span style="color: #990000">.</span>uris<span style="color: #990000">.</span><span style="font-weight: bold"><span style="color: #000000">push</span></span><span style="color: #990000">(</span>$<span style="color: #990000">(</span>a<span style="color: #990000">).</span><span style="font-weight: bold"><span style="color: #000000">attr</span></span><span style="color: #990000">(</span><span style="color: #FF0000">"href"</span><span style="color: #990000">));</span>
+        <span style="color: #FF0000">}</span><span style="color: #990000">);</span>
+    <span style="color: #FF0000">}</span></tt></pre></div></div>
+<div class="paragraph"><p>Checks if the page was opened by another window and looks for any
+container with id="dyno-uris". If found, the url any anchor inside it
+that has no id is considered an uri.</p></div>
+<div class="paragraph"><p>Check out dyno/example.popup.html -click on any link- for a complete example.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_ignore_the_bridge_and_use_your_own_values">Ignore the bridge and use your own values</h3>
+<div class="paragraph"><p>As seen in <strong>Installation and configuration</strong>, you can pass an array of
+values directly to the settings and Dyno will show them, ignoring any
+other option. For the expected format, see javascripts/example.js.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_make_your_own_bridge">Make your own bridge</h3>
+<div class="paragraph"><p>Anything that will answer a GET request and answer in JSONP with
+properly formatted data -again: see javascripts/example.js- can be
+used as a bridge.
+Expect the following parameters -with altQuerystring: false-:
+<strong>callback</strong>: needed for JSONP:
+<strong>urls</strong>: our settings.uris values, url-encoded and separated by a comma
+(,);
+<strong>lang</strong>: language from settings.lang -defaults to "en".</p></div>
+<div class="paragraph"><p>Remember to change settings.source. If you don&#8217;t want to use JSONP you
+can set settings.jsonp to false.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_change_the_style">Change the style</h3>
+<div class="paragraph"><p>CSS styling is in stylesheets/main.css, here it is easy to change the
+basics of the style, like colors, fonts and even the loading screen
+animation. stylesheets/jquery.tooltip.css manages the tooltips when
+hovering over the [?] and [source?] links.</p></div>
+<div class="paragraph"><p>When changing the HTML be careful that nothing is broken, Dyno expects
+some elements, css ids and classes to be present. For example,
+empty sections like these:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>        <span style="font-weight: bold"><span style="color: #0000FF">&lt;div</span></span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-title"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;&lt;h1&gt;&lt;/h1&gt;&lt;/div&gt;</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">&lt;div</span></span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"sources"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
+          <span style="font-weight: bold"><span style="color: #0000FF">&lt;div</span></span> <span style="color: #009900">id</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-sources-list"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;&lt;/div&gt;</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span></tt></pre></div></div>
+<div class="paragraph"><p><strong>and</strong></p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.3
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>      <span style="font-weight: bold"><span style="color: #0000FF">&lt;div</span></span> <span style="color: #009900">class</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-attribute"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">&lt;span</span></span> <span style="color: #009900">class</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-name"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;&lt;p&gt;&lt;/p&gt;&lt;/span&gt;</span></span>
+        <span style="font-weight: bold"><span style="color: #0000FF">&lt;span</span></span> <span style="color: #009900">class</span><span style="color: #990000">=</span><span style="color: #FF0000">"dyno-value"</span><span style="font-weight: bold"><span style="color: #0000FF">&gt;&lt;p&gt;&lt;/p&gt;&lt;/span&gt;</span></span>
+      <span style="font-weight: bold"><span style="color: #0000FF">&lt;/div&gt;</span></span></tt></pre></div></div>
+<div class="paragraph"><p>are expected and used as a template to build the table.</p></div>
+<div class="paragraph"><p>The javascript in javascripts/main.js is also somewhat structure
+dependent.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_basic_interactions">Basic interactions</h3>
+<div class="paragraph"><p>The Dyno jQuery plugin offers some additional functionalities, some
+examples:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+any element with class="dyno-onload-show" will be hidden while data
+   is being retrieved and shown when that&#8217;s done.
+</p>
+</li>
+<li>
+<p>
+any element with class="dyno-onload-hide" will be shown while data
+   is being retrieved and hidden when that&#8217;s done. This is used for
+   the "please wait" moving thingie at the start.
+</p>
+</li>
+<li>
+<p>
+settings.callback, if set to a function, is called when all the
+   data has been retrieved.
+</p>
+</li>
+<li>
+<p>
+settings.callback, if set to a function, is called if something
+   goes wrong. The callback function should expect two parameters, an
+   id (something like <em>no_uris</em>) and a human-readable error message.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_components">Components</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_the_sindice_bridge">The Sindice bridge</h3>
+<div class="paragraph"><p>This java server application acts like a bridge between the sindice
+application and the rest of the application.
+We include two different versions: a standalone jar that uses Jetty as
+as web server, and a war file that can be deployed on a servet
+container like Tomcat or Glassfish. The bridge files can be found in
+"dyno/bridges/".</p></div>
+</div>
+<div class="sect2">
+<h3 id="_the_dyno_jquery_plugin">The Dyno jQuery plugin</h3>
+<div class="paragraph"><p>This widget uses the Dyno jQuery plugin. The widget actually started
+as a sort of prototype for the plugin iself, but got the jump on it
+and is now the show&#8217;s star.</p></div>
+<div class="paragraph"><p>The plugin is pretty simple and knowledge of it is not required
+to use Dyno. If you are curious or think the plugin could be useful
+for you, the code in javascripts/dyno.jquery.js, while the
+documentation is in javascripts/dyno.jquery.README</p></div>
+</div>
+<div class="sect2">
+<h3 id="_css_style">CSS Style</h3>
+<div class="paragraph"><p>CSS stylesheets and images where realized for the Islamic Art demo
+(<a href="http://islamicart.muruca.org/">http://islamicart.muruca.org/</a>), and we thought it nice to leave them
+here, they were quite nice, after all.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Version 1.0<br />
+Last updated 2010-12-02 17:08:14 CET
+</div>
+</div>
+</body>
+</html>

@@ -17,7 +17,7 @@
     <%= timeline_includes %>
     <%= image_annotations_include_tags @swicky_mode%>
     <%= render :partial => 'shared/userecho' %>
-
+    <%= javascript_include_tag 'dyno' if TaliaCore::CONFIG['sindice'] %>
 
     <% if @source %>
     <link rel="foaf:primarytopic" href="<%= @source.uri.to_s %>"/>

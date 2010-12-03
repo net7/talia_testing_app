@@ -1,0 +1,270 @@
+/* Tags */
+body {
+    font-family: Helvetica,Arial,Verdana,sans-serif;
+    font-size: 12px;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+    background: url(i/main_bg.gif);
+    color: #666666;
+}
+
+a {
+  color: #b03a00;
+}
+
+a:hover {
+}
+
+a:active {
+}
+
+/* Parti interfaccia */
+#dyno-attributes
+{
+	padding-bottom: 100px;
+	overflow: hidden;
+}
+
+
+
+#header {
+	width: 100%;
+	background-color: #e2e2da;
+}
+
+/* Titolone in alto */
+#dyno-title {
+	height: 50px;
+	width: 100%;
+	background: #e2e2da url(i/title_bg.gif) top left repeat-x;
+	margin: 0; padding: 0;
+	z-index: 10000;
+	
+	/* Ombra */
+	/*
+	-moz-box-shadow: 5px 5px 5px #000;
+	-webkit-box-shadow: 5px 5px 5px #000;
+	box-shadow: 5px 5px 5px #000;
+	*/
+}
+	
+	#dyno-title h1 {
+		line-height: 50px;
+		font-size: 26px;
+		color: #8d8779;
+		font-weight: bold;
+		margin: 0; padding: 0 0 0 17px;
+		
+		/* Rilievo */
+		text-shadow: 0px 1px 0 #FFF;
+	}    
+.dyno-attribute {
+	/*
+	width: 100%;
+    margin: 5px 0 5px 0;
+    clear: both;
+    */
+    background: url(i/or_sep.gif) bottom left repeat-x;
+    padding-bottom: 2px;
+}
+
+.dyno-name {
+	display: block;
+	width: 100%;
+	/* background: #f2f2ea url(i/dyno-name-bg.gif) top left repeat-x; */
+	font-size: 14px;
+	font-weight: bold;
+	color: #837d71;
+	position: relative;
+	margin: 0;
+	
+	/* Rilievo */
+	text-shadow: 0px 1px 0 #FFF;
+	
+	/* Ombra */
+	/*
+	-moz-box-shadow: 0px 0px 4px #555;
+	-webkit-box-shadow: 0px 0px 4px #555;
+	box-shadow: 0px 0px 4px #555;
+	*/
+}
+
+.dyno-name p {
+	padding: 10px 10px 10px 20px;
+	margin: 0 0 0 10px;
+	cursor: pointer;
+	background: url(i/source_open.gif) center left no-repeat;
+	/* Rilievo */
+	text-shadow: 0px 1px 0 #FFF;
+}
+
+.dyno-name p.closed {
+	background: url(i/source_closed.gif) center left no-repeat;
+}
+
+.dyno-value {
+	padding: 0;
+	display: block;
+	line-height: 20px;
+	background-color: #FFF;
+	border-top: 1px solid #e3e2d9;
+	border-bottom: 1px solid #e3e2d9;
+	margin: 0 0 2px 0;
+}
+
+.dyno-value p {
+	padding: 5px 20px;
+	margin: 0;
+	/*
+	-moz-column-count: 2;
+	-moz-column-gap: 20px;
+	-webkit-column-count: 2;
+	-webkit-column-gap: 20px;
+	column-count: 2;
+	column-gap: 20px;
+	*/
+}
+
+
+.dyno-value img {
+    border: 1px solid #493e35;    
+    margin: 2px;
+}
+
+#dyno-loading {
+}
+
+#dyno-loading img {
+    display: block;
+    position: absolute;
+    top: 390px;
+    left: 50%;
+    margin-left: -105px;
+}
+
+#dyno-loading p {
+    color: #8d8779;
+    font-weight: bold;
+    position: absolute;
+    top: 360px;
+    left: 50%;
+    margin-left: -100px;
+}
+
+#thanks {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	color: #493e35;
+    font-weight: bold;
+    height: 35px;
+    line-height: 35px;
+    background-color: #8d8779;
+    padding: 0;
+    z-index: 3000;
+    text-align: right;
+}
+
+#thanks .right{
+	display: block;
+    height: 35px;
+    line-height: 35px;
+    float: right;
+}
+#thanks p {
+	float: left;
+	margin: 0 10px 0 0;
+    line-height: 35px;
+    font-weight: normal;
+}
+#thanks img {
+    border: 0;
+    margin: 0 10px;
+}
+#thanks a {
+	float: left;
+}
+
+/* Selezione delle sources da cui attingere */
+#sources {
+   z-index: 1;
+}
+
+#sources p {
+    display: inline;
+    font-weight: bold;
+    color:#493E35;
+    line-height: 1.5em;
+    width: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#dyno-sources-toggle-bar {
+	height: 22px;
+	background: url(i/toggle-bar-bg.gif) top left repeat-x;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+#dyno-sources-toggle-bar p {
+	text-align: center;
+	color: #FFF;
+	line-height: 22px;
+	display: block;
+	width: 100px;
+	margin: 0 auto;
+	background: url(i/sources_arrows_up.gif) center center no-repeat;
+}
+
+#dyno-sources-toggle-bar p.closed {
+	background: url(i/sources_arrows_down.gif) center center no-repeat;
+}
+
+#dyno-sources-list {
+	width: 100%;
+	background-color: #787266;
+	padding: 25px 0;
+	color: #FFF;
+	/* Onbra interna */
+	-moz-box-shadow: inset 0px 0px 10px #666157;
+	-webkit-box-shadow: inset 0px 0px 10px #666157;
+	box-shadow: inset 0px 0px 10px #666157;
+}
+
+#dyno-sources-list {
+	text-align: center;
+}
+
+#dyno-sources-list a {
+	color: #FFF;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+#dyno-sources-list a:hover {
+	text-decoration: underline;
+}
+
+.dyno-onload-show {
+    display: none;
+}
+
+#error {
+    display: none;
+    background-color: #8d8779;
+    color: #fff;
+    text-align: center;
+    width: 300px;
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    margin-left: -150px;
+    padding-bottom: 5px;
+}
+
+#error a {
+    color: #fff;
+}

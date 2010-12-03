@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    
+    <link rel="stylesheet" href="stylesheets/main.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/jquery.tooltip.css" type="text/css" media="screen"/>
+    
+    <script type="text/javascript" src="javascripts/jquery-1.4.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.dimensions.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.tooltip.min.js"></script>
+    <script type="text/javascript" src="javascripts/dyno.jquery.js"></script>
+    <script type="text/javascript" src="javascripts/main.js"></script>
+  </head>
+  <body>
+    <div id="dyno-attributes" rdf:about="http://dbpedia.org/resource/Bologna">
+      <div class="dyno-onload-show" id="header">
+        <div id="thanks">
+        	<span class="right">
+				<p>Powered by</p>
+				<a target="_blank" href="http://www.muruca.org"><img src="images/logo_muruca.gif" alt="Muruca" /></a>
+				<a target="_blank" href="http://sindice.com"><img src="images/logo_sindice.gif" alt="Sindice" /></a>
+        	</span>
+        </div>
+        <div id="dyno-title"><h1></h1></div>
+        <div id="sources">
+          <div id="dyno-sources-list"></div>
+          <div id="dyno-sources-toggle-bar"><p class="closed">sources</p></div>
+        </div>
+      </div>
+      
+      <div class="dyno-attribute">
+        <span class="dyno-name"><p></p></span>
+        <span class="dyno-value"><p></p></span>
+      </div>
+      <div id="dyno-loading" class="dyno-onload-hide">
+        <p>Loading data from LOD, please wait...</p>
+        <img src="images/ajax-loader.gif" />
+      </div>
+      <div id="error" style="display: hidden;">
+        <h2>Error</h2>
+        <p></p>
+        <a class="error-close" style="display: hidden;" href="">Close window</a>
+        <a class="error-hide" style="display: hidden;" href="">Hide error</a>
+      </div>
+    </div>
+  </body>
+</html>

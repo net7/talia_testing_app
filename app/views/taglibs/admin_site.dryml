@@ -142,6 +142,7 @@
     <repeat with="&models">
       <nav-item><ht key="#{this.name.tableize}.nav_item"><%= this.view_hints.model_name_plural %></ht></nav-item>
     </repeat>
+      <nav-item href="#{base_url}/admin/import"><ht key="import.nav_item">Import</ht></nav-item>
   </navigation>
 </def>
 

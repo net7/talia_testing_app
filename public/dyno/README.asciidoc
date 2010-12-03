@@ -1,0 +1,358 @@
+The Dyno widget documentation
+=============================
+Riccardo Giomi <giomi@netseven.it>
+V1.0, 1th of December 2010
+
+Dyno is a widget that queries the sindice engine (http://sindice.org/)
+about one or more URIS requested by the user, and creates a pretty
+table with the results. Results can be filtered by "source" (where
+sindice found the information).
+
+Requirements
+------------
+Dyno requires Java to be installed on your machine, unless you want to
+use the most basic of its features.
+For best performance, or you if you already have it -and then, why
+not?- Dyno can use a Java servlet container like Tomcat
+(http://tomcat.apache.org/) or GlassFish (http://glassfish.java.net/).
+
+TODO: better java requirements (version ecc.)
+
+Installation and configuration
+------------------------------
+Download from github
+~~~~~~~~~~~~~~~~~~~~
+This code is hosted by github at https://github.com/net7/dyno. You can
+download it in tar.gz or .zip format by using the "download" button on
+that page. You can also use git, for example from the command line:
+
+----
+$ git clone git://github.com/net7/dyno.git
+----
+
+This will create a *dyno/* directory.
+
+TIP: it is not necessary to clone/decompress the file in a
+web-accessible directory. The application and examples will work all
+the same, if you use _file:///<where dyno is>/dyno/index.html_ as an
+url.
+
+Choose a bridge and start it
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Dyno uses a java application as a bridge towards the sindice
+server. The bridge comes in two versions, a standalone jar file and a
+war file that can be deployed on Tomcat or GlassFish.
+
+Choose and follow one of the following sections:
+
+Standalone Jar bridge
+^^^^^^^^^^^^^^^^^^^^^
+You can start the bridge with the java -jar command. Assuming you are
+in the *dyno/* directory:
+
+----
+$ java -jar bridges/sindiceservice.jar
+----
+
+You should then see something like this, which indicates the
+standalone server is started:
+
+----
+Dec 1, 2010 7:48:53 PM
+org.restlet.engine.http.connector.HttpServerHelper start
+INFO: Starting the internal HTTP server on port 8182
+----
+
+The port should be the same in your case, unless the 8182 port is
+already in use. If it is, please take note of the number in "HTTP
+server on port <number>", it will be needed in a few moments to
+configure the rest of the application.
+
+If you want to try to query the service put this url in your browser:
+
+----
+http://localhost:8182/sindice/http%3A%2F%2Fdbpedia.org%2Fresource%2FBologna/en?callback=jsonp1291286937275
+----
+
+If your port number is different from 8182, change the url accordingly.
+
+Tomcat/GlassFish
+^^^^^^^^^^^^^^^^
+If you have Tomcat or GlassFish installed and working, all you need to
+do is copy the *bridges/sindice.war* file in the *webapps/* directory
+for the servlet container, and wait a few seconds.
+
+You'll need to know the port tomcat listens to to configure the rest
+of the application. Usually the port is 8080.
+
+TIP: whichever bridge you use, it is not necessary to keep the
+files in the bridges/ directory. The jar file will work wherever it is
+put, and the war file needs to go somewhere else anyway.
+
+Configure the widget
+~~~~~~~~~~~~~~~~~~~~
+The main configuration for the widget is at the start of
+dyno/javascripts/main.js. 
+
+*javascripts/main.js*
+
+[source, javascript]
+----
+    var settings = {
+        values: null,
+        uris: [],
+        source: 'http://localhost:8182/sindice',
+        lang: 'en',
+        altQuerystring: true,
+        jsonp: true,
+        callback: function() {
+            $(".dyno-predicate").tooltip({
+                delay: 0,
+                showURL: false,
+                bodyHandler: function() { 
+                    return '<h3>Predicate URI: ' + this + '</h3>';
+                }
+            });
+            $(".dyno-source").tooltip({
+                delay: 0,
+                showURL: false,
+                bodyHandler: function() { 
+                    return '<h3>Source: ' + this + '<h3>';
+                }
+            });
+        }
+    };
+----
+*Values* allow to supply the widget with pre-prepared values
+to show without using a bridge. See the dyno/javascripts/example.js
+file for an example and the "*Personalization*" section. When *values* is
+anything but nil all the other settings except from *callback* are
+ignored.
+
+The important settings when using a bridge are *uris*, *source* and
+*altQuerystring*.
+
+*uris*
+This is an array of URIs we want to query sindice about. It you are
+asking about a single URI, you can set this to a single string instead
+of an array.
+
+The settings are read later in the code, you have time until this
+call:
+[source, javascript]
+----
+        $("#dyno-attributes").dyno(settings);
+----
+to set your uris in any dynamic way that suits your needs.
+
+If no values for uris are given, Dyno defaults to the value value of the first
+*rdf:about* attribute it can find in the dyno/index.html file. You can
+see from that file's code:
+[source, html]
+----
+    <div id="dyno-attributes" rdf:about="http://dbpedia.org/resource/Bologna">
+----
+That the code will default to *http://dbpedia.org/resource/Bologna* if
+no *uris* or *values* are given. You can change that value instead of
+the uris setting if you want.
+
+*source*
+This is the url to the bridge to Sindice.
+
+If you started the *standalone jar file* then the default value should
+be ok, unless the service gave you a different port number.
+
+If you deployed the *war on Tomcat of GlassFish* then, assuming the
+server is on port 8080, the value would be:
+[source, javascript]
+----
+        source: 'http://localhost:8080/sindice',
+----
+
+*altQuerystring*
+This should be true if the bridge service is started with the jar
+file, false for the war file.
+
+This option tells Dyno to ask the bridge using "/" to separate
+parameters in the request, if true, and the usual ?name=value
+querystring if false.
+
+*lang*
+This setting will change the language sindice results will be in. This
+will always translate the result names' and possibly the values -when
+it makes sense.
+
+*timeout*
+A query response from the bridge can take some time. By default Dyno
+waits 30 seconds before crying foul. This is usually more than enough
+to get an answer from the bridge. If you want to change the timeout
+milliseconds value, you can do so with:
+[source, javascript]
+----
+    var settings = {
+    ...
+    timeout: 15000,
+    ...
+    }
+----
+to set it, for example, to 15 seconds.
+
+Trying it out
+-------------
+If you followed the instructions in the  *installation and
+configuration* section above, it is now time to play with the thing!
+
+Point your browser to dyno/index.html, wait a moment and you should
+see a pretty long -and pretty!- table listing the informations dbpedia
+has about Bologna -or whatever uri-identified-thing you queried about.
+
+For every information you will see a *name*, with a [?] symbol you can
+hover over and get the relative RDF predicate.
+
+Values can be either text, or a link, the latter being for
+references. The links open whatever the reference was to in a new
+window. Hovering over [source?] will show the URI this value is
+related to. This last information is really only useful if you asked
+about more than one URI with the uris settings.
+
+TIP: if you get a "Timeout, 30 seconds have passed..." error,
+it's likely you either haven't started the bridge service, or it is
+not configured correctly.
+
+
+If you want to see a more interesting example, try setting uris to the
+following values:
+[source, javascript]
+----
+        uris: ["http://sws.geonames.org/3181928/", "http://dbpedia.org/resource/Bologna"],
+----
+This is actually taken from a live demo about islamic art, here:
+http://islamicart.muruca.org/page/Bologna (open "Source properties"
+and look for a "Get more data from LOD" button).
+
+Personalization
+---------------
+As you might have noticed, all this code is part of a bigger
+project. A lot of things, from the graphic style to the code in the
+index.html and javascripts/main.js files are pretty project
+specific.
+
+Luckily, we made _some_ efforts to make Dyno customizable, here is
+what you could do without too many difficulties:
+
+Load Dyno as a popup or similar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This is easy, in fact, this is how it was used in the original project.
+This code in javascripts/main.js:
+[source, javascript]
+----
+    /// An example of how to get the required uri from the opener page if 
+    /// Dyno is shown in a popup or similar fashion.
+    if(window.opener && $("#dyno-uris a[href]", window.opener.document)) {
+        $("#dyno-uris a[href]", window.opener.document).each(function(i, a) {
+            if(!$(a).attr("id")) settings.uris.push($(a).attr("href"));
+        });
+    }
+----
+Checks if the page was opened by another window and looks for any
+container with id="dyno-uris". If found, the url any anchor inside it
+that has no id is considered an uri.
+
+Check out dyno/example.popup.html -click on any link- for a complete example.
+
+Ignore the bridge and use your own values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As seen in *Installation and configuration*, you can pass an array of
+values directly to the settings and Dyno will show them, ignoring any
+other option. For the expected format, see javascripts/example.js.
+
+Make your own bridge
+~~~~~~~~~~~~~~~~~~~~
+Anything that will answer a GET request and answer in JSONP with
+properly formatted data -again: see javascripts/example.js- can be
+used as a bridge.
+Expect the following parameters -with altQuerystring: false-:
+*callback*: needed for JSONP:
+*urls*: our settings.uris values, url-encoded and separated by a comma
+(,);
+*lang*: language from settings.lang -defaults to "en".
+
+Remember to change settings.source. If you don't want to use JSONP you
+can set settings.jsonp to false.
+
+Change the style
+~~~~~~~~~~~~~~~~
+CSS styling is in stylesheets/main.css, here it is easy to change the
+basics of the style, like colors, fonts and even the loading screen
+animation. stylesheets/jquery.tooltip.css manages the tooltips when
+hovering over the [?] and [source?] links.
+
+When changing the HTML be careful that nothing is broken, Dyno expects
+some elements, css ids and classes to be present. For example,
+empty sections like these:
+[source, html]
+----
+        <div id="dyno-title"><h1></h1></div>
+        <div id="sources">
+          <div id="dyno-sources-list"></div>
+        </div>
+----
+*and*
+[source, html]
+----
+      <div class="dyno-attribute">
+        <span class="dyno-name"><p></p></span>
+        <span class="dyno-value"><p></p></span>
+      </div>
+----
+are expected and used as a template to build the table.
+
+The javascript in javascripts/main.js is also somewhat structure
+dependent.
+
+Basic interactions
+~~~~~~~~~~~~~~~~~~
+The Dyno jQuery plugin offers some additional functionalities, some
+examples:
+
+ * any element with class="dyno-onload-show" will be hidden while data
+   is being retrieved and shown when that's done.
+
+ * any element with class="dyno-onload-hide" will be shown while data
+   is being retrieved and hidden when that's done. This is used for
+   the "please wait" moving thingie at the start.
+
+ * settings.callback, if set to a function, is called when all the
+   data has been retrieved.
+
+ * settings.callback, if set to a function, is called if something
+   goes wrong. The callback function should expect two parameters, an
+   id (something like 'no_uris') and a human-readable error message.
+
+Components
+----------
+The Sindice bridge
+~~~~~~~~~~~~~~~~~~
+This java server application acts like a bridge between the sindice
+application and the rest of the application.
+We include two different versions: a standalone jar that uses Jetty as
+as web server, and a war file that can be deployed on a servet
+container like Tomcat or Glassfish. The bridge files can be found in
+"dyno/bridges/".
+
+
+The Dyno jQuery plugin
+~~~~~~~~~~~~~~~~~~~~~~
+This widget uses the Dyno jQuery plugin. The widget actually started
+as a sort of prototype for the plugin iself, but got the jump on it
+and is now the show's star.
+
+The plugin is pretty simple and knowledge of it is not required
+to use Dyno. If you are curious or think the plugin could be useful
+for you, the code in javascripts/dyno.jquery.js.
+
+CSS Style
+~~~~~~~~~
+CSS stylesheets and images where realized for the Islamic Art demo
+(http://islamicart.muruca.org/), and we thought it nice to leave them
+here, they were quite nice, after all.
