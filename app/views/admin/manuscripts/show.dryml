@@ -1,0 +1,24 @@
+<% can_edit_stuff = @manuscript.updatable_by?(current_user) %>
+<show-page>
+	<content-body: >
+                <field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_number, numbering_type, numbering_author, numbering_writing_type, notes, repository, repository_structure, shelfmark"/>
+		<collection with="&this.elements" id="collection_order">
+			<item: id="item_#{this.id}">
+		      <div class="ordering-handle" if="&can_edit_stuff">&uarr;<br/>&darr;</div>
+		      <card />
+		    </item:>
+			<empty-message:>This Manuscript is empty</empty-message:>
+		</collection>
+		<%= if Hobo::Dryml.last_if
+		        opts = { :url => { :controller => 'talia_collections', :action => 'reorder', :id => @manuscript.to_uri.safe_encoded},
+		                 :constraint => :vertical,
+		                 :overlap => :vertical,
+		                 :scroll => :window,
+		                 :handle => 'ordering-handle',
+		                 :complete => [visual_effect(:highlight, 'book_order')]
+		                }
+		        sortable_element 'collection_order', opts
+		      end # FIXME: Make unobstrusive
+		   %>
+	</content-body>
+</show-page>
