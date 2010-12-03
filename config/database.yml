@@ -6,19 +6,19 @@
 development: 
   adapter: jdbcmysql
   host: localhost
-  username: talia
-  password: talia
-  # database: talia_demo_development
-  database: talia_testing_app
+  username: danilo
+  password: danilo
+  database: schopenhauer_development
 production:
   adapter: jdbcmysql
   host: localhost
-  username: talia
-  password: talia
-  database: talia_demo_production
+  username: danilo
+  password: danilo
+  database: schopenhauer_production
 test:
-  adapter: jdbcmysql
+  adapter: mysql
   host: localhost
-  username: talia
-  password: talia
-  database: talia_demo_talia_test
+  username: danilo
+  password: danilo
+  database: schopenhauer_test
+

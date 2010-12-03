@@ -28,6 +28,40 @@
 </def>
 
 
+
+<def tag="card" for="Work">
+  <card class="work" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><%= this.title %></a><delete-icon /></h4>
+    </header:>
+    <body:>
+
+      <ht key="work.side_collection.count" count="&this.elements.size">
+			Contains <%= this.elements.size %> Sources
+      </ht>
+
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Manuscript">
+  <card class="manuscript" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><%= this.title %></a><delete-icon /></h4>
+    </header:>
+    <body:>
+
+      <ht key="work.side_collection.count" count="&this.elements.size">
+			Contains <%= this.elements.size %> Sources
+      </ht>
+
+    </body:>
+  </card>
+</def>
+
+
+
+
 <def tag="card-with-drag-handle">
   <% drag_id = this.to_uri.safe_encoded %>
   <div id="#{drag_id}">

@@ -1,7 +1,7 @@
 require "base64"
 class BoxViewController < ApplicationController
   include TaliaCore
-
+  include SemanticTemplateHelper
   layout nil
 
   NO_ERRORS = 0
@@ -74,6 +74,9 @@ class BoxViewController < ApplicationController
     @source = TaliaCore::ActiveSource.find(source_uri)
     @source_name = @source.uri.to_uri.local_name.to_s.gsub('_', ' ')
     html = ''
+
+    template = template_for(@source, 'box_view')
+
     types = ActiveRDF::Query.new(N::URI).select(:type).distinct.where(@source, N::RDF.type, :type).execute
     if  N::DEMO.Person.in? types
       html += render_to_string :person

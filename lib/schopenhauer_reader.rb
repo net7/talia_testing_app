@@ -17,10 +17,10 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
   element :index_element do
     @current.attributes["uri"] ||= Guid.new
     add 'type', BookIndexSection
-    add 'index_section_number', from_element(:position)
-    add 'index_section_title', from_element(:title)
-    add 'index_section_starting_page', from_element(:start_page)
-    add 'index_section_ending_page', from_element(:end_page)
+    add 'number', from_element(:position)
+    add 'title', from_element(:title)
+    add 'starting_page', from_element(:start_page)
+    add 'ending_page', from_element(:end_page)
     add_rel N::SCHOP.index_of, N::LOCAL + from_element(:book)
   end
 

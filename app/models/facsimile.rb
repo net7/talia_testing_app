@@ -1,8 +1,12 @@
 require 'exifr'
 
-class Facsimile <  TaliaCore::Source
+class Facsimile < TaliaCore::Source
 hobo_model
-extend RdfProperties
+  extend RdfProperties
+  include StandardPermissions
+
+  has_rdf_type N::SCHOP.Facsimile
+
   after_create :fill_data_from_image_file
 
   rdf_property :author, N::DCT.author #TODO check if correct ontology item

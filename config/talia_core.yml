@@ -23,7 +23,7 @@ namespaces:
   geo: http://www.w3.org/2003/01/geo/wgs84_pos#
   demo: http://ontologies.muruca.org/demo3#
   bibo: http://purl.org/ontology/bibo/
-  schop: http://purl.org/schopenhauersource/ontology/
+  schop: http://purl.org/schopenhauersource/ontology#
 site_name: Schopenhauer Source
 iip_root_directory_location: /home/danilo/Dropbox/Progetti/schopenhauer/schopenhauer_source/iip_root
 data_directory_location: /home/danilo/Dropbox/Progetti/schopenhauer/schopenhauer_source/data
@@ -38,7 +38,9 @@ oai:
 shown_tabs:
   - users
   - talia_sources
-
+  - talia_collections
+  - manuscripts
+  - works
 thumb_options:
   height: "600"
   width: "600"

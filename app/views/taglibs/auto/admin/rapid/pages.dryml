@@ -6,6 +6,7 @@
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Home</nav-item>
     <nav-item with="&CustomTemplate"><ht key="custom_templates.nav_item">Templates</ht></nav-item>
+    <nav-item with="&Manuscript"><ht key="manuscripts.nav_item">Manuscripts</ht></nav-item>
     <nav-item with="&TaliaCollection"><ht key="talia_collections.nav_item">Collections</ht></nav-item>
     <nav-item with="&TaliaSource"><ht key="talia_sources.nav_item">Sources</ht></nav-item>
     <nav-item with="&User"><ht key="users.nav_item">Users</ht></nav-item>
@@ -122,6 +123,126 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'custom_templates.actions.delete', :default=>['Remove This Template']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Manuscript Pages ====== -->
+
+<def tag="index-page" for="Manuscript">
+  <page merge title="#{ht 'manuscripts.index.title', :default=>['Manuscripts'] }">
+    <body: class="index-page manuscript" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="manuscripts.index.heading">
+            Manuscripts
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="manuscripts.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="manuscripts.actions.new">New Manuscript</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Manuscript">
+  <page merge title="#{ht 'manuscripts.new.title', :default=>[' New Manuscript'] }">
+    <body: class="new-page manuscript" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="manuscripts.new.heading">
+            New Manuscript
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'manuscripts.actions.create', :default=>['Create Manuscript']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Manuscript">
+  <page merge title="#{ht 'manuscripts.show.title', :default=>['Manuscript'] }">
+
+    <body: class="show-page manuscript" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="manuscripts.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="manuscripts.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Manuscript
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:description param="description"/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Manuscript">
+  <page merge title="#{ht 'manuscripts.edit.title', :default=>['Edit Manuscript'] }">
+
+    <body: class="edit-page manuscript" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="manuscripts.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'manuscripts.actions.delete', :default=>['Remove This Manuscript']}" param/>
       </section>
 
       <section param="content-body">
@@ -538,5 +659,124 @@
 
   </page>
 </def>
+
+
+
+<!-- ====== Work Pages ====== -->
+
+<def tag="index-page" for="Work">
+  <page merge title="#{ht 'works.index.title', :default=>['Works'] }">
+    <body: class="index-page work" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="works.index.heading">
+            Works
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="works.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="works.actions.new">New Work</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Work">
+  <page merge title="#{ht 'works.new.title', :default=>[' New Work'] }">
+    <body: class="new-page work" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="works.new.heading">
+            New Work
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'works.actions.create', :default=>['Create Work']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Work">
+  <page merge title="#{ht 'works.show.title', :default=>['Work'] }">
+
+    <body: class="show-page work" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="works.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="works.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Work
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Work">
+  <page merge title="#{ht 'works.edit.title', :default=>['Edit Work'] }">
+
+    <body: class="edit-page work" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="works.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'works.actions.delete', :default=>['Remove This Work']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
 
 

@@ -12,6 +12,18 @@
 
 
 
+<def tag="form" for="Manuscript">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'manuscripts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="TaliaCollection">
   <form merge param="default">
     <error-messages param/>
@@ -68,4 +80,16 @@
     </div>
   </form>
 </def>
+
+<def tag="form" for="Work">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'works.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
 

@@ -1,5 +1,8 @@
 class Page < TaliaCore::Source
   hobo_model
+  include StandardPermissions
+
+  has_rdf_type N::SCHOP.Page
 
   extend RdfProperties
 
@@ -20,14 +23,17 @@ class Page < TaliaCore::Source
   end
 
   def next_page
-    my_index = book.index(self)
-    return book[my_index + 1] unless book.size == (my_index + 1)
-    return self
+    book.next(self)
+
   end
 
   def prev_page
-    my_index = book.index(self)
-    return book[my_index - 1] unless my_index == 0
-    return self
+    book.prev(self)
   end
+
+  # Returns an array of facsimiles related to this page (or an empty one)
+  def related_facsimiles
+    self.inverse[N::DCT.isFormatOf]
+  end
+
 end

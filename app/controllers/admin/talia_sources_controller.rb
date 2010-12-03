@@ -14,9 +14,8 @@ class Admin::TaliaSourcesController < Admin::AdminSiteController
       add_files(created_source, files)
       assign_collection_from_params(created_source)
       created_source.save!
+      redirect_to :controller => :sources,  :action => :index
     end
-   
-    redirect_to :action => 'index'
   end
 
   def update

@@ -11,6 +11,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/admin/talia_sources/:action/:id', :controller => 'admin/talia_sources'
   map.connect '/admin/talia_collections/:action/:id', :controller => 'admin/talia_collections'
 
+  map.connect 'test', :controller => 'test', :action => 'show'
+
+
   map.connect 'swicky_notebooks/context/:action', :controller => 'swicky_notebooks'
   map.resources :swicky_notebooks, :path_prefix => 'users/:user_name'
 

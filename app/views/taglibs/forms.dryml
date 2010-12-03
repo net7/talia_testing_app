@@ -25,6 +25,7 @@
             Dom.get(el).addEventListener(type, fn, false);
           };
         } else if (window.attachEvent) {
+
           return function(el, type, fn) {
             var f = function() {
               fn.call(Dom.get(el), window.event);
@@ -104,3 +105,17 @@
     </div>
   </form>
 </def>
+
+
+<def tag="form" for="Manuscript">
+  <form merge param="default">
+    <error-messages param/>
+    <%#*<field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_number, numbering_type, numbering_author, numbering_writing_type, notes, repository, repository_structure, shelfmark" param/>%>
+
+    <field-list fields="title, volume" param/>
+    <div param="actions">
+      <submit label="#{ht 'manuscripts.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+

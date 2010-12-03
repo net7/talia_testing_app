@@ -1,5 +1,13 @@
 <!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
 
+<def tag="card" for="BookIndexSection">
+  <card class="book-index-section" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+  </card>
+</def>
+
 <def tag="card" for="CustomTemplate">
   <card class="custom-template" param="default" merge>
     <header: param>
@@ -8,6 +16,33 @@
     <body: param>
       <view:content param="description"/>
     </body:>
+  </card>
+</def>
+
+<def tag="card" for="Facsimile">
+  <card class="facsimile" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Manuscript">
+  <card class="manuscript" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+    <body: param>
+      <view:description param="description"/>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Page">
+  <card class="page" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
   </card>
 </def>
 
@@ -29,6 +64,14 @@
 
 <def tag="card" for="User">
   <card class="user" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Work">
+  <card class="work" param="default" merge>
     <header: param>
       <h4 param="heading"><name/></h4>
     </header:>
