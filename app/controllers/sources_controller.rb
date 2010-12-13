@@ -125,7 +125,7 @@ class SourcesController < ApplicationController
     #    if source
     return unless check_source_or_redirect
     callback
-    render :text => @source.to_rdf
+    render :text => @source.to_lod_rdf
     #    else
     #      render :text => ''
     #    end

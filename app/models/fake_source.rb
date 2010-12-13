@@ -4,6 +4,12 @@ module FakeSource
   
   # Class methods for fake sources
   module ClassMethods
+
+    # BY RIK
+    # Copy of TaliaCore::Collection#lod? for the "special child" TaliaCollection
+    def lod?
+      return false
+    end
     
     def real_class
       @real_class ||= TaliaCore::Source

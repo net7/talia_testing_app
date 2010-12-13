@@ -2,6 +2,12 @@ class TaliaFile < TaliaCore::Source
 
   before_destroy :delete_file_parts
   
+  # BY RIK
+  # Disable LOD RDF for this class
+  def self.lod?
+    false
+  end
+
   def pseudo_id
     self.uri.to_s["#{N::LOCAL.file}/".length, uri.to_s.length]
   end
