@@ -12,7 +12,7 @@ class CreateSourceOaiFields < ActiveRecord::Migration
       t.string :identifier
     end
     
-    add_index :source_oai_fields, :class, :unique => true
+    add_index :source_oai_fields, :klass, :unique => true
   end
 
   def self.down
