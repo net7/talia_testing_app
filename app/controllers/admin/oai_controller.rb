@@ -10,11 +10,16 @@ class Admin::OaiController < ApplicationController
   def edit_default
     @all_fields = TaliaCore::Oai::SourceOaiFields.describe
     @all_predicates = TaliaCore::SemanticRelation.all_predicates
-    @fields = TaliaCore::Oai::SourceOaiFields.for :'_all'
+    @fields = TaliaCore::Oai::SourceOaiFields.for '_all'
   end
 
   def update_default
     @record = TaliaCore::Oai::SourceOaiFields.find_by_klass '_all'
+    if @record.nil?
+      @record = TaliaCore::Oai::SourceOaiFields.new
+      @record["klass"] = '_all'
+    end
+
     params[:_all].each do |name, value|
       @record[name] = value
     end
@@ -33,12 +38,17 @@ class Admin::OaiController < ApplicationController
     @all_fields = TaliaCore::Oai::SourceOaiFields.describe
     @klass = get_klass
     @all_predicates = @klass.all_predicates
-    @fields = @klass.oai_fields
+    @fields = TaliaCore::Oai::SourceOaiFields.for_klass @klass.to_s
   end
 
   def update
     @klass = get_klass
     @record = TaliaCore::Oai::SourceOaiFields.find_by_klass @klass.to_s
+    if @record.nil?
+      @record = TaliaCore::Oai::SourceOaiFields.new
+      @record["klass"] = @klass.to_s
+    end
+
     params[@klass.to_s].each do |name, value|
       @record[name] = value
     end
