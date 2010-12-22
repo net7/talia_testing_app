@@ -23,7 +23,10 @@ class Admin::OaiController < ApplicationController
   end
 
   def guess_default
-    render :inline => 'TODO!'
+    @all_fields = TaliaCore::Oai::SourceOaiFields.describe
+    @all_predicates = TaliaCore::SemanticRelation.all_predicates
+    @fields = TaliaCore::Oai::SourceOaiFields.guess_default_fields
+    render :template => 'admin/oai/edit_default'
   end
 
   def edit 
@@ -44,7 +47,11 @@ class Admin::OaiController < ApplicationController
   end
 
   def guess
-    render :inline => 'TODO!'
+    @klass = get_klass
+    @all_fields = TaliaCore::Oai::SourceOaiFields.describe
+    @all_predicates = @klass.all_predicates
+    @fields = @klass.guess_oai_fields
+    render :template => 'admin/oai/edit'
   end
 
   private
