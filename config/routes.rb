@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.admin '/admin', :controller => 'admin/front', :action => 'index'
   map.connect '/admin/import/:action', :controller => 'admin/import'
+  map.connect '/admin/oai/:action', :controller => 'admin/oai'
+
   map.connect '/admin/destroy_notebook', :controller => 'admin/destroy_notebook', :action => 'perform_destroy'
   map.connect '/admin/talia_sources/:action/:id', :controller => 'admin/talia_sources'
   map.connect '/admin/talia_collections/:action/:id', :controller => 'admin/talia_collections'

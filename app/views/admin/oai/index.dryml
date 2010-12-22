@@ -1,0 +1,21 @@
+<page title="OAI Configuration">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1>OAI-PMH configuration</h1>
+      <section class="welcome-message"></section>
+    </header>
+
+    <section class="content-body">
+    <a href="edit_default">General configuration</a><br/>
+    <hr/>
+    <% @klasses.each do |k| %>
+    <a href="edit?klass=#{k.name}"><%= k.name.split('::').last %></a><br/>
+    <% end %>
+
+    </section>
+  </content:>
+  
+</page>

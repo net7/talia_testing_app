@@ -1,6 +1,10 @@
 module TaliaCore
   module SourceTypes
     class DummySource < Source
+      def self.oai?
+        false
+      end
+
       # BY RIK
       # TODO: check what we should destroy and when
       def attach_files(files)

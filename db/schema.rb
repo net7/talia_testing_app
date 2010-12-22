@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100118154130) do
+ActiveRecord::Schema.define(:version => 20101214171411) do
 
   create_table "active_sources", :force => true do |t|
     t.datetime "created_at"
@@ -67,6 +67,21 @@ ActiveRecord::Schema.define(:version => 20100118154130) do
   end
 
   add_index "semantic_relations", ["predicate_uri"], :name => "index_semantic_relations_on_predicate_uri"
+
+  create_table "source_oai_fields", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "class",       :null => false
+    t.string   "title"
+    t.string   "creator"
+    t.string   "subject"
+    t.string   "description"
+    t.string   "date"
+    t.string   "type"
+    t.string   "identifier"
+  end
+
+  add_index "source_oai_fields", ["class"], :name => "index_source_oai_fields_on_class", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "crypted_password",          :limit => 40

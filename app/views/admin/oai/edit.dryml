@@ -1,0 +1,45 @@
+<page title="OAI Configuration for #{@klass}">
+  <body: class="front-page"/>
+  <content:>
+    <header class="content-header">
+      <h1>OAI-PMH configuration for <%= @klass != '_all' ? @klass : "generic"%></h1>
+      <section class="welcome-message"></section>
+      <a href="index">Back</a>
+    </header>
+
+    <section class="content-body">
+      <form action="update">
+        <input type="hidden" name="klass" value="#{@klass}"/>
+        <h2>Fill manually</h2>
+        <% @all_fields.each do |name|%>
+        <%= name %> <input type="text" name="#{@klass}[#{name}]" value="#{@fields[name]}"/><br/>
+        <% end %>
+        <input size="30" type="submit" name="save" value="Save"/>
+        <h2>Drag from existing predicates</h2>
+        <% unless @all_predicates.count.zero? %>
+        <select size="20">
+          <% @all_predicates.each do |predicate| %>
+          <option class="draggable" value="<%= predicate %>"><%= predicate %></option>
+          <% end %>
+        </select>
+        <% else %>
+        <p>No predicates for this class.</p>
+        <% end %>
+      </form>
+      <h2>Guess</h2>
+      <% unless @all_predicates.count.zero? %>
+      <p>Guessing will fill all fields, empty or not.</p>
+      <form action="guess">
+        <input type="hidden" name="klass" value="#{@klass}"/>
+        <input type="submit" name="guess_all" value="Let me guess..."/>
+      </form>
+      <% else %>
+      <p>Cannot guess... no predicates for this class.</p>
+      <% end %>
+    </section>
+
+    <footer class="content-footer">
+      <a href="index">Back</a>
+    </footer>
+  </content:>
+</page>

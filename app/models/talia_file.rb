@@ -1,10 +1,14 @@
 class TaliaFile < TaliaCore::Source
 
   before_destroy :delete_file_parts
-  
+
   # BY RIK
   # Disable LOD RDF for this class
   def self.lod?
+    false
+  end
+
+  def self.oai?
     false
   end
 
