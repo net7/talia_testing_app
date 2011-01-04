@@ -1,5 +1,17 @@
 <!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
 
+<def tag="form" for="BookIndexSection">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'book_index_sections.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="CustomTemplate">
   <form merge param="default">
     <error-messages param/>

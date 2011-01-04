@@ -5,13 +5,132 @@
 <def tag="main-nav">
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Home</nav-item>
+    <nav-item with="&BookIndexSection"><ht key="book_index_sections.nav_item">Book Index Sections</ht></nav-item>
     <nav-item with="&CustomTemplate"><ht key="custom_templates.nav_item">Templates</ht></nav-item>
     <nav-item with="&Manuscript"><ht key="manuscripts.nav_item">Manuscripts</ht></nav-item>
     <nav-item with="&TaliaCollection"><ht key="talia_collections.nav_item">Collections</ht></nav-item>
     <nav-item with="&TaliaSource"><ht key="talia_sources.nav_item">Sources</ht></nav-item>
-    <nav-item with="&User"><ht key="users.nav_item">Users</ht></nav-item>
   </navigation>
 </def>
+
+
+
+
+<!-- ====== BookIndexSection Pages ====== -->
+
+<def tag="index-page" for="BookIndexSection">
+  <page merge title="#{ht 'book_index_sections.index.title', :default=>['Book Index Sections'] }">
+    <body: class="index-page book-index-section" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="book_index_sections.index.heading">
+            Book Index Sections
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="book_index_sections.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="book_index_sections.actions.new">New Book Index Section</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="BookIndexSection">
+  <page merge title="#{ht 'book_index_sections.new.title', :default=>[' New Book Index Section'] }">
+    <body: class="new-page book-index-section" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="book_index_sections.new.heading">
+            New Book Index Section
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'book_index_sections.actions.create', :default=>['Create Book Index Section']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="BookIndexSection">
+  <page merge title="#{ht 'book_index_sections.show.title', :default=>['Book Index Section'] }">
+
+    <body: class="show-page book-index-section" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="book_index_sections.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="book_index_sections.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Book Index Section
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="BookIndexSection">
+  <page merge title="#{ht 'book_index_sections.edit.title', :default=>['Edit Book Index Section'] }">
+
+    <body: class="edit-page book-index-section" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="book_index_sections.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'book_index_sections.actions.delete', :default=>['Remove This Book Index Section']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
 
 
 

@@ -28,6 +28,20 @@
 </def>
 
 
+<def tag="card" for="Page">
+  <card class="page" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a><delete-icon /></h4>
+    </header:>
+    <body:>
+      (<%= this.uri %>) 
+<!--      <source-collections /> -->
+    </body:>
+  </card>
+</def>
+
+
+
 
 <def tag="card" for="Work">
   <card class="work" param="default" merge>
@@ -121,26 +135,6 @@
                             />
     </if>
   </repeat>
-</def>
-
-
-<def tag="field-edit-table" polymorphic>
-  <table class="field-list">
-    <do param="content" />
-  </table>
-</def>
-
-<def tag="field-row" attrs="fieldname">
-  <tr>
-    <th class="#{fieldname}-label" param="label"><ht key="#{this.class.name.tableize}.#{fieldname}"><%= fieldname.titleize %></ht></th>
-<td class="#{fieldname}-view" param="view"><base-card-link with="&this[fieldname.to_sym]" /></td>
-</tr>
-</def>
-
-<def tag="field-edit-row" attrs="fieldname">
-  <field-row fieldname="&fieldname">
-    <view:><input field="&fieldname" /></view:>
-  </field-row>
 </def>
 
 <def tag="single-connection-row" attrs="fieldname">

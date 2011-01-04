@@ -7,7 +7,7 @@
 <include src="taglibs/auto/admin/rapid/forms"/>
 <include src="taglibs/cards"/>
 <include src="taglibs/forms"/>
-
+<include src="taglibs/talia_backend"/>
 
 <set-theme name="clean"/>
 

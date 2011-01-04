@@ -1,0 +1,150 @@
+<include src="taglibs/talia_backend_multi_select" />
+
+<!-- Taglib for common tasks in the Talia Backend interface.
+-->
+
+<!--
+`<field-edit-table>` will create a table that is tagged with "field-edit-table" and will 
+be rendered like the "normal" table of editable fields in the automatic Hobo forms and views.
+-->
+<def tag="field-edit-table" polymorphic>
+    <table class="field-list">
+        <do param="content" />
+    </table>
+</def>
+
+<!-- Creates a row for "viewing" a field of the current context (this). 
+This is meant to be used inside the `field-edit-table`. The
+first column, `label`, will contain the label, which can be translated using a
+key of the form "my_models.field". The second column, `view` will contain
+the value of the field, which will use the appropriate `field-value` tag.
+-->
+<def tag="field-row" attrs="fieldname">
+    <% name = this_field.nil? ? fieldname : this_field %>
+    <tr>
+        <th class="#{this_field}-label" param="label"><span class='field_label'><ht key="generic_field_names.#{name}" /></span></th>
+        <td class="#{this_field}-view" param="view"><talia-field-value /></td>
+    </tr>
+    <tr><td colspan="2" class="spacer"></td></tr>
+</def>
+
+<def tag="talia-field-value">
+    <% 
+      options = this_parent.try_call.property_options_for(this_field) || {}
+      type = talia_type(this_parent, this_field) || String
+      single = options[:singular_property].true?
+    %>
+    <if test="&single">
+        <field-value merge for-type="&type"/>
+    </if>
+    <else>
+        <repeat join="<br />"><field-value for-type="&type" /></repeat>
+    </else>
+</def>
+
+<!-- `field-value` will render the given value. This polymorphic tag can be
+overloaded to give a different rendering for different values. Unlinke the `card` this
+is meant for simple, one-line representations of the value. The base implementation
+just prints the current object as a string -->
+<def tag="field-value" polymorphic>
+    <%= this.to_s %>
+</def>
+
+<!-- For an ActiveRecord, the value will be a normal link to the record's show page.
+See the Rapid `a` tag -->
+<def tag="field-value" for="ActiveRecord::Base">
+    <if test="&this.is_a?(CustomBibliographyItem)">
+        <%= this.name.nil? ? "" : "("+this.name+") "%><%= this.bibliography_item.author %>: 
+        <%= this.bibliography_item.title %><%= this.pages.nil? ? "" : " ("+this.pages+")" %>
+    </if>
+    <else>
+        <a />
+    </else>
+</def>
+
+
+<!-- 
+Works like the `field-row`, but instead of the value of the field this will contain
+an input element appropriate for modifying the contents of the field.
+-->
+<def tag="field-edit-row">
+    <field-row merge >
+        <view:><talia-input merge /></view:>
+    </field-row>
+</def>
+
+<!-- 
+"Semantic" version of the standard `input` tag. This will check if the current object
+(`this`) is an ActiveSource (if not, it will use the standard input tag). If the tag
+is used with a field, it will first try to use the type defined in the 
+ActiveSource class with `property_options` (or the singuar/multi accessor definitions)
+it will use the `semantic-input` tag defined for that type. If a "simple" type is 
+defined in the class, it will use the standard input tag for that type
+-->
+<def tag="talia-input">
+  <% 
+    options = this_parent.try_call.property_options_for(this_field) || {}
+    my_type = talia_type(this_parent, this_field)
+    single = options[:singular_property].true?
+    multi = options[:multi_property].true?
+    string = (my_type.to_s == "String")
+    hobo_type = this_parent.class.attr_type(this_field)
+  %>
+  
+  <if test="&my_type.nil?">
+      <input name="#{this_parent.class.name.underscore}[#{this_field}]" merge/>
+  </if>
+  <else>
+      <if test="&single">
+          <if test="&string">
+              <input name="#{this_parent.class.name.underscore}[#{this_field}]" for-type="&hobo_type" merge />
+          </if>
+          <else>
+              <input merge name="#{this_parent.class.name.underscore}[#{this_field}]" for-type="&my_type" for="&hobo_type" />
+          </else>
+      </if>
+      <if test="&multi">
+          <talia-multi-input merge />
+      </if>
+      <!-- TODO: using single-select if neither singular or multi property are set -->
+      <if test="&!(multi || single)">
+          <talia-single-select merge name="#{this_parent.class.name.underscore}[#{this_field}]" for-type="&my_type" />
+      </if>
+  </else>
+</def>
+
+<!--
+This is the default situation
+-->
+<def tag="input" for="TaliaCore::ActiveSource">
+    <talia-single-select merge />
+</def>
+
+<!--
+    TODO: This shouldnt be needed .. but sometimes (why?? when??) in the edit action
+    the :text fields just get rendered as input text... 
+    
+<def tag="input" for="HoboFields::Text" merge>
+    <textarea></textarea>
+</def>
+-->
+
+<def tag="talia-single-select" attrs="id, name, fieldtype, selectoptions">
+    <% type = fieldtype || talia_type(this_parent, this_field) || this_type || ActiveSource %>
+    <% type = type.constantize unless(type.is_a?(Class)) %>
+    <% options = selectoptions || type.all.collect { |el| [ "#{el.try_call.to_list_s || source_name(el)}", el.uri.to_s ] }.sort %>
+    <% name = name.blank? ? "#{this_parent.class.name.underscore}[#{this_field}]" : name %>
+    <% id = id.blank? ? "#{this_parent.class.name.underscore}_#{this_field}" : id %>
+    <if test="&this.blank?">
+        <select-menu name = "&name"
+            id            = "&id"
+            options       = "&options" 
+            first-option  = "&I18n.t('talia.select_one')" />
+    </if>
+    <else>
+        <select-menu name = "&name"
+            id            = "&id"
+            options       = "&options" 
+            selected      = "&this.try.uri.to_s" />
+    </else>
+</def>

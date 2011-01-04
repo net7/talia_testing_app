@@ -22,6 +22,7 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
     add 'starting_page', from_element(:start_page)
     add 'ending_page', from_element(:end_page)
     add_rel N::SCHOP.index_of, N::LOCAL + from_element(:book)
+#    add 'book', from_element(:book)
   end
 
   element :page do

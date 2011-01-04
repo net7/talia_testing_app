@@ -1,0 +1,44 @@
+<def tag="talia-multi-input" attrs="name, id">
+    <%
+        # Parameters to pass in: 
+        # main_name: name of the model (eg: BibliographyItem)
+        # param_name: name of the field (eg: author)
+        # existing: hash of already existing items of this kind, to add right away
+        # options: options to display into the select 
+
+        id = id.blank? ? "#{this_parent.class.name.underscore}_#{this_field}" : id
+        hidden_name = name.blank? ? "#{this_parent.class.name.underscore}[#{this_field}][]" : name
+        populate_ul_id = id+"_list"
+        select_id = id+"_select"
+        add_button_id = id+"_add"
+        existing = this.nil? ? [] : this.collect {|x| [x.try_call.to_list_s || x.try_call.name || x.to_uri.local_name, x.uri.to_s]}
+    %>
+    <ul id="<%=h populate_ul_id %>"></ul>
+    <talia-single-select id="&select_id" name="&select_id" merge />
+    <input type="button" class="button" value="&h(I18n.t('general.add'))" name='&h(add_button_id)' id='&h(add_button_id)' />
+
+    <script>
+    (function() {
+        var param_name = "<%=this_field %>",
+            add_button_id = "<%=escape_javascript add_button_id %>",
+            populate_ul_id = "<%=escape_javascript populate_ul_id %>",
+            select_id = "<%=escape_javascript select_id %>",
+            main_name = "<%=this_parent.class.name %>";
+    
+        // Load all existing data as soon as the window is ready
+        Event.observe(window, 'load', function() {
+            <% existing.each do |name, value| %>
+                populate_with_item(populate_ul_id, '<%=escape_javascript name %>', [{name: '<%=hidden_name %>', value: '<%=escape_javascript value %>'}]);
+            <% end %>
+        });
+    
+        // Click on add button: populate our list with the selected item
+        $(add_button_id).observe('click', function() {
+                selected = $(select_id).options[$(select_id).selectedIndex],
+                hidden_hash = [{name: "<%=hidden_name %>", value: selected.value}];
+
+            populate_with_item(populate_ul_id, selected.text, hidden_hash);
+        });    
+    })();
+    </script>
+</def>
