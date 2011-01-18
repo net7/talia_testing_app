@@ -66,6 +66,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # Linked Open Data formatted requests
   # http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
+  map.connect 'resource/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch',
+  :requirements => { :dispatch_uri => /[^\.]+/ }
   map.connect 'data/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_rdf',
     :requirements => { :dispatch_uri => /[^\.]+/ }
   map.connect 'page/:dispatch_uri.:format', :controller => 'sources', :action => 'dispatch_html',
