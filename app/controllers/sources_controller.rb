@@ -78,8 +78,17 @@ class SourcesController < ApplicationController
   #
   # LOD reference: http://www4.wiwiss.fu-berlin.de/bizer/pub/LinkedDataTutorial/
   def dispatch
+    # logger.info '---- BEGIN REQUEST ----'
+    # logger.info request.env['REQUEST_URI']
+    # logger.info '---- REQUEST HEADERS ----'
+    # for header in request.env.select{|k,v| k.match("^HTTP.*")}
+    #   logger.info "#{header[0]} => #{header[1]}"
+    # end
+    # logger.info '---- END REQUEST ----'
     return unless check_source_or_redirect
     ActionController::Base.use_accept_header = true
+    force_rdf_format
+    # logger.info "Chosen format: #{request.format}"
     case request.format
     when 'xml' then redirect_to :status => 303, :action => 'dispatch_xml',  :dispatch_uri => params[:dispatch_uri]
     when 'rdf' then redirect_to :status => 303, :action => 'dispatch_rdf',  :dispatch_uri => params[:dispatch_uri]
@@ -176,6 +185,20 @@ class SourcesController < ApplicationController
   end
   
   private
+
+  def force_rdf_format
+    if ['rdf', 'application/rdf', 'text/rdf', 'text/rdf+xml'].include? request.format
+      request.format ='rdf'
+      return
+    end
+    # The previous condition may not be enough: check if a valid accept mime was present 
+    # in the request but not chosen:
+    valid = ['application/rdf+xml', 'application/rdf', 'text/rdf', 'text/rdf+xml']
+    unless (valid & request.env['HTTP_ACCEPT'].gsub(' ', '').split(',')).empty?
+      request.format = 'rdf'
+    end
+  end
+
 
   def set_swicky_mode
     @swicky_mode = request.user_agent.index("annotation-client-") == 0
