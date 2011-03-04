@@ -1,7 +1,7 @@
 <% can_edit_stuff = @manuscript.updatable_by?(current_user) %>
 <show-page>
 	<content-body: >
-                <field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_number, numbering_type, numbering_author, numbering_writing_type, notes, repository, repository_structure, shelfmark"/>
+                <field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_count, numbering_type, numbering_author, numbering_writing_type, notes, repository, repository_structure, shelfmark"/>
 		<collection with="&this.elements" id="collection_order">
 			<item: id="item_#{this.id}">
 		      <div class="ordering-handle" if="&can_edit_stuff">&uarr;<br/>&darr;</div>

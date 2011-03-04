@@ -39,6 +39,7 @@ shown_tabs:
   - users
   - talia_sources
   - talia_collections
+  - book_index_sections
   - manuscripts
   - works
 thumb_options:

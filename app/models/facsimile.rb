@@ -9,15 +9,16 @@ hobo_model
 
   after_create :fill_data_from_image_file
 
-  rdf_property :author, N::DCT.author #TODO check if correct ontology item
-  rdf_property :copyright_note, N::DCT.copyright #TODO check if correct ontology item
+  rdf_property :author, N::SCHOP.author
+  rdf_property :copyright_note, N::SCHOP.copyright #TODO check if correct ontology item
   rdf_property :width, N::SCHOP.width
   rdf_property :height, N::SCHOP.height
-  rdf_property :date, N::DCT.date
+  rdf_property :date, N::SCHOP.date
 #  rdf_property :page, N::DCT.isFormatOf, :type => Page
 
   def page
-    self.dct.isFormatOf.first
+#    self.dct.isFormatOf.first
+    self.SCHOP.format_of.first
   end
 
   def fill_data_from_image_file

@@ -16,16 +16,16 @@ class Manuscript < Book
   declare_attr_type :title, :string
 
 # rdf_property :volume, N::DCT.isPartOf, :type => :string
-  rdf_property :description, N::DCNS.description, :type => :string
+  rdf_property :description, N::SCHOP.description, :type => :string
 
-  rdf_property :date, N::DCT.date, :type => :string # this accept a range, though it's recommended to follow a standard (ISO861)
+  rdf_property :date, N::SCHOP.date, :type => :string # this accept a range, though it's recommended to follow a standard (ISO861)
   rdf_property :width, N::SCHOP.width, :type => :string
   rdf_property :height, N::SCHOP.height, :type => :string
   rdf_property :binding_type, N::SCHOP.binding_type, :type => :string
   rdf_property :old_title, N::SCHOP.old_title, :type => :string
   rdf_property :new_title, N::SCHOP.new_title, :type => :string
   rdf_property :ex_libris, N::SCHOP.ex_libris, :type => :string
-  rdf_property :sheets_number, N::SCHOP.sheets_number, :type => :string
+  rdf_property :sheets_count, N::SCHOP.sheets_count, :type => :string
   rdf_property :numbering_type, N::SCHOP.numbering_type, :type => :string
   rdf_property :numbering_author, N::SCHOP.numbering_author, :type => :string
   rdf_property :numbering_writing_type, N::SCHOP.numbering_writing_type, :type => :string
@@ -33,7 +33,7 @@ class Manuscript < Book
   rdf_property :writing_starting_date, N::SCHOP.writing_starting_date, :type => :string
   rdf_property :writing_ending_date, N::SCHOP.writing_ending_date, :type => :string
   rdf_property :repository, N::SCHOP.repository, :type => :string
-  rdf_property :repository_structure, N::SCHOP.repository_structu, :type => :string
+  rdf_property :repository_structure, N::SCHOP.repository_structure, :type => :string
   rdf_property :shelfmark, N::SCHOP.shelfmark, :type => :string
   rdf_property :author, N::SCHOP.has_author, :type => TaliaCore::ActiveSource
   rdf_property :notes, N::SCHOP.notes, :type => :string
@@ -73,7 +73,9 @@ class Manuscript < Book
   end
 
   def fetch_volume
-    ActiveRDF::Query.new(Manuscript).select(:m).where(:m, N::DCT.hasPart, self).execute.first
+    # TaliaCore::Collection uses N::DCT.hasPart internally for its items
+    qry = ActiveRDF::Query.new(Manuscript).select(:m).where(:m, N::DCT.hasPart, self)
+    qry.execute.first
   end
 
   # If there's errors validating the volume, add these errors to this                                                                

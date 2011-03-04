@@ -19,7 +19,8 @@ class Page < TaliaCore::Source
   end
 
   def book
-    self.dct.isPartOf.first
+#    self.dct.isPartOf.first
+    self.SCHOP.part_of.first
   end
 
   def next_page

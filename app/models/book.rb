@@ -1,7 +1,6 @@
 class Book < TaliaCore::Collection
   
-  #    singular_property :book_collection, N::SCHOP.book_collection
-
+#    singular_property :book_collection, N::SCHOP.book_collection
 #      before_save :set_collection_value
 
   has_rdf_type N::SCHOP.Book

@@ -110,9 +110,11 @@
 <def tag="form" for="Manuscript">
   <form merge param="default">
     <error-messages param/>
-      <field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_number, numbering_type, numbering_author, numbering_writing_type, notes, repository, repository_structure, shelfmark" param/> 
+      <field-list fields="title, description, date, width, height, binding_type, old_title, new_title, ex_libris, sheets_count, numbering_type, numbering_author, numbering_writing_type, numbering_notes, writing_starting_date, writing_ending_date, repository, repository_structure, shelfmark, notes" param/>
 
-      <% volume=this.volume; manuscript_hash = {}; Manuscript.all.each { |b| manuscript_hash[b.name] = b.to_uri unless b.uri == this.uri} %>
+      <% volume=this.volume %>
+
+    <% manuscript_hash = {}; Manuscript.all.each { |b| manuscript_hash[b.name] = b.to_uri unless b.uri == this.uri} %>
         <unless test="&manuscript_hash.empty?"> 
           <field-row field="volume">
 	    <view:><select-menu options="&manuscript_hash" id="volume" name="manuscript[volume]" first-option="select if subpart of another manuscript" /></view:> 

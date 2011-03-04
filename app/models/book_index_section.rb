@@ -11,7 +11,10 @@ hobo_model
   rdf_property :title, N::SCHOP.index_section_title, :type => :string
   rdf_property :starting_page, N::SCHOP.index_section_starting_page, :type => :string
   rdf_property :ending_page, N::SCHOP.index_section_ending_page, :type => :string
+
+
   manual_property :book
+
 
   def book=(value)
     self.schop.index_of << value

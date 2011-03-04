@@ -30,7 +30,8 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
     add 'type', Page
     add 'name', from_element(:name)
     add 'position', from_element(:position)
-    add_rel  N::DCT.isPartOf, N::LOCAL + from_element(:book)
+#  add_rel  N::DCT.isPartOf, N::LOCAL + from_element(:book)
+   add_rel  N::DCT.part_of, N::LOCAL + from_element(:book)
 #  add_rel  'dct:isPartOf, from_element(:book)
   end
 
@@ -39,7 +40,8 @@ class SchopenhauerReader < TaliaCore::ActiveSourceParts::Xml::GenericReader
     # file
     @current.attributes["uri"] ||= Guid.new
     add 'type', Facsimile
-    add_rel N::DCT.isFormatOf, N::LOCAL + from_element(:page)
+#    add_rel N::DCT.isFormatOf, N::LOCAL + from_element(:page)
+    add_rel N::SCHOP.format_of, N::LOCAL + from_element(:page)
 #     add_rel :page , N::LOCAL + from_element(:page)
 
     add_file all_elements(:file)
