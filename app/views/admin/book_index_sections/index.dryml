@@ -1,0 +1,9 @@
+<index-page>
+
+ <% books = BookIndexSections.books_with_index_sections  %>
+ <% unless books.nil? %>
+    <% books.each do |b| %>
+       	<%= b %>
+    <% end %>
+ <% end %>
+</index-page>
