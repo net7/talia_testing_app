@@ -74,8 +74,8 @@ class Manuscript < Book
 
   def fetch_volume
     # TaliaCore::Collection uses N::DCT.hasPart internally for its items
-    qry = ActiveRDF::Query.new(Manuscript).select(:m).where(:m, N::DCT.hasPart, self)
-    qry.execute.first
+#    qry = ActiveRDF::Query.new(Manuscript).select(:m).where(:m, N::DCT.hasPart, self)
+#    qry.execute.first
   end
 
   # If there's errors validating the volume, add these errors to this                                                                

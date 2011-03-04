@@ -63,7 +63,7 @@ Warbler::Config.new do |config|
   # fine-grained control.
   # config.gems << /^merb-/
   # config.gems << Gem::Dependency.new("merb-core", "= 0.9.3")
-config.gems += ["activerecord-jdbcmysql-adapter","memcache-client","muruca_widgets","talia_core","rails","jruby-openssl","activerecord-jdbcmysql-adapter","hobo","oai_talia","json_pure","activerdf_net7", "simplyx", "nokogiri"]
+config.gems += ["activerecord-jdbcmysql-adapter","memcache-client","muruca_widgets","talia_core","rails","jruby-openssl","activerecord-jdbcmysql-adapter","hobo","oai_talia","json_pure","activerdf_net7", "simplyx", "nokogiri", "exifr"]
   # Include gem dependencies not mentioned specifically. Default is true, uncomment
   # to turn off.
   # config.gem_dependencies = false
